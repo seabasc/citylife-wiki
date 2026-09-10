@@ -977,7 +977,32 @@
       });
 
       Promise.all([
-        fetch('community-wiki-data.json').then(response => { if (!response.ok) throw new Error(`Wiki data request failed (${response.status})`); return response.json(); })
+        (function() {
+          // If running as a local file (file:// protocol), browsers block fetch() for security.
+          // In that case, fall back to XMLHttpRequest which still works with local files.
+          if (location.protocol === 'file:') {
+            return new Promise(function(resolve, reject) {
+              var xhr = new XMLHttpRequest();
+              xhr.open('GET', 'community-wiki-data.json', true);
+              xhr.onload = function() {
+                if (xhr.status >= 200 && xhr.status < 300) {
+                  try { resolve(JSON.parse(xhr.responseText)); }
+                  catch(e) { reject(new Error('Failed to parse wiki data JSON: ' + e.message)); }
+                } else {
+                  reject(new Error('Wiki data request failed (HTTP ' + xhr.status + ')'));
+                }
+              };
+              xhr.onerror = function() { reject(new Error('Network error reading wiki data. This page must be served over HTTP/S — use a local web server.')); };
+              xhr.send();
+            });
+          } else {
+            // Running on http/https (GitHub Pages, localhost dev server, etc.) — normal fetch path
+            return fetch('community-wiki-data.json').then(function(response) {
+              if (!response.ok) throw new Error('Wiki data request failed (' + response.status + ')');
+              return response.json();
+            });
+          }
+        })()
       ])
         .then(wikiData => {
           // Defensive: handle both object and array responses gracefully
@@ -997,7 +1022,7 @@
           showHome();
         })
         .catch(error => {
-          main.innerHTML = `<div class="error"><strong>Wiki data could not be loaded.</strong><br>${escapeHtml(error.message)}<br><br>Open this page through a local web server so the browser can load the JSON file.</div>`;
+          main.innerHTML = `<div class="error"><strong>Wiki data could not be loaded.</strong><br>${escapeHtml(error.message)}<br><br><span id="fixHint">If opening from your hard drive, ensure <code>community-wiki-data.json</code> exists in the same folder. You can also run a local web server (e.g., <code>npx serve .</code>) for the best experience.</span></div>`;
           nav.innerHTML = '';
         });
     })();

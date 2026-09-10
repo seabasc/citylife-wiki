@@ -1,0 +1,2 @@
+# This file tells GitHub Pages NOT to run Jekyll on this repo.
+# Our wiki is a pure static site (HTML + JSON) — Jekyll interferes with .md files.

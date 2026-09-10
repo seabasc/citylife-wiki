@@ -1,0 +1,20 @@
+# Build outputs (regenerated)
+build/
+dist/
+
+# Node modules
+node_modules/
+
+# OS / Editor
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+.vscode/
+.idea/
+
+# Large map assets (re-downloadable from originals if needed)
+map/GTAV_ATLUS_8192x8192.png
+map/GTAV-HD-MAP-roadmap.jpg
+map/GTAV-HD-MAP-satellite.jpg

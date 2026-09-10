@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>City Life Santos Wiki</title>
+  <meta name="description" content="Interactive wiki, rules viewer, GTA V map, and gang calculators.">
+  <link rel="manifest" href="assets/manifest.json">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.min.js"></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+</head>
+<body>
+  <div class="toast-container" id="toastContainer"></div>
+  <div class="modal-overlay" id="modalOverlay"><div class="modal" id="modalContent"></div></div>
+
+  <div class="app">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-section">
+        <div class="sidebar-label">Main</div>
+        <div class="sidebar-item active" data-panel="welcome"><span class="icon">&#x1F3E0;</span> Home</div>
+        <div class="sidebar-item" data-panel="rules"><span class="icon">&#x1F4D2;</span> Rules</div>
+        <div class="sidebar-item" data-panel="map"><span class="icon">&#x1F5FA;</span> Map</div>
+        <div class="sidebar-item" data-panel="calculators"><span class="icon">&#x1F9EE;</span> Calculators</div>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-label">Resources</div>
+        <div class="sidebar-item" data-panel="wiki"><span class="icon">&#x1F4D6;</span> Wiki</div>
+        <div class="sidebar-item" data-panel="faves"><span class="icon">&#x2B50;</span> Favorites</div>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-label">Rules Quick Nav</div>
+        <div id="ruleNav"></div>
+      </div>
+    </aside>
+
+    <div style="flex:1; display:flex; flex-direction:column; height:calc(100vh - var(--topbar-height)); margin-top:var(--topbar-height); overflow:hidden;">
+      <header class="topbar">
+        <button class="action-btn sidebar-toggle" id="sidebarToggle">&#9776;</button>
+        <div class="topbar-brand"><div class="topbar-logo">CL</div><span class="topbar-title">City Life Santos Wiki</span></div>
+        <div class="topbar-search">
+          <div class="search-input-wrapper">
+            <span class="search-icon">&#x1F50D;</span>
+            <input type="text" class="search-input" id="searchInput" placeholder="Search rules, map pins, wiki..." autocomplete="off">
+            <button class="search-mode-toggle" id="searchModeToggle" title="Toggle AI Semantic Search"><span class="dot"></span> AI</button>
+            <span class="search-shortcut">Ctrl+K</span>
+          </div>
+          <div class="search-results-dropdown" id="searchResults"></div>
+        </div>
+        <div class="topbar-actions">
+          <button class="action-btn" id="themeToggle" title="Toggle Theme">&#x1F319;</button>
+          <button class="action-btn" id="settingsBtn" title="Settings">&#x2699;&#xFE0F;</button>
+        </div>
+      </header>
+
+      <main class="main" id="mainContent">
+        <div class="content-panel active" id="panel-welcome"></div>
+        <div class="content-panel" id="panel-rules"><div class="rules-container" id="rulesContainer"><div class="rules-header"><h1>CityLife Roleplay — All Rules</h1><p>Quick reference for gameplay rules.</p></div><div id="rulesContent"></div></div></div>
+        <div class="content-panel" id="panel-map"><div class="map-container"><div class="map-layer-selector"><button class="layer-tab active" data-layer="roadmap">Roadmap</button><button class="layer-tab" data-layer="satellite">Satellite</button><button class="layer-tab" data-layer="atlus">Atlus Map</button></div><div id="map-view"></div></div></div>
+        <div class="content-panel" id="panel-calculators"><div class="calcs-container"><div class="rules-header"><h1>Gang Calculators</h1><p>Useful tools for planning and tracking.</p></div><div class="calcs-grid" id="calcGrid"></div></div></div>
+        <div class="content-panel" id="panel-wiki"><div class="wiki-container"><div class="rules-header"><h1>Wiki Pages</h1><p>Your gang strategies, routes, lore, and more.</p></div><div id="wikiContent"></div></div></div>
+        <div class="content-panel" id="panel-faves"><div class="rules-container"><div class="rules-header"><h1>Favorites</h1><p>Your bookmarked rules, map pins, and wiki pages.</p></div><div id="favesContent"></div></div></div>
+      </main>
+    </div>
+  </div>
+
+  <script src="js/data.js"></script>
+  <script src="js/search.js"></script>
+  <script src="js/map.js"></script>
+  <script src="js/calculators.js"></script>
+  <script src="js/wiki.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

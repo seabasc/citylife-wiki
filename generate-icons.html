@@ -1,0 +1,7 @@
+<!DOCTYPE html>
+<html><head><title>Generate CLWiki Icons</title><style>*{display:flex;align-items:center;justify-content:center;height:100vh;background:#1a1a28;color:#e8e8f0;font-family:sans-serif}canvas{border-radius:24px}</style></head><body><h3 style="margin-bottom:20px">Generating icons...</h3></body></html>
+<script>
+const W=[192,512],G=(c,s)=>{const g=c.createLinearGradient(0,0,w,w);g.addColorStop(0,'#8b5cf6');g.addColorStop(1,'#3b82f6');return g};
+W.forEach(w=>{const c=document.createElement('canvas');c.width=w;c.height=w;const x=c.getContext('2d');x.fillStyle=G(c,w);x.fillRect(0,0,w,w);x.fillStyle='#fff';x.font=`bold ${w>300?200:72}px Arial Black`;x.textAlign='center';x.fillText('CL',w/2,w/2+((w>300)?15:-8));c.toBlob(b=>{const u=URL.createObjectURL(b);const a=document.createElement('a');a.href=u;a.download=`icon-${w}.png`;a.click();URL.revokeObjectURL(u)},'image/png')});
+document.querySelector('h3').textContent='Icons downloaded! Close this tab.';
+</script>

@@ -11,6 +11,9 @@ Thumbs.db
 *.swp
 *.swo
 *~
+*.bak
+tree.txt
+tree_map.txt
 .vscode/
 .idea/
 

@@ -17,4 +17,4 @@ Woodcutting is an easy-to-learn skill that levels up by chopping down Trees! Bel
 * [x] Reaching Level 70 Unlocks Cutting Agarwood Trees!
 * [x] Reaching Level 80 Unlocks Cutting Boxwood & Baobab Trees!
 
-<figure><img src="assets/wiki/8392b1a7aea8e349e3af.png" alt=""><figcaption></figcaption></figure>
+<figure><img src="https://1220491511-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FTjoPqB53oR42XfwTK5MK%2Fuploads%2FEcs0c2kvamG31hEwe3k7%2Fgolden_plank.png?alt=media&amp;token=e385a788-3219-4dd7-988d-92575e98f02b" alt=""><figcaption></figcaption></figure>

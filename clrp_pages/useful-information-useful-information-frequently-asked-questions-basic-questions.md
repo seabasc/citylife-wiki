@@ -52,7 +52,7 @@ Check out our mini-guides section, where we have a [Voice Settings](/useful-info
 
 If your textures are not loading for some reason, try increasing your Extended Texture Budget to about halfway! Find this in your **Settings > Graphics > Extended Texture Budget**
 
-![](assets/wiki/f31d78039c0b93603066.png)
+![](https://1220491511-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FTjoPqB53oR42XfwTK5MK%2Fuploads%2F5vqA9JIHbRmmYiDpAvI2%2Fimage.png?alt=media\&token=301671af-deee-4d75-ae08-12e6c78793c7)
 
 </details>
 
@@ -68,7 +68,7 @@ Trying to do something and it says you need a commercial license? No problem! He
 
 <summary>Help, I cannot find my car!</summary>
 
-If your car goes on an adventure without you, treat it like a one-time-use coupon. Once it's gone, you're stuck waiting for the next tsunami to bring it back from the impound lot. Be safe rather than being sorry!
+If a vehicle is lost, it remains unavailable until the next tsunami returns it from the impound lot. Take precautions to avoid losing the vehicle.
 
 </details>
 
@@ -80,7 +80,7 @@ Did the cops swipe your wheels? No worries!
 
  Keep an eye on your in-game inbox for an email with the scoop on when your ride will be back. Once the time's up, head to The Tow Lot and scoop it back from the desk near the Tow Boss.
 
-<img src="assets/wiki/3170b14a72b535df67a8.png" alt="" data-size="original">
+<img src="https://1220491511-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FTjoPqB53oR42XfwTK5MK%2Fuploads%2FCGD0v6m8nGZyqm1NeMRL%2Fimage.png?alt=media&amp;token=7ed12ac8-125c-496a-ad59-1ba4c18717f9" alt="" data-size="original">
 
 **NOTE: If it is not here, then you may need to talk to a Police Officer to have them retreive your vehicle.**
 

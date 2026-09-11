@@ -1,6 +1,6 @@
 # Getting Started
 
-> **Note:** : Before playing, it is highly recommended that you read and fully understand our rules. Click [Rules](wiki:rules)to view our rules!
+> **Note:** : Before entering the city, it is highly recommended that you read and fully understand our rules. Click [Rules](wiki:rules)to view our rules!
 
 ### Why does this wiki exist?
 
@@ -8,4 +8,4 @@ Think of this wiki as a handbook to CityLife. It's meant to help you with any qu
 
 ### Tips!
 
-We've hand crafted various tabs inside this Wiki to help you navigate through the many different aspects that you will stumble upon during your adventure here at CityLife. P.S, different pages of the wiki have tips & warnings that are wise to abide by!
+Use the Wiki tabs to navigate CityLife topics. Review and follow all notes and warnings included on each page.

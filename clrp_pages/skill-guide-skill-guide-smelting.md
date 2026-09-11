@@ -32,4 +32,4 @@ Smelting is a skill that can be leveled by you cracking rocks, and smelting mine
 * [x] Reaching Level 100 Increases chance to receive gems!
 * [x] As you level up, your chance to get bonus materials while smelting increases!
 
-<figure><img src="assets/wiki/7d4ccdff4cefc54cba72.png" alt=""><figcaption></figcaption></figure>
+<figure><img src="https://1220491511-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FTjoPqB53oR42XfwTK5MK%2Fuploads%2F3VITeSQ5cdeJw6ClbxBw%2Fgolden_gem.png?alt=media&amp;token=852c56d1-dc47-4ce3-b02a-d38cd371949d" alt=""><figcaption></figcaption></figure>

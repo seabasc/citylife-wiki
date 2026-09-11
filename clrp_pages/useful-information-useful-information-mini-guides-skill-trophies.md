@@ -6,7 +6,7 @@ The pinnacle companion for those with maximum skill level!
 
 ### To start, visit Smelting Factory
 
-<figure><img src="assets/wiki/66d15a959895e026464c.png" alt="" width="245"><figcaption><p>Postal 9306</p></figcaption></figure>
+<figure><img src="https://1220491511-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FTjoPqB53oR42XfwTK5MK%2Fuploads%2Fwlb2THiTMSo0G9HULiqe%2Fimage.png?alt=media&amp;token=23768fa4-b560-439b-9b66-be2ecbb1a4eb" alt="" width="245"><figcaption><p>Postal 9306</p></figcaption></figure>
 
 1. **Visit the Smelting Factory**\
    Head upstairs near the anvil to get started.

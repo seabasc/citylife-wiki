@@ -4,9 +4,9 @@
 
 ### To start Mail Delivery, head over to the Delivery blip on your GPS!&#x20;
 
-<figure><img src="assets/wiki/5226760b3d1e6c9ed6ea.png" alt=""><figcaption><p>POSTAL: 10042</p></figcaption></figure>
+<figure><img src="https://1220491511-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FTjoPqB53oR42XfwTK5MK%2Fuploads%2FFUH6SZ1gPeuz6fcbkq1l%2Fimage.png?alt=media&amp;token=72276c43-6a25-4ca8-9346-a58072d7c232" alt=""><figcaption><p>POSTAL: 10042</p></figcaption></figure>
 
-1. **Meet the Boss**: Start the activity by having a chat with the Mail Delivery Boss. Choose the route that calls to you. Remember, higher skill levels unlock better routes.
+1. **Meet the Boss**: Speak with the Mail Delivery Boss and select a route. Higher skill levels unlock additional routes.
 2. **Command Your Vehicle**: Step into your brand-new Mail Delivery truck. It's more than a vehicle; it's your trusty steed for this mission.
 3. **Follow Your Route**: Let the GPS guide you to your first delivery location. Enjoy the drive!
 4. **Retrieve the Package**: Once at your destination, step out of your truck and use your third eye to pick up the package from the back of your vehicle.
@@ -15,7 +15,7 @@
 7. **Complete Your Route**: Continue this process until you've delivered all packages on your route.
 8. **Return to the Boss**: Once all deliveries are done, your GPS will guide you back to your boss. Time to collect your well-earned pay. You've not just delivered mail; you've delivered joy!
 
-> **TIP: See the linked Delivery article for unlock details!**
+> **TIP: See the linked Delivery article for complete unlock details!**
 
 {% content-ref url="/pages/Ol4GmVr728P9PxY5Df1x" %}
 [Delivery (Post Ops)](/skill-guide/skill-guide/delivery/delivery-post-ops.md)

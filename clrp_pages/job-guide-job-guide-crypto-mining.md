@@ -8,7 +8,7 @@ This job is a bit different, and focuses on passive income through Crypto Mining
 
 ### To start Crypto Mining, Visit The Digital Den on your GPS!&#x20;
 
-<figure><img src="assets/wiki/4822a83a0db30ddae463.png" alt="" width="247"><figcaption><p>Visit the Digital Den on your GPS!</p></figcaption></figure>
+<figure><img src="https://1220491511-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FTjoPqB53oR42XfwTK5MK%2Fuploads%2FNYZV5x3L1WHvnvCsDg2i%2Fdigitalden.png?alt=media&amp;token=529d0d4a-7dd2-43e8-b74e-ddf7e472d85b" alt="" width="247"><figcaption><p>Visit the Digital Den on your GPS!</p></figcaption></figure>
 
 1. **Visit Digital Den:** Head over to the Digital Den electronics store on your GPS! This is your one-stop shop for all things tech-related, and home to the crafting bench where you'll build your first mining rig.
 2. **Stock up**: Now, purchase all the parts you'll need to build your first Mining Rig. You'll need a Tier 1 Motherboard, GPU, RAM, Cooling System, Power Supply, Storage Drive, and a Computer Case!

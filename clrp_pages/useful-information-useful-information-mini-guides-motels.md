@@ -10,24 +10,24 @@ Upon your arrival, make a beeline for the welcoming Motel Manager NPC who is alw
 
 The Pink Cage is Located here!
 
-<div align="left"><figure><img src="assets/wiki/0eda53392cc416b602b3.png" alt="" width="283"><figcaption></figcaption></figure></div>
+<div align="left"><figure><img src="https://1220491511-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FTjoPqB53oR42XfwTK5MK%2Fuploads%2FVcyJEKAkTY8GgW2Hhmxi%2Fasspink.png?alt=media&amp;token=ffca44b2-9ab8-4cb6-890d-0a6ff00fac4d" alt="" width="283"><figcaption></figcaption></figure></div>
 
 The Perrera Beach Is located here!
 
-<div align="left"><figure><img src="assets/wiki/6f0e90566a0fe663757a.png" alt="" width="289"><figcaption></figcaption></figure></div>
+<div align="left"><figure><img src="https://1220491511-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FTjoPqB53oR42XfwTK5MK%2Fuploads%2FjqkJ7eznjisii6qZSOUz%2Fass.png?alt=media&amp;token=f16b0dd3-0ea3-4ef3-ba1f-7d277a11c24f" alt="" width="289"><figcaption></figcaption></figure></div>
 
 The Harmony Motel Is located here!
 
-![](assets/wiki/aabc4c2e9f4f1ef9b105.png)
+![](https://1220491511-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FTjoPqB53oR42XfwTK5MK%2Fuploads%2FsZgumvuCeeWhvkj5u36P%2Fimage.png?alt=media\&token=0a2e6974-d1a4-4ca5-9fb8-1cfda8fa4f6b)
 
 **The Hawick Motel is located here!**
 
-<div align="left"><figure><img src="assets/wiki/7cc186aa9e623aa1efc0.png" alt="" width="289"><figcaption></figcaption></figure></div>
+<div align="left"><figure><img src="https://1220491511-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FTjoPqB53oR42XfwTK5MK%2Fuploads%2F3dTgCk7E60Cnr9aBC0Jc%2Fimage.png?alt=media&amp;token=af67757f-db42-4f17-a4f8-742a0882b0d5" alt="" width="289"><figcaption></figcaption></figure></div>
 
 The Billingsgate Motel is located here!
 
-<div align="left"><figure><img src="assets/wiki/a618db2730ce1e39db40.png" alt="" width="286"><figcaption></figcaption></figure></div>
+<div align="left"><figure><img src="https://1220491511-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FTjoPqB53oR42XfwTK5MK%2Fuploads%2FXZ7hqQQoBKyQUkMeB8Gu%2Fimage.png?alt=media&amp;token=56a3495a-d2ae-4b92-8cd1-200ac95c6ab5" alt="" width="286"><figcaption></figcaption></figure></div>
 
 The Bayview Lodge is located here!
 
-<div align="left"><figure><img src="assets/wiki/d3b62f5addb1e564ea01.png" alt="" width="285"><figcaption></figcaption></figure></div>
+<div align="left"><figure><img src="https://1220491511-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FTjoPqB53oR42XfwTK5MK%2Fuploads%2FyJLqzs5nPNlLWzfDgAs9%2Fimage.png?alt=media&amp;token=085dae8d-9646-474b-8cfc-b4345a49131f" alt="" width="285"><figcaption></figcaption></figure></div>

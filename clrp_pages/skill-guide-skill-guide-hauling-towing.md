@@ -18,4 +18,4 @@ Towing is a skill that can be leveled by you Towing using the Towing Job! Below 
 
 * [x] As your level increases, the likelihood of obtaining higher-tier categories that you have already unlocked improves.
 
-<figure><img src="assets/wiki/a3a4fc66e768f8d6d219.png" alt=""><figcaption></figcaption></figure>
+<figure><img src="https://1220491511-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FTjoPqB53oR42XfwTK5MK%2Fuploads%2FNUFl294jPhT14N8Y5r6s%2Fgolden_hook.png?alt=media&amp;token=24d450c1-c218-4293-831d-f546c5e3bfe9" alt=""><figcaption></figcaption></figure>

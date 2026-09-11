@@ -15,4 +15,4 @@ Recycling is an easy-to-learn skill that levels up by breaking down items and co
 
 * [x] As you level up, your chance to get bonus materials while Recycling increases!
 
-<figure><img src="assets/wiki/d9f7354b3737c50424de.png" alt=""><figcaption></figcaption></figure>
+<figure><img src="https://1220491511-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FTjoPqB53oR42XfwTK5MK%2Fuploads%2FaHq7nIz8dOmYdVo7F9XT%2Fgolden_hammer.png?alt=media&amp;token=a9d2ffaa-14e4-4311-907b-addddc594955" alt=""><figcaption></figcaption></figure>

@@ -15,4 +15,4 @@ Taxi Driving is a skill that can be leveled by you Driving a Taxi! Below is your
 * [x] Reaching Level 85 unlocks the Electric Taxi
 * [x] Reaching Level 100 unlocks the Sports Taxi IV
 
-<figure><img src="assets/wiki/1882f5d58dde5a851a3c.png" alt=""><figcaption></figcaption></figure>
+<figure><img src="https://1220491511-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FTjoPqB53oR42XfwTK5MK%2Fuploads%2Fz9HHgp3izYkR42ETTvfd%2Fgolden_steeringwheel.png?alt=media&amp;token=247ca3c0-ff53-413b-9b70-6793e328c756" alt=""><figcaption></figcaption></figure>

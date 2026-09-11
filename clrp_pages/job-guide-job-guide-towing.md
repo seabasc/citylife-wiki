@@ -6,7 +6,7 @@
 
 ### To start Towing, head to the Tow Lot blip on your GPS!
 
-<figure><img src="assets/wiki/82bca82a8eaff4425ea4.png" alt=""><figcaption><p>POSTAL: 9039</p></figcaption></figure>
+<figure><img src="https://1220491511-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FTjoPqB53oR42XfwTK5MK%2Fuploads%2FGAeMZoeHWDryOD7d3i1V%2Faaaa.png?alt=media&amp;token=55809e83-6cdd-4db3-a0e5-648e2dd12bd8" alt=""><figcaption><p>POSTAL: 9039</p></figcaption></figure>
 
 1. **Arrival at Postal 9039:** Make your way to the jovial boss Bon Joe at postal 9039. He's your first point of contact to get things rolling.
 2. **Sign in:** Engage in some small talk and hit 'Sign In' on your chat options. You're now officially a part of the team!
@@ -18,9 +18,9 @@
 8. **Return to Base:** With the vehicle safely hooked, it's time to head back. Drive to the Tow Lot to deposit your newfound metallic friend.
 9. **Unhook & Deposit:** At the lot, get out and use your third eye on the back of the flatbed to 'Unhook Vehicle'. Follow up with another third eye interaction to 'Deposit' the vehicle.
 10. **The Cycle Continues:** Repeat this process as much as you'd like. You're still in the queue, ready for the next job at any moment. To leave the queue or collect your $500 deposit, simply have a chat with Bon Joe and sign out.
-11. **You've Got This:** The towing activity is complete.
+11. **You've Got This:** The towing setup is complete. Begin accepting towing jobs.
 
-> **Note:** See the linked Towing article for unlock details!
+> **Note:** See the linked Towing article for complete unlock details!
 
 {% content-ref url="/pages/xq0T0fVsriO18U3iKedb" %}
 [Towing](/skill-guide/skill-guide/hauling/towing.md)

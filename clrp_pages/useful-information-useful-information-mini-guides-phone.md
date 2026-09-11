@@ -34,7 +34,7 @@ Ready to pass the keys of your beloved ride? Here's how! Whip out your phone, he
 
 <summary>Twitter Application</summary>
 
-Time to be a social butterfly! The Twitter app lets you stay connected, informed, and entertained. Post your thoughts, respond to trending tweets, or amplify other's voices with a retweet. Use the platform in accordance with the applicable rules.
+Time to be a social butterfly! The Twitter app lets you stay connected, informed, and entertained. Post your thoughts, respond to trending tweets, or amplify other's voices with a retweet. Let your social-savvy self shine in the world of CityLife Roleplay!
 
 </details>
 

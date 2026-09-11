@@ -1,6 +1,6 @@
 # Heists
 
- This article covers Heists.
+ This guide covers the Heists available throughout CityLife.
 
 {% content-ref url="/pages/esU8mXkteEr1TDxJTehG" %}
 [Laundromat Heist](/criminal-guide/criminal-guide/heists/laundromat-heist.md)
@@ -26,7 +26,7 @@
 [Bobcat Heist (WIP)](/criminal-guide/criminal-guide/heists/bobcat-heist-wip.md)
 {% endcontent-ref %}
 
-> **Note:** See the linked Thieving article for unlock details
+> **Note:** See the linked Thieving article for complete unlock details
 
 {% content-ref url="/pages/mhGFVRjMEDuiLlThUANx" %}
 [Thieving](/skill-guide/skill-guide/thieving.md)

@@ -23,4 +23,4 @@ Radio Comms 101: Staying Connected
 
 With the right frequency and a solid plan, your radio becomes the backbone of any organized effort—whether it’s coordinating a daring escape or just chatting with friends across town. Stay sharp, stay connected, and keep the airwaves buzzing!
 
-<figure><img src="assets/wiki/671f1c33602cdbfb9f9f.png" alt=""><figcaption><p>Top right - Connect and Disconnect<br>Middle center - Volume up and Volume Down</p></figcaption></figure>
+<figure><img src="https://1220491511-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FTjoPqB53oR42XfwTK5MK%2Fuploads%2FDiSHn0W0laRcAqi1AZEU%2Fimage.png?alt=media&amp;token=9a9c38d2-f172-4c48-afbc-38849965a2bb" alt=""><figcaption><p>Top right - Connect and Disconnect<br>Middle center - Volume up and Volume Down</p></figcaption></figure>

@@ -7,6 +7,10 @@
   <title>City Life / Santos Cartel Community Wiki</title>
   <script src="vendor/fuse.min.js"></script>
   <script src="vendor/marked.min.js"></script>
+  <script src="supabase-config.js"></script>
+  <script>if (/^https:\/\//.test(window.CITYLIFE_SUPABASE?.url || '')) document.documentElement.classList.add('collab-required');</script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/map-collaboration.js"></script>
   <style>
     :root { --bg:#0b1018; --surface:#121b27; --surface-2:#1a2635; --line:#29394c; --line-soft:#1d2a39; --text:#f2f6f9; --muted:#9aabba; --accent:#50cfbf; --accent-2:#efc263; --danger:#ef6b73; --sidebar:310px; --display:Bahnschrift, "Segoe UI Variable Display", "Arial Narrow", sans-serif; --sans:"Segoe UI Variable Text", Aptos, "Segoe UI", sans-serif; --body:"Segoe UI Variable Text", Aptos, "Segoe UI", sans-serif; }
     * { box-sizing:border-box; }
@@ -21,6 +25,7 @@
     button { cursor:pointer; }
     .app { display:grid; grid-template-columns:var(--sidebar) minmax(0,1fr); min-height:100vh; }
     .sidebar { position:sticky; top:0; height:100vh; overflow-y:auto; border-right:1px solid var(--line); background:linear-gradient(180deg, #111a26, #0d151f); padding:24px 14px; z-index:4; box-shadow:16px 0 44px #02060c38; }
+    .sidebar-close, .sidebar-scrim { display:none; }
     .brand { display:flex; align-items:center; gap:11px; padding:0 10px 24px; border-bottom:1px solid var(--line); margin-bottom:18px; font-family:Arial, sans-serif; }
     .brand-mark { width:34px; height:34px; display:grid; place-items:center; background:linear-gradient(135deg, #6ce5d3, #32a79e); color:#071513; font-weight:900; font-size:13px; letter-spacing:.05em; border-radius:8px; box-shadow:0 5px 18px #43c8bb3d; }
     .brand strong { display:block; letter-spacing:.03em; font-size:14px; }
@@ -32,6 +37,53 @@
     .rules-button:hover, .rules-button.active { border-color:var(--accent-2); background:var(--surface-2); }
     .map-button { display:block; width:calc(100% - 12px); margin:0 6px 18px; border:1px solid var(--line); background:var(--surface); color:var(--text); padding:9px 10px; text-align:left; font-family:Arial, sans-serif; font-size:12px; font-weight:700; letter-spacing:.04em; }
     .map-button:hover, .map-button.active { border-color:var(--accent); background:var(--surface-2); }
+    .collab-button { display:flex; align-items:center; gap:8px; width:calc(100% - 12px); margin:-10px 6px 18px; border:1px solid var(--line); background:#0d151f; color:var(--muted); padding:8px 10px; text-align:left; font-size:11px; }
+    .collab-button:hover { color:var(--text); border-color:#4b6279; }
+    .collab-dot { width:7px; height:7px; flex:none; border-radius:50%; background:#69798a; box-shadow:0 0 0 3px #69798a1c; }
+    .collab-button.connected .collab-dot { background:var(--accent); box-shadow:0 0 0 3px #50cfbf24; }
+    .collab-button.error .collab-dot { background:var(--danger); box-shadow:0 0 0 3px #ef6b7324; }
+    .collab-dialog { width:min(430px, calc(100% - 28px)); max-height:min(720px, calc(100dvh - 28px)); padding:0; overflow:auto; border:1px solid #4a6078; border-radius:7px; background:#111b27; color:var(--text); box-shadow:0 28px 90px #000d; }
+    .collab-dialog::backdrop { background:#03070bcc; backdrop-filter:blur(3px); }
+    .collab-dialog-body { padding:22px; }
+    .collab-head { display:flex; align-items:flex-start; justify-content:space-between; gap:18px; margin-bottom:18px; }
+    .collab-head small { display:block; color:var(--accent); font-size:10px; letter-spacing:.1em; text-transform:uppercase; }
+    .collab-head h2 { margin:3px 0 0; font-size:23px; }
+    .collab-close { display:grid; place-items:center; width:36px; height:36px; flex:none; padding:0; border:1px solid #41546a; border-radius:4px; background:#172331; color:var(--text); font-size:22px; }
+    .collab-dialog p { color:#b7c5d1; font-size:13px; }
+    .collab-dialog form { display:grid; gap:12px; }
+    .collab-dialog label { display:grid; gap:5px; color:var(--muted); font-size:11px; }
+    .collab-dialog input { width:100%; padding:10px; border:1px solid #3b5067; border-radius:4px; outline:none; background:#0a121b; color:var(--text); }
+    .collab-dialog input:focus { border-color:var(--accent); box-shadow:0 0 0 3px #50cfbf17; }
+    .collab-dialog button[type="submit"], .collab-dialog-body > button { min-height:40px; border:1px solid #54cfc0; border-radius:4px; background:#173c38; color:#8cebdd; font-weight:600; }
+    .collab-divider { display:flex; align-items:center; gap:10px; margin:20px 0; color:#718395; font-size:10px; text-transform:uppercase; letter-spacing:.08em; }
+    .collab-divider::before, .collab-divider::after { content:''; height:1px; flex:1; background:#2c3d50; }
+    .collab-member { display:flex; align-items:center; justify-content:space-between; gap:14px; margin-bottom:16px; padding:12px; border:1px solid #30445a; background:#0d1621; }
+    .collab-member span { color:var(--accent); font-size:11px; }
+    .collab-code { display:flex; align-items:center; gap:8px; margin:5px 0 15px; }
+    .collab-code code { flex:1; padding:10px; border:1px solid #34495f; background:#09111a; color:#f3ca75; letter-spacing:.08em; }
+    .collab-code button { min-height:38px; border:1px solid #40566e; background:#172331; color:var(--text); }
+    .collab-text-button { width:100%; margin-top:10px; border-color:#3a4c60 !important; background:transparent !important; color:var(--muted) !important; }
+    .collab-error { padding:10px; border-left:2px solid var(--danger); background:#351e26; color:#ffc7ca !important; }
+    html.collab-required body:not(.collab-authorized) .app { visibility:hidden; }
+    .collab-gate[hidden] { display:none; }
+    .collab-gate { position:fixed; z-index:300; inset:0; display:grid; place-items:center; overflow:auto; padding:24px; background:linear-gradient(135deg, #09111a 0%, #101c28 48%, #07131a 100%); }
+    .collab-gate::before { content:''; position:fixed; inset:0; pointer-events:none; opacity:.34; background-image:linear-gradient(#ffffff08 1px, transparent 1px), linear-gradient(90deg, #ffffff08 1px, transparent 1px); background-size:42px 42px; mask-image:linear-gradient(to bottom, #000, transparent 80%); }
+    .collab-gate-card { position:relative; width:min(440px, 100%); padding:26px; border:1px solid #3d536a; border-top:2px solid var(--accent); border-radius:7px; background:#111b27f2; box-shadow:0 28px 90px #000b; }
+    .collab-gate-brand { display:flex; align-items:center; gap:13px; margin-bottom:18px; }
+    .collab-gate-brand > span { display:grid; place-items:center; width:42px; height:42px; flex:none; border-radius:7px; background:var(--accent); color:#061714; font-weight:900; }
+    .collab-gate-brand small { display:block; color:var(--accent); font-size:10px; letter-spacing:.1em; text-transform:uppercase; }
+    .collab-gate-brand h1 { margin:2px 0 0; font-size:22px; }
+    .collab-gate-intro { margin:0 0 18px; color:#b7c5d1; font-size:13px; }
+    .collab-gate form { display:grid; gap:12px; }
+    .collab-gate label { display:grid; gap:5px; color:var(--muted); font-size:11px; }
+    .collab-gate input { width:100%; padding:10px; border:1px solid #3b5067; border-radius:4px; outline:none; background:#08111a; color:var(--text); }
+    .collab-gate input:focus { border-color:var(--accent); box-shadow:0 0 0 3px #50cfbf17; }
+    .collab-gate button[type="submit"] { min-height:42px; border:1px solid #54cfc0; border-radius:4px; background:#173c38; color:#8cebdd; font-weight:700; }
+    .collab-owner-setup { margin-top:18px; border-top:1px solid #2c3d50; padding-top:14px; color:var(--muted); font-size:11px; }
+    .collab-owner-setup summary { cursor:pointer; }
+    .collab-owner-setup form { margin-top:14px; }
+    body.collab-locked #addPoi, body.collab-locked [data-tool], body.collab-locked .color-picker, body.collab-locked .map-brush, body.collab-locked .map-action-lane, body.collab-locked .map-library { display:none !important; }
+    body.collab-locked .map-drawings { pointer-events:none; }
     .search-wrap { position:relative; margin:0 6px 18px; }
     .search { width:100%; border:1px solid var(--line); background:var(--surface); color:var(--text); padding:10px 12px 10px 34px; outline:none; font-family:Arial, sans-serif; font-size:13px; }
     .search:focus { border-color:var(--accent); }
@@ -134,13 +186,13 @@
     .poi-item strong, .poi-item small { display:block; }
     .poi-item strong { font-size:13px; font-weight:600; }
     .poi-item small { color:var(--muted); font-size:11px; margin-top:2px; }
-    .map-stage { min-width:0; display:flex; flex-direction:column; overflow:visible; background:#080d13; }
+    .map-stage { min-width:0; display:flex; flex-direction:column; overflow:visible; background:#0fa8d2; }
     .map-toolbar { position:relative; z-index:6; display:grid; grid-template-columns:minmax(0, 1fr); grid-template-rows:36px 38px; gap:7px; height:100px; padding:9px 13px; border-bottom:1px solid var(--line); background:linear-gradient(180deg, #182431, #111a25); user-select:none; }
     .map-primary-tools, .map-action-lane { display:flex; align-items:center; gap:8px; min-width:0; }
     .map-action-lane { grid-column:1 / -1; height:38px; padding-top:7px; border-top:1px solid #26374a; overflow:visible; }
     .map-action-lane .map-layer { visibility:hidden; }
     .map-action-lane .map-layer.is-visible { visibility:visible; }
-    .map-canvas { position:relative; flex:1; min-height:0; overflow:hidden; background:#080e15; touch-action:none; cursor:default; }
+    .map-canvas { position:relative; flex:1; min-height:0; overflow:hidden; background:#0fa8d2; touch-action:none; cursor:default; }
     .map-canvas::after { content:''; position:absolute; inset:0; pointer-events:none; border:1px solid #ffffff0a; box-shadow:inset 0 0 80px #00000038; }
     .map-canvas.dragging { cursor:grabbing; }
     .map-world { position:absolute; left:50%; top:50%; width:100%; aspect-ratio:1; transform-origin:center; }
@@ -185,6 +237,7 @@
     .delete-confirm-actions .confirm-delete { border-color:#b85b65; background:#54272e; color:#ffd9dc; }
     .map-detail h2 { margin:0 0 5px; font-size:18px; }
     .map-detail p { margin:0 0 13px; color:#c2cfda; font-size:13px; }
+    .map-detail .map-detail-meta { margin:-6px 0 13px; color:#8194a6; font-size:10px; letter-spacing:.04em; text-transform:uppercase; }
     .map-detail .poi-open { color:var(--accent); border-color:var(--accent); }
     .map-detail-controls { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:12px; }
     .map-detail-controls label { color:var(--muted); font:11px var(--sans); }
@@ -251,14 +304,44 @@
     .rules-document { box-shadow:0 15px 46px #0000002b; }
     .rules-intro, .rules-section { background:linear-gradient(135deg, #15202c, #101923); border-color:#314257; }
     .rules-section:nth-child(even) { background:linear-gradient(135deg, #111a25, #0e1720); }
-    .map-poi-toggle{display:none !important}.map-sheet-close{display:none}@media (max-width:850px) { main.map-main { padding:10px; } .map-view h1 { margin:16px 0 4px; } .map-lede { margin-bottom:14px; } /* Map fills full viewport on mobile, POI panel is an overlay */ .map-workspace { display:block; position:relative; overflow:hidden; height:calc(100vh - var(--topbar-h) - 20px); } .map-sidebar { border-right:0; max-height:none; width:100%; position:absolute; z-index:10; bottom:0; left:0; right:0; background:#0b1018f2; backdrop-filter:blur(16px); transform:translateY(calc(100% + 24px)); transition:transform .3s cubic-bezier(.4,0,.2,1); border-radius:16px 16px 0 0; box-shadow:0 -8px 40px #000a; padding-top:48px; overflow-y:auto; max-height:75vh; } .map-sidebar.mobile-open { transform:translateY(0); } .map-canvas { min-height:100%; width:100%; touch-action: none; position:relative; overflow:hidden; z-index:1; } .map-toolbar { height:auto; grid-template-rows:auto auto; padding:8px 9px; gap:5px; } .map-primary-tools, .map-action-lane { flex-wrap:wrap; } .map-layer { font-size:14px; min-height:36px; min-width:72px; padding:7px 10px; } .map-zoom button { width:38px; height:38px; font-size:20px; } .color-trigger { width:28px; height:28px; min-width:28px; min-height:28px; } .map-brush { color:#f2f6f9; font-size:13px; } .brush-value { font-size:15px; } .poi-list li { padding:6px 0; } .pin-delete-btn { width:40px; height:40px; min-width:40px; min-height:40px; font-size:18px; display:flex; align-items:center; justify-content:center; cursor:pointer; background:rgba(239,107,115,.2) !important; border-radius:10px !important; } .pin-delete-btn:hover { background:rgba(239,107,115,.4) !important; } #mapCanvas svg .map-drawing { cursor:pointer; touch-action:none; stroke-linejoin:round; stroke-linecap:round; } .menu { min-width:44px; min-height:44px; font-size:15px; padding:0 14px; background:#1a2735; border-radius:6px; border:1px solid #3b4a5f; color:var(--text); } /* Mobile-only map mode */ .mobile-only { display:none !important; } .map-sheet-close{display:flex;position:absolute;top:10px;right:10px;width:44px;height:44px;border:none;background:#50cfbf;color:#07201a;font-size:24px;border-radius:50%;align-items:center;justify-content:center;cursor:pointer;z-index:21}.map-poi-toggle { position:absolute; bottom:16px; right:16px; width:52px; height:52px; border-radius:50%; background:#50cfbf; color:#07201a; font-size:24px; border:none; box-shadow:0 4px 20px #0008; z-index:20; display:flex; align-items:center; justify-content:center; cursor:pointer; } @media (max-width:850px) { .app { display:block; } .sidebar { transform:translateX(-100%); position:fixed; width:min(310px, 88vw); transition:transform .2s ease; box-shadow:12px 0 30px #0008; } body.sidebar-open .sidebar { transform:translateX(0); } .menu { display:block; } main { padding:22px 20px 46px; } .category-grid { grid-template-columns:repeat(2, minmax(0,1fr)); } .article { display:block; } .toc, .rules-index { display:none; } .rules-layout { display:block; } .home h1 { margin-top:28px; } /* Hide editing tools on mobile */ .color-picker { display:none !important; } [data-tool="draw"], .map-brush, #gridToggle { display:none !important; } #addPoi { display:none !important; } .delete-confirm { display:none !important; } /* Show POI-only toolbar on mobile */ .map-toolbar::after { content:'Tap pins to view locations'; display:block; text-align:center; font-size:11px; color:var(--muted); margin-top:2px; } .map-detail { position:fixed; left:8px; right:8px; bottom:8px; z-index:100; } @media (max-width:480px) { .map-view h1 { font-size:22px; margin:10px 0 3px; } .map-lede { font-size:13px; margin-bottom:8px; } .map-workspace { border-radius:0; } .map-toolbar { padding:6px 7px; gap:4px; } .map-layer { font-size:12px; min-height:32px; min-width:58px; padding:5px 7px; } .map-zoom button { width:32px; height:32px; font-size:18px; } .color-trigger { width:24px; height:24px; min-width:24px; min-height:24px; } .map-add { font-size:13px; padding:10px 12px; min-height:44px; } #poiForm, #mapFilters { margin:8px 0; } .map-search { font-size:15px; padding:9px 10px; min-height:44px; } .poi-item { padding:10px 8px; min-height:44px; font-size:13px; } .poi-item strong { font-size:14px; } .delete-confirm { width:min(290px, calc(100% - 24px)); padding:15px; } .map-detail { left:8px; right:8px; bottom:8px; width:auto; padding:13px; } .map-form { padding:10px; gap:7px; } .map-form-actions button { min-height:44px; padding:9px 12px; font-size:15px; } main.map-main { padding:6px; } .map-view h1 { font-size:18px; margin:6px 0 2px; } .map-lede { font-size:12px; margin-bottom:6px; } @media (max-width:480px) { .category-grid { grid-template-columns:1fr; } .stats { gap:20px; } .lede { font-size:16px; } }
-    @media (max-width:850px) { .app { display:block; } .sidebar { transform:translateX(-100%); position:fixed; width:min(310px, 88vw); transition:transform .2s ease; box-shadow:12px 0 30px #0008; } body.sidebar-open .sidebar { transform:translateX(0); } .menu { display:block; } main { padding:22px 20px 46px; } .category-grid { grid-template-columns:repeat(2, minmax(0,1fr)); } .article { display:block; } .toc, .rules-index { display:none; } .rules-layout { display:block; } .home h1 { margin-top:28px; } }
+    .map-poi-toggle{display:none !important}.map-sheet-close{display:none}@media (max-width:850px){main.map-main{padding:10px}.map-view h1{margin:14px 0 4px}.map-lede{margin-bottom:12px}.map-workspace{display:flex;flex-direction:column;flex:1 1 auto;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch}.map-stage{flex:0 0 auto;height:56vh;min-height:56vh}.map-canvas{min-height:calc(56vh - 120px);width:100%;touch-action:none;position:relative;overflow:hidden}.map-sidebar{order:2;flex:0 0 auto;border-right:0;border-top:1px solid var(--line);overflow:visible;padding:12px;background:#0e1620}.map-toolbar{height:auto;grid-template-rows:none;display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:8px 10px}.map-primary-tools{flex-wrap:wrap;gap:8px}.map-layer{font-size:14px;min-height:38px;min-width:auto;padding:8px 11px}.map-zoom{margin-left:auto;display:flex;gap:6px}.map-zoom button{width:40px;height:40px;font-size:20px}#addPoi,#poiForm,[data-tool],.color-picker,.color-popover,.map-brush,.map-action-lane,.map-library,.map-layer-menu,.map-detail #editLocation,.map-detail .map-delete,.map-detail #reassignLocation,.pin-delete-btn{display:none !important}.map-detail{left:8px;right:8px;bottom:8px;width:auto;max-height:44%;overflow:auto}.poi-item{min-height:44px}.map-marker{width:26px;height:26px}.map-float-btn{position:fixed;right:14px;bottom:16px;z-index:60;display:none;align-items:center;gap:7px;padding:11px 16px;border-radius:999px;background:#121b27;color:var(--text);font-weight:600;font-size:14px;border:1px solid #35485f;box-shadow:0 12px 32px #0009;cursor:pointer;backdrop-filter:blur(10px)}.map-float-btn.show{display:inline-flex}.map-float-bottom{background:#50cfbf;color:#04121a;border-color:#6fdccb}.menu{min-width:44px;min-height:44px;font-size:15px;padding:0 14px;background:#1a2735;border-radius:6px;border:1px solid #3b4a5f;color:var(--text)}}
+    @media (max-width:850px) {
+      main.map-main { height:100dvh; overflow:hidden; padding:10px; }
+      .map-view { min-height:0; }
+      .map-workspace { scroll-behavior:smooth; }
+      .map-stage { height:auto; min-height:0; }
+      .map-toolbar { flex:0 0 auto; }
+      .map-canvas { flex:none; min-height:0; height:calc(56dvh - 112px); }
+      .map-drawings { pointer-events:none; }
+      .map-detail { max-height:46%; }
+      .map-detail .poi-open { min-height:40px; }
+      .map-details-jump { position:relative; z-index:7; display:flex; align-items:center; justify-content:center; gap:8px; width:100%; min-height:42px; border:0; border-top:1px solid #2d4054; border-bottom:1px solid #26394d; background:linear-gradient(180deg, #152230, #101a25); color:#dce9f1; font-weight:600; font-size:12px; letter-spacing:.04em; }
+      .map-details-jump span { color:var(--accent); font-size:18px; line-height:1; }
+      .map-details-jump:active { background:#1b2c3a; }
+      .map-sidebar { scroll-margin-top:8px; }
+      .map-float-btn { display:none !important; }
+      .app { display:block; }
+      .sidebar { z-index:101; transform:translateX(-100%); position:fixed; width:min(310px, 88vw); transition:transform .2s ease; box-shadow:12px 0 30px #0008; }
+      body.sidebar-open .sidebar { transform:translateX(0); }
+      .sidebar-close { position:absolute; top:14px; right:13px; z-index:2; display:grid; place-items:center; width:40px; height:40px; padding:0; border:1px solid #3b4d62; border-radius:5px; background:#172331; color:var(--text); font-size:25px; line-height:1; }
+      .sidebar-close:active { border-color:var(--accent); color:var(--accent); background:#1b2c39; }
+      .sidebar-scrim { position:fixed; z-index:100; inset:0; display:block; border:0; padding:0; background:#03070bb3; opacity:0; pointer-events:none; transition:opacity .2s ease; }
+      body.sidebar-open .sidebar-scrim { opacity:1; pointer-events:auto; }
+      .menu { display:block; }
+      main { padding:22px 20px 46px; }
+      .category-grid { grid-template-columns:repeat(2, minmax(0,1fr)); }
+      .article { display:block; }
+      .toc, .rules-index { display:none; }
+      .rules-layout { display:block; }
+      .home h1 { margin-top:28px; }
+    }
     @media (max-width:480px) { .category-grid { grid-template-columns:1fr; } .stats { gap:20px; } .lede { font-size:16px; } }
   </style>
 </head>
 <body>
   <div class="app">
     <aside class="sidebar" id="sidebar">
+      <button class="sidebar-close" id="sidebarClose" type="button" aria-label="Close menu">&times;</button>
       <div class="brand"><div class="brand-mark">CL</div><div><strong>City Life / Santos Cartel</strong><small>Community Wiki</small></div></div>
       <button class="home-button active" id="homeButton">Home</button>
       <button class="rules-button" id="rulesButton" type="button">Rules (Verbatim)</button>
@@ -266,12 +349,14 @@
       <div class="search-wrap"><span class="search-icon">/</span><input class="search" id="searchInput" type="search" placeholder="Search the wiki" autocomplete="off"></div>
       <nav id="categoryNav"><p class="loading">Loading wiki pages...</p></nav>
     </aside>
+    <button class="sidebar-scrim" id="sidebarScrim" type="button" aria-label="Close menu"></button>
     <main id="mainContent"><div class="loading">Loading City Life / Santos Cartel Community Wiki...</div></main>
   </div>
   <script>
     (() => {
       const mapLayerSources = { atlus: 'https://www.bragitoff.com/wp-content/uploads/2015/11/GTAV_ATLUS_8192x8192.png', roadmap: 'https://www.bragitoff.com/wp-content/uploads/2015/11/GTAV-HD-MAP-roadmap.jpg', satellite: 'https://www.bragitoff.com/wp-content/uploads/2015/11/GTAV-HD-MAP-satellite.jpg' };
       const state = { pages: [], categories: [], fuse: null, activeId: null, query: '', rulesRaw: '', ruleGuideLinks: [], locations: [], mapFilter: 'all', selectedLocation: null, map: { layer: 'atlus', scale: 1, x: 0, y: 0, tool: 'draw', color: '#f3bd50', width: 2, grid: false, activeAnnotationLayer: 'plans', annotationLayers: { plans: true, territories: true, staging: true, routes: true, notes: true }, selectedDrawings: [], picker: { hue: 42, saturation: 59, value: 95 }, history: [], confirmDeletes: localStorage.getItem('santos-cartel-confirm-deletes') !== 'false' } };
+      let collaboration = null;
       const main = document.getElementById('mainContent');
       const nav = document.getElementById('categoryNav');
       const searchInput = document.getElementById('searchInput');
@@ -411,7 +496,8 @@
 
       function showMap() {
         main.classList.add('map-main');
-        if (state.map.tool === 'pan') state.map.tool = 'draw';
+        state.map.tool = isMobile() ? 'pan' : (state.map.tool === 'pan' ? 'draw' : state.map.tool);
+        if (isMobile()) state.map.selectedDrawings = [];
         state.query = '';
         searchInput.value = '';
         state.activeId = 'map';
@@ -425,25 +511,48 @@
         renderMap();
         animateView();
         wireMenu();
+        initMobileMap();
       }
 
       function allLocations() {
-        const saved = JSON.parse(localStorage.getItem('santos-cartel-map-locations') || '[]');
-        return [...state.locations, ...saved];
+        return [...state.locations, ...savedLocations()];
+      }
+
+      function savedLocations() {
+        return JSON.parse(localStorage.getItem('santos-cartel-map-locations') || '[]');
+      }
+
+      function addMapAudit(items, previousItems) {
+        const author = collaboration?.author();
+        if (!author) return items;
+        const previous = new Map(previousItems.map(item => [item.id, item]));
+        const comparable = item => JSON.stringify(Object.fromEntries(Object.entries(item).filter(([key]) => !['createdBy', 'createdAt', 'updatedBy', 'updatedAt'].includes(key))));
+        return items.map(item => {
+          const prior = previous.get(item.id);
+          if (prior && comparable(prior) === comparable(item)) return item;
+          const now = new Date().toISOString();
+          return { ...item, createdBy:prior?.createdBy || author, createdAt:prior?.createdAt || now, updatedBy:author, updatedAt:now };
+        });
+      }
+
+      function saveLocations(locations, sync = true, audit = true) {
+        localStorage.setItem('santos-cartel-map-locations', JSON.stringify(audit ? addMapAudit(locations, savedLocations()) : locations));
+        if (sync) collaboration?.saveSoon();
       }
 
       function savedDrawings() {
         return JSON.parse(localStorage.getItem('santos-cartel-map-drawings') || '[]');
       }
 
-      function saveDrawings(drawings) {
-        localStorage.setItem('santos-cartel-map-drawings', JSON.stringify(drawings));
+      function saveDrawings(drawings, sync = true, audit = true) {
+        localStorage.setItem('santos-cartel-map-drawings', JSON.stringify(audit ? addMapAudit(drawings, savedDrawings()) : drawings));
+        if (sync) collaboration?.saveSoon();
       }
 
       function savedSnapshots() { return JSON.parse(localStorage.getItem('santos-cartel-map-snapshots') || '[]'); }
 
       function downloadMapPlan() {
-        const plan = { version: 1, exportedAt: new Date().toISOString(), drawings: savedDrawings(), locations: JSON.parse(localStorage.getItem('santos-cartel-map-locations') || '[]'), layers: state.map.annotationLayers };
+        const plan = { version: 1, exportedAt: new Date().toISOString(), drawings: savedDrawings(), locations: savedLocations(), layers: state.map.annotationLayers };
         const link = document.createElement('a');
         link.href = URL.createObjectURL(new Blob([JSON.stringify(plan, null, 2)], { type: 'application/json' }));
         link.download = 'santos-cartel-map-plan.json'; link.click(); URL.revokeObjectURL(link.href);
@@ -451,7 +560,7 @@
 
       function importMapPlan(file) {
         const reader = new FileReader();
-        reader.onload = () => { try { const plan = JSON.parse(reader.result); if (!Array.isArray(plan.drawings) || !Array.isArray(plan.locations)) throw new Error(); captureMapHistory(); saveDrawings(plan.drawings); localStorage.setItem('santos-cartel-map-locations', JSON.stringify(plan.locations)); if (plan.layers) state.map.annotationLayers = { ...state.map.annotationLayers, ...plan.layers }; state.map.selectedDrawings = []; renderMap(); } catch { alert('This file is not a valid map plan.'); } };
+        reader.onload = () => { try { const plan = JSON.parse(reader.result); if (!Array.isArray(plan.drawings) || !Array.isArray(plan.locations)) throw new Error(); captureMapHistory(); saveDrawings(plan.drawings, false); saveLocations(plan.locations); if (plan.layers) state.map.annotationLayers = { ...state.map.annotationLayers, ...plan.layers }; state.map.selectedDrawings = []; renderMap(); } catch { alert('This file is not a valid map plan.'); } };
         reader.readAsText(file);
       }
 
@@ -463,8 +572,8 @@
       function undoMapChange() {
         const prior = state.map.history.pop();
         if (!prior) return false;
-        localStorage.setItem('santos-cartel-map-drawings', prior.drawings);
-        localStorage.setItem('santos-cartel-map-locations', prior.locations);
+        saveDrawings(JSON.parse(prior.drawings), false);
+        saveLocations(JSON.parse(prior.locations));
         state.map.selectedDrawings = [];
         state.selectedLocation = null;
         document.getElementById('mapDetail')?.setAttribute('hidden', '');
@@ -520,14 +629,14 @@
         const query = document.getElementById('mapSearch').value.trim().toLowerCase();
         const locations = allLocations().filter(location => (state.mapFilter === 'all' || location.type === state.mapFilter) && `${location.name} ${location.notes || ''}`.toLowerCase().includes(query));
         document.getElementById('mapFilters').innerHTML = ['all', ...Object.keys(colors)].map(type => `<button class="map-filter${state.mapFilter === type ? ' active' : ''}" type="button" data-filter="${type}">${type}</button>`).join('');
-        list.innerHTML = locations.length ? locations.map(location => `<button class="poi-item${state.selectedLocation === location.id ? ' active' : ''}" style="--poi-color:${colors[location.type] || colors.other}" data-poi-list="${escapeHtml(location.id)}" type="button"><strong>${escapeHtml(location.name)}</strong><small>${escapeHtml(location.type || 'other')}${location.guidePath ? ' · linked guide' : ''}</small></button>`).join('') : '<p class="map-empty">No locations match this filter.</p>';
+        list.innerHTML = locations.length ? locations.map(location => `<button class="poi-item${state.selectedLocation === location.id ? ' active' : ''}" style="--poi-color:${colors[location.type] || colors.other}" data-poi-list="${escapeHtml(location.id)}" type="button"><strong>${escapeHtml(location.name)}</strong><small>${escapeHtml(location.type || 'other')}${location.guidePath ? ' · linked guide' : ''}${location.updatedBy || location.createdBy ? ` · by ${escapeHtml(location.updatedBy || location.createdBy)}` : ''}</small></button>`).join('') : '<p class="map-empty">No locations match this filter.</p>';
         world.querySelectorAll('.map-marker').forEach(marker => marker.remove());
         const drawings = document.getElementById('mapDrawings');
         drawings.innerHTML = '<path id="drawingPreview" class="map-drawing drawing-preview"></path><rect id="drawingMarquee" class="drawing-marquee" hidden></rect>';
         const rawDrawings = savedDrawings();
         rawDrawings.filter(drawing => state.map.annotationLayers[drawing.layer || 'plans'] !== false).forEach(drawing => appendDrawing(drawings, drawing));
-        if (state.map.selectedDrawings.length === 1) appendSelectionFrame(drawings, rawDrawings.find(drawing => drawing.id === state.map.selectedDrawings[0]));
-        if (state.map.selectedDrawings.length > 1) appendMultiSelectionFrame(drawings, rawDrawings.filter(drawing => state.map.selectedDrawings.includes(drawing.id)));
+        if (!isMobile() && state.map.selectedDrawings.length === 1) appendSelectionFrame(drawings, rawDrawings.find(drawing => drawing.id === state.map.selectedDrawings[0]));
+        if (!isMobile() && state.map.selectedDrawings.length > 1) appendMultiSelectionFrame(drawings, rawDrawings.filter(drawing => state.map.selectedDrawings.includes(drawing.id)));
         locations.forEach(location => {
           if (!Number.isFinite(location.map?.x) || !Number.isFinite(location.map?.y)) return;
           const marker = document.createElement('button');
@@ -552,7 +661,7 @@
         document.querySelectorAll('[data-layer]').forEach(button => button.addEventListener('click', () => switchMapLayer(button.dataset.layer)));
         document.querySelectorAll('[data-zoom]').forEach(button => button.addEventListener('click', () => { const zoom = button.dataset.zoom; state.map.scale = zoom === 'reset' ? 1 : Math.min(20, Math.max(1, state.map.scale * (zoom === 'in' ? 1.6 : 1 / 1.6))); if (zoom === 'reset') { state.map.x = 0; state.map.y = 0; } renderMap(); }));
         document.querySelectorAll('[data-tool]').forEach(button => button.addEventListener('click', () => { state.map.tool = button.dataset.tool; state.selectedLocation = null; document.getElementById('mapDetail').hidden = true; renderMap(); }));
-        document.getElementById('gridToggle').addEventListener('click', () => { state.map.grid = !state.map.grid; document.getElementById('mapGrid').classList.toggle('visible', state.map.grid); document.getElementById('gridToggle').classList.toggle('active', state.map.grid); });
+        document.getElementById('gridToggle').addEventListener('click', () => { state.map.grid = !state.map.grid; document.getElementById('mapGrid').classList.toggle('visible', state.map.grid); document.getElementById('gridToggle').classList.toggle('active', state.map.grid); document.getElementById('mapGridCurrent').classList.toggle('visible', state.map.grid); highlightCenterCell(); });
         const setBrushColor = color => { if (!/^#[0-9a-f]{6}$/i.test(color)) return; state.map.color = color.toLowerCase(); state.map.picker = hexToHsv(state.map.color); document.getElementById('colorTrigger').style.setProperty('--brush-color', state.map.color); document.getElementById('colorHex').value = state.map.color; const field = document.getElementById('colorField'); field.style.setProperty('--picker-hue', state.map.picker.hue); field.style.setProperty('--picker-x', state.map.picker.saturation); field.style.setProperty('--picker-y', state.map.picker.value); document.getElementById('hueStrip').value = state.map.picker.hue; };
         document.getElementById('colorTrigger').addEventListener('click', () => { const picker = document.getElementById('colorPopover'); picker.hidden = !picker.hidden; });
         document.getElementById('colorHex').addEventListener('change', event => setBrushColor(event.target.value));
@@ -582,11 +691,13 @@
         document.querySelector('.map-toolbar').append(layerMenu);
         document.getElementById('layersButton').addEventListener('click', () => layerMenu.hidden = !layerMenu.hidden);
         document.querySelectorAll('[data-annotation-layer]').forEach(input => input.addEventListener('change', () => { state.map.annotationLayers[input.dataset.annotationLayer] = input.checked; renderMap(); }));
-        document.getElementById('snapshotButton').addEventListener('click', () => { const name = prompt('Snapshot name'); if (!name?.trim()) return; const snapshots = savedSnapshots(); snapshots.push({ id:`snapshot-${Date.now()}`, name:name.trim(), savedAt:new Date().toISOString(), drawings:savedDrawings(), locations:JSON.parse(localStorage.getItem('santos-cartel-map-locations') || '[]'), layers:{ ...state.map.annotationLayers } }); localStorage.setItem('santos-cartel-map-snapshots', JSON.stringify(snapshots)); });
+        document.getElementById('snapshotButton').addEventListener('click', () => { const name = prompt('Snapshot name'); if (!name?.trim()) return; const snapshots = savedSnapshots(); snapshots.push({ id:`snapshot-${Date.now()}`, name:name.trim(), savedAt:new Date().toISOString(), drawings:savedDrawings(), locations:savedLocations(), layers:{ ...state.map.annotationLayers } }); localStorage.setItem('santos-cartel-map-snapshots', JSON.stringify(snapshots)); });
         document.getElementById('exportButton').addEventListener('click', downloadMapPlan);
         document.getElementById('importButton').addEventListener('click', () => document.getElementById('importPlan').click());
         document.getElementById('importPlan').addEventListener('change', event => { if (event.target.files[0]) importMapPlan(event.target.files[0]); });
         wireMapInteraction(canvas, world);
+        wireMobileTouch(canvas, world);
+        highlightCenterCell();
       }
 
       function appendDrawing(container, drawing) {
@@ -787,7 +898,16 @@
         const drawingIds = location.drawingIds || [];
         const drawings = savedDrawings().filter(drawing => drawingIds.includes(drawing.id));
         const points = drawings.flatMap(drawing => (drawing.points || []).map(point => transformedPoint(drawing, point)));
-        if (!points.length) return;
+        if (!points.length) {
+          const canvasEl = document.getElementById('mapCanvas');
+          const cb = canvasEl ? canvasEl.getBoundingClientRect() : { width: 320, height: 320 };
+          if (Number.isFinite(location.map?.x) && Number.isFinite(location.map?.y)) {
+            state.map.scale = 5;
+            state.map.x = (50 - location.map.x) / 100 * cb.width * state.map.scale;
+            state.map.y = (50 - location.map.y) / 100 * cb.width * state.map.scale;
+          }
+          return;
+        }
         const bounds = points.reduce((box, point) => ({ minX:Math.min(box.minX, point.x), maxX:Math.max(box.maxX, point.x), minY:Math.min(box.minY, point.y), maxY:Math.max(box.maxY, point.y) }), {minX:100,maxX:0,minY:100,maxY:0});
         const canvas = document.getElementById('mapCanvas');
         const canvasBounds = canvas.getBoundingClientRect();
@@ -816,6 +936,91 @@
         preview.setAttribute('d', `M ${(state.map.liveStroke || []).map(point => `${point.x} ${point.y}`).join(' L ')}`);
       }
 
+      function isMobile() {
+        return window.matchMedia('(max-width: 850px)').matches;
+      }
+
+      function initMobileMap() {
+        if (!isMobile()) return;
+        state.map.tool = 'pan';
+        const ws = document.querySelector('.map-workspace');
+        const stage = document.querySelector('.map-stage');
+        const panel = document.getElementById('mobilePoiPanel');
+        if (!ws || !stage || !panel) return;
+        const detailsBtn = document.createElement('button');
+        detailsBtn.id = 'mapDetailsBtn';
+        detailsBtn.type = 'button';
+        detailsBtn.className = 'map-details-jump';
+        detailsBtn.innerHTML = 'Browse locations <span aria-hidden="true">&#8595;</span>';
+        detailsBtn.addEventListener('click', () => panel.scrollIntoView({ behavior: 'smooth', block: 'start' }));
+        stage.append(detailsBtn);
+      }
+
+      function highlightCenterCell() {
+        if (!isMobile()) return;
+        const canvas = document.getElementById('mapCanvas');
+        const world = document.getElementById('mapWorld');
+        const current = document.getElementById('mapGridCurrent');
+        if (!canvas || !world || !current) return;
+        const canvasBounds = canvas.getBoundingClientRect();
+        const worldBounds = world.getBoundingClientRect();
+        const x = (canvasBounds.left + canvasBounds.width / 2 - worldBounds.left) / worldBounds.width * 100;
+        const z = (canvasBounds.top + canvasBounds.height / 2 - worldBounds.top) / worldBounds.height * 100;
+        const columnIndex = Math.max(0, Math.min(9, Math.floor(x / 10)));
+        const rowIndex = Math.max(0, Math.min(9, Math.floor(z / 10)));
+        const cell = `${String.fromCharCode(65 + columnIndex)}${rowIndex + 1}`;
+        current.style.left = `${columnIndex * 10}%`;
+        current.style.top = `${rowIndex * 10}%`;
+        current.style.width = '10%';
+        current.style.height = '10%';
+        current.classList.toggle('visible', state.map.grid);
+        document.getElementById('mapGridCurrentLabel').textContent = cell;
+        document.getElementById('mapCell').textContent = cell;
+        document.getElementById('mapCoordinates').textContent = `X ${Math.round(x * 81.92).toString().padStart(4, '0')} · Z ${Math.round(z * 81.92).toString().padStart(4, '0')}`;
+      }
+
+      function wireMobileTouch(canvas, world) {
+        if (!isMobile()) return;
+        if (canvas.dataset.touchBound) return;
+        canvas.dataset.touchBound = 'true';
+        const pointers = new Map();
+        let pan = null;
+        let pinch = null;
+        const interactive = t => t && t.closest && t.closest('.map-marker, .map-drawing, .map-detail, .delete-confirm, .map-poi-toggle');
+        const apply = () => {
+          world.style.transform = `translate(calc(-50% + ${state.map.x}px), calc(-50% + ${state.map.y}px)) scale(${state.map.scale})`;
+          highlightCenterCell();
+        };
+        canvas.addEventListener('pointerdown', event => {
+          if (event.pointerType !== 'touch' && event.pointerType !== 'pen') return;
+          if (interactive(event.target)) return;
+          event.preventDefault();
+          pointers.set(event.pointerId, { x: event.clientX, y: event.clientY });
+          if (pointers.size === 1) { pan = { x: event.clientX, y: event.clientY, mapX: state.map.x, mapY: state.map.y }; canvas.classList.add('dragging'); }
+          else if (pointers.size === 2) {
+            pan = null;
+            const [a, b] = [...pointers.values()];
+            const bounds = canvas.getBoundingClientRect();
+            pinch = { dist: Math.max(1, Math.hypot(a.x - b.x, a.y - b.y)), scale: state.map.scale, mapX: state.map.x, mapY: state.map.y, x: (a.x + b.x) / 2 - bounds.left - bounds.width / 2, y: (a.y + b.y) / 2 - bounds.top - bounds.height / 2 };
+          }
+          try { canvas.setPointerCapture(event.pointerId); } catch (e) {}
+        });
+        canvas.addEventListener('pointermove', event => {
+          if (event.pointerType !== 'touch' && event.pointerType !== 'pen') return;
+          if (!pointers.has(event.pointerId)) return;
+          pointers.set(event.pointerId, { x: event.clientX, y: event.clientY });
+          if (pinch && pointers.size >= 2) { const [a, b] = [...pointers.values()]; const dist = Math.max(1, Math.hypot(a.x - b.x, a.y - b.y)); const nextScale = Math.min(20, Math.max(1, pinch.scale * (dist / pinch.dist))); const ratio = nextScale / pinch.scale; state.map.x = pinch.x - (pinch.x - pinch.mapX) * ratio; state.map.y = pinch.y - (pinch.y - pinch.mapY) * ratio; state.map.scale = nextScale; apply(); return; }
+          if (pan && pointers.size === 1) { state.map.x = pan.mapX + (event.clientX - pan.x); state.map.y = pan.mapY + (event.clientY - pan.y); apply(); }
+        });
+        const endPointer = event => {
+          pointers.delete(event.pointerId);
+          if (pointers.size === 0) { pan = null; pinch = null; canvas.classList.remove('dragging'); }
+          else if (pointers.size === 1 && pinch) { pinch = null; const [a] = [...pointers.values()]; pan = { x: a.x, y: a.y, mapX: state.map.x, mapY: state.map.y }; }
+        };
+        canvas.addEventListener('pointerup', endPointer);
+        canvas.addEventListener('pointercancel', endPointer);
+      }
+
       function wireMapInteraction(canvas, world) {
         if (canvas.dataset.interactionsBound) return;
         canvas.dataset.interactionsBound = 'true';
@@ -824,7 +1029,7 @@
         let stroke = null;
         let transform = null;
         let marquee = null;
-        canvas.addEventListener('pointermove', event => { const bounds = world.getBoundingClientRect(); const x = (event.clientX - bounds.left) / bounds.width * 100; const z = (event.clientY - bounds.top) / bounds.height * 100; const columnIndex = Math.max(0, Math.min(9, Math.floor(x / 10))); const rowIndex = Math.max(0, Math.min(9, Math.floor(z / 10))); const cell = `${String.fromCharCode(65 + columnIndex)}${rowIndex + 1}`; document.getElementById('mapCell').textContent = cell; document.getElementById('mapCoordinates').textContent = `X ${Math.round(x * 81.92).toString().padStart(4, '0')} · Z ${Math.round(z * 81.92).toString().padStart(4, '0')}`; const current = document.getElementById('mapGridCurrent'); current.style.left = `${columnIndex * 10}%`; current.style.top = `${rowIndex * 10}%`; current.style.width = '10%'; current.style.height = '10%'; current.classList.toggle('visible', state.map.grid); document.getElementById('mapGridCurrentLabel').textContent = cell; });
+        canvas.addEventListener('pointermove', event => { if (isMobile() || event.pointerType !== 'mouse') return; const bounds = world.getBoundingClientRect(); const x = (event.clientX - bounds.left) / bounds.width * 100; const z = (event.clientY - bounds.top) / bounds.height * 100; const columnIndex = Math.max(0, Math.min(9, Math.floor(x / 10))); const rowIndex = Math.max(0, Math.min(9, Math.floor(z / 10))); const cell = `${String.fromCharCode(65 + columnIndex)}${rowIndex + 1}`; document.getElementById('mapCell').textContent = cell; document.getElementById('mapCoordinates').textContent = `X ${Math.round(x * 81.92).toString().padStart(4, '0')} · Z ${Math.round(z * 81.92).toString().padStart(4, '0')}`; const current = document.getElementById('mapGridCurrent'); current.style.left = `${columnIndex * 10}%`; current.style.top = `${rowIndex * 10}%`; current.style.width = '10%'; current.style.height = '10%'; current.classList.toggle('visible', state.map.grid); document.getElementById('mapGridCurrentLabel').textContent = cell; });
         const applyMarqueeSelection = end => {
           const minX = Math.min(marquee.clientStart.x, end.x), maxX = Math.max(marquee.clientStart.x, end.x);
           const minY = Math.min(marquee.clientStart.y, end.y), maxY = Math.max(marquee.clientStart.y, end.y);
@@ -834,7 +1039,7 @@
           group.disabled = !state.map.selectedDrawings.length;
           group.textContent = `Group (${state.map.selectedDrawings.length})`;
         };
-        canvas.addEventListener('pointerdown', event => { const drawingPath = event.target.closest('.map-drawing:not(.drawing-preview)'); if (event.button !== 0 || !drawingPath || event.target.closest('.drawing-handle')) return; const id = drawingPath.dataset.drawing; const additive = event.ctrlKey || event.metaKey; if (additive || state.map.selectedDrawings.length !== 1 || !state.map.selectedDrawings.includes(id)) { selectDrawing(id, additive); event.stopImmediatePropagation(); } }, true);
+        canvas.addEventListener('pointerdown', event => { if (isMobile()) return; const drawingPath = event.target.closest('.map-drawing:not(.drawing-preview)'); if (event.button !== 0 || !drawingPath || event.target.closest('.drawing-handle')) return; const id = drawingPath.dataset.drawing; const additive = event.ctrlKey || event.metaKey; if (additive || state.map.selectedDrawings.length !== 1 || !state.map.selectedDrawings.includes(id)) { selectDrawing(id, additive); event.stopImmediatePropagation(); } }, true);
         canvas.addEventListener('pointerdown', event => { if (event.button !== 0 || event.target.closest('.map-marker, .map-drawing, .map-detail, .delete-confirm')) return; if (state.map.tool === 'select') { event.preventDefault(); const rect = world.getBoundingClientRect(); const canvasRect = canvas.getBoundingClientRect(); marquee = { start: { x: (event.clientX - rect.left) / rect.width * 100, y: (event.clientY - rect.top) / rect.height * 100 }, clientStart: { x: event.clientX, y: event.clientY }, canvasStart: { x: event.clientX - canvasRect.left, y: event.clientY - canvasRect.top } }; const overlay = document.getElementById('marqueeOverlay'); overlay.style.left = `${marquee.canvasStart.x}px`; overlay.style.top = `${marquee.canvasStart.y}px`; overlay.style.width = '0'; overlay.style.height = '0'; overlay.classList.add('visible'); return; } if (state.map.tool !== 'draw' && state.map.selectedDrawings.length) { state.map.selectedDrawings = []; renderMap(); } });
         canvas.addEventListener('wheel', event => { event.preventDefault(); const bounds = canvas.getBoundingClientRect(); const factor = event.deltaY < 0 ? 1.28 : 1 / 1.28; const nextScale = Math.min(20, Math.max(1, state.map.scale * factor)); if (nextScale === state.map.scale) return; const pointerX = event.clientX - bounds.left - bounds.width / 2; const pointerY = event.clientY - bounds.top - bounds.height / 2; const ratio = nextScale / state.map.scale; state.map.x = pointerX - (pointerX - state.map.x) * ratio; state.map.y = pointerY - (pointerY - state.map.y) * ratio; state.map.scale = nextScale; world.style.transform = `translate(calc(-50% + ${state.map.x}px), calc(-50% + ${state.map.y}px)) scale(${state.map.scale})`; if (state.map.selectedDrawings.length) renderMap(); }, { passive: false });
         canvas.addEventListener('pointerdown', event => { const handle = event.target.closest('.drawing-handle'); const drawingPath = event.target.closest('.map-drawing'); if (event.button === 0 && handle) { const drawing = savedDrawings().find(item => item.id === handle.dataset.drawing); if (!drawing) return; captureMapHistory(); const rect = world.getBoundingClientRect(); const point = { x: (event.clientX - rect.left) / rect.width * 100, y: (event.clientY - rect.top) / rect.height * 100 }; const center = { x: drawing.center.x + (drawing.transform?.x || 0), y: drawing.center.y + (drawing.transform?.y || 0) }; transform = { id: drawing.id, type: handle.dataset.handle, center, scale: drawing.transform?.scale || 1, rotation: drawing.transform?.rotation || 0, distance: Math.max(.1, Math.hypot(point.x - center.x, point.y - center.y)), angle: Math.atan2(point.y - center.y, point.x - center.x) }; canvas.setPointerCapture(event.pointerId); return; } if (event.button === 0 && drawingPath && state.map.selectedDrawings.includes(drawingPath.dataset.drawing)) { const drawing = savedDrawings().find(item => item.id === drawingPath.dataset.drawing); captureMapHistory(); const rect = world.getBoundingClientRect(); transform = { id: drawing.id, type: 'move', x: drawing.transform?.x || 0, y: drawing.transform?.y || 0, point: { x: (event.clientX - rect.left) / rect.width * 100, y: (event.clientY - rect.top) / rect.height * 100 } }; canvas.setPointerCapture(event.pointerId); return; } if (event.button === 1) { event.preventDefault(); drag = { x: event.clientX, y: event.clientY, mapX: state.map.x, mapY: state.map.y, moved: false }; canvas.classList.add('dragging'); canvas.setPointerCapture(event.pointerId); return; } if (event.button !== 0 || event.target.closest('.map-marker, .map-drawing, .map-detail, .delete-confirm') || state.map.tool !== 'draw') return; const rect = world.getBoundingClientRect(); stroke = [{ x: (event.clientX - rect.left) / rect.width * 100, y: (event.clientY - rect.top) / rect.height * 100 }]; state.map.liveStroke = stroke; updateLiveStroke(); canvas.classList.add('drawing'); canvas.setPointerCapture(event.pointerId); });
@@ -852,28 +1057,39 @@
         state.selectedLocation = id;
         const detail = document.getElementById('mapDetail');
         detail.hidden = false;
+        if (isMobile()) {
+          detail.innerHTML = `<h2>${escapeHtml(location.name)}</h2><p>${escapeHtml(location.notes || 'No notes recorded for this location.')}</p>${location.updatedBy || location.createdBy ? `<p class="map-detail-meta">Last edited by ${escapeHtml(location.updatedBy || location.createdBy)}</p>` : ''}${location.guidePath ? '<button class="poi-open" type="button">Open linked guide</button>' : ''}`;
+          detail.querySelector('.poi-open')?.addEventListener('click', () => openArticle(state.pages.find(page => page.url && new URL(page.url).pathname === location.guidePath)));
+          renderMap();
+          if (focus) requestAnimationFrame(() => document.querySelector('.map-workspace')?.scrollTo({ top: 0, behavior: 'smooth' }));
+          return;
+        }
         const transform = location.drawing?.transform || { scale: 1, rotation: 0 };
-        detail.innerHTML = `<h2>${escapeHtml(location.name)}</h2><p>${escapeHtml(location.notes || 'No notes recorded for this location.')}</p>${location.guidePath ? '<button class="poi-open" type="button">Open linked guide</button>' : ''}<button class="poi-open" type="button" id="editLocation">Edit</button>${state.map.selectedDrawings.length ? '<button class="poi-open" type="button" id="reassignLocation">Reassign selected drawing</button>' : ''}<button class="map-delete" type="button">Delete point</button>`;
+        detail.innerHTML = `<h2>${escapeHtml(location.name)}</h2><p>${escapeHtml(location.notes || 'No notes recorded for this location.')}</p>${location.updatedBy || location.createdBy ? `<p class="map-detail-meta">Last edited by ${escapeHtml(location.updatedBy || location.createdBy)}</p>` : ''}${location.guidePath ? '<button class="poi-open" type="button">Open linked guide</button>' : ''}<button class="poi-open" type="button" id="editLocation">Edit</button>${state.map.selectedDrawings.length ? '<button class="poi-open" type="button" id="reassignLocation">Reassign selected drawing</button>' : ''}<button class="map-delete" type="button">Delete point</button>`;
         detail.querySelector('.poi-open')?.addEventListener('click', () => openArticle(state.pages.find(page => page.url && new URL(page.url).pathname === location.guidePath)));
         detail.querySelector('#editLocation').addEventListener('click', () => editLocation(location.id));
         detail.querySelector('#reassignLocation')?.addEventListener('click', () => reassignLocation(location.id));
         ['drawingScale', 'drawingRotation'].forEach(id => detail.querySelector(`#${id}`)?.addEventListener('input', () => updateDrawingTransform(location.id, Number(detail.querySelector('#drawingScale').value), Number(detail.querySelector('#drawingRotation').value))));
-        detail.querySelector('.map-delete').addEventListener('click', () => { const saved = JSON.parse(localStorage.getItem('santos-cartel-map-locations') || '[]').filter(item => item.id !== location.id); localStorage.setItem('santos-cartel-map-locations', JSON.stringify(saved)); state.selectedLocation = null; detail.hidden = true; renderMap(); });
+        detail.querySelector('.map-delete').addEventListener('click', () => { const saved = savedLocations().filter(item => item.id !== location.id); saveLocations(saved); state.selectedLocation = null; detail.hidden = true; renderMap(); });
         renderMap();
+        if (isMobile()) {
+          if (focus) { const ws = document.querySelector('.map-workspace'); if (ws) ws.scrollTo({ top: 0, behavior: 'smooth' }); }
+          else { requestAnimationFrame(() => { const item = document.querySelector('.map-sidebar .poi-item.active'); if (item) item.scrollIntoView({ behavior: 'smooth', block: 'center' }); }); }
+        }
       }
 
       function updateDrawingTransform(id, scale, rotation) {
-        const saved = JSON.parse(localStorage.getItem('santos-cartel-map-locations') || '[]');
+        const saved = savedLocations();
         const location = saved.find(item => item.id === id);
         if (!location?.drawing) return;
         location.drawing.transform = { ...(location.drawing.transform || {}), scale, rotation };
-        localStorage.setItem('santos-cartel-map-locations', JSON.stringify(saved));
+        saveLocations(saved);
         const path = document.querySelector(`.map-drawing[data-poi="${id}"]`);
         path?.setAttribute('transform', `translate(${location.drawing.transform.x || 0} ${location.drawing.transform.y || 0}) rotate(${rotation} ${location.map.x} ${location.map.y}) scale(${scale} ${scale})`);
       }
 
       function editLocation(id) {
-        const saved = JSON.parse(localStorage.getItem('santos-cartel-map-locations') || '[]');
+        const saved = savedLocations();
         const location = saved.find(item => item.id === id);
         if (!location) return;
         const form = document.getElementById('poiForm');
@@ -881,7 +1097,7 @@
         form.innerHTML = `<form class="map-form" id="locationEditor"><strong>Edit point of interest</strong><label>Name<input name="name" required value="${escapeHtml(location.name)}"></label><label>Type<select name="type">${['operation','resource','meeting','property','route','other'].map(type => `<option value="${type}" ${type === location.type ? 'selected' : ''}>${type}</option>`).join('')}</select></label><label>Linked guide<select name="guidePath"><option value="">None</option>${state.pages.filter(page => page.url).sort((a,b) => a.title.localeCompare(b.title)).map(page => `<option value="${escapeHtml(new URL(page.url).pathname)}" ${new URL(page.url).pathname === location.guidePath ? 'selected' : ''}>${escapeHtml(page.title)}</option>`).join('')}</select></label><label>Notes<textarea name="notes" rows="3">${escapeHtml(location.notes || '')}</textarea></label><div class="map-form-actions"><button type="button" id="useSelection">Use selected drawing</button><span id="linkedDrawingStatus">${drawingIds.length ? `${drawingIds.length} drawing linked` : 'No drawing linked'}</span></div><div class="map-form-actions"><button>Save changes</button><button type="button" id="cancelEdit">Cancel</button></div></form>`;
         document.getElementById('useSelection').addEventListener('click', () => { drawingIds = [...state.map.selectedDrawings]; document.getElementById('linkedDrawingStatus').textContent = drawingIds.length ? `${drawingIds.length} drawing linked` : 'No drawing selected'; });
         document.getElementById('cancelEdit').addEventListener('click', () => form.innerHTML = '');
-        document.getElementById('locationEditor').addEventListener('submit', event => { event.preventDefault(); const values = Object.fromEntries(new FormData(event.target)); const linked = savedDrawings().filter(drawing => drawingIds.includes(drawing.id)); const points = linked.flatMap(drawing => (drawing.points || []).map(point => transformedPoint(drawing, point))); location.name = values.name.trim(); location.type = values.type; location.guidePath = values.guidePath; location.notes = values.notes.trim(); location.drawingIds = drawingIds; if (points.length) location.map = points.reduce((total, point) => ({ x:total.x + point.x / points.length, y:total.y + point.y / points.length }), {x:0,y:0}); localStorage.setItem('santos-cartel-map-locations', JSON.stringify(saved)); form.innerHTML = ''; renderMap(); showLocation(id, false); });
+        document.getElementById('locationEditor').addEventListener('submit', event => { event.preventDefault(); const values = Object.fromEntries(new FormData(event.target)); const linked = savedDrawings().filter(drawing => drawingIds.includes(drawing.id)); const points = linked.flatMap(drawing => (drawing.points || []).map(point => transformedPoint(drawing, point))); location.name = values.name.trim(); location.type = values.type; location.guidePath = values.guidePath; location.notes = values.notes.trim(); location.drawingIds = drawingIds; if (points.length) location.map = points.reduce((total, point) => ({ x:total.x + point.x / points.length, y:total.y + point.y / points.length }), {x:0,y:0}); saveLocations(saved); form.innerHTML = ''; renderMap(); showLocation(id, false); });
       }
 
       function reassignLocation(id) {
@@ -889,13 +1105,13 @@
         if (!selected.length) return;
         const points = selected.flatMap(drawing => (drawing.points || []).map(point => transformedPoint(drawing, point)));
         const center = points.reduce((total, point) => ({ x:total.x + point.x / points.length, y:total.y + point.y / points.length }), { x:0, y:0 });
-        const saved = JSON.parse(localStorage.getItem('santos-cartel-map-locations') || '[]');
+        const saved = savedLocations();
         const location = saved.find(item => item.id === id);
         if (!location) return;
         captureMapHistory();
         location.drawingIds = selected.map(drawing => drawing.id);
         location.map = center;
-        localStorage.setItem('santos-cartel-map-locations', JSON.stringify(saved));
+        saveLocations(saved, false);
         saveDrawings(savedDrawings().map(drawing => ({ ...drawing, pinId: state.map.selectedDrawings.includes(drawing.id) ? id : drawing.pinId })));
         state.map.selectedDrawings = [];
         renderMap();
@@ -906,7 +1122,7 @@
         const form = document.getElementById('poiForm');
         form.innerHTML = `<form class="map-form" id="poiEditor"><label>Name<input name="name" required></label><label>Type<select name="type"><option value="operation">Operation</option><option value="resource">Resource</option><option value="meeting">Meeting</option><option value="property">Property</option><option value="route">Route</option><option value="other">Other</option></select></label><label>Linked guide<select name="guidePath"><option value="">None</option>${state.pages.filter(page => page.url).sort((a,b) => a.title.localeCompare(b.title)).map(page => `<option value="${escapeHtml(new URL(page.url).pathname)}">${escapeHtml(page.title)}</option>`).join('')}</select></label><label>Notes<textarea name="notes" rows="3"></textarea></label><input name="x" type="hidden" value="${x}"><input name="y" type="hidden" value="${y}"><div class="map-form-actions"><button>Save point</button><button type="button" id="cancelPoi">Cancel</button></div></form>`;
         document.getElementById('cancelPoi').addEventListener('click', () => form.innerHTML = '');
-        document.getElementById('poiEditor').addEventListener('submit', event => { event.preventDefault(); const values = Object.fromEntries(new FormData(event.target)); const saved = JSON.parse(localStorage.getItem('santos-cartel-map-locations') || '[]'); const id = `poi-${Date.now()}`; saved.push({ id, name: values.name.trim(), type: values.type, guidePath: values.guidePath, notes: values.notes.trim(), map: { x: Number(values.x || 50), y: Number(values.y || 50) }, drawingIds, ...(drawing ? { drawing: { points: drawing, transform: { scale: 1, rotation: 0, x: 0, y: 0 } } } : {}) }); localStorage.setItem('santos-cartel-map-locations', JSON.stringify(saved)); if (drawingIds.length) { const drawings = savedDrawings().map(item => drawingIds.includes(item.id) ? { ...item, pinId: id } : item); saveDrawings(drawings); state.map.selectedDrawings = []; } form.innerHTML = ''; renderMap(); });
+        document.getElementById('poiEditor').addEventListener('submit', event => { event.preventDefault(); const values = Object.fromEntries(new FormData(event.target)); const saved = savedLocations(); const id = `poi-${Date.now()}`; saved.push({ id, name: values.name.trim(), type: values.type, guidePath: values.guidePath, notes: values.notes.trim(), map: { x: Number(values.x || 50), y: Number(values.y || 50) }, drawingIds, ...(drawing ? { drawing: { points: drawing, transform: { scale: 1, rotation: 0, x: 0, y: 0 } } } : {}) }); saveLocations(saved, !drawingIds.length); if (drawingIds.length) { const drawings = savedDrawings().map(item => drawingIds.includes(item.id) ? { ...item, pinId: id } : item); saveDrawings(drawings); state.map.selectedDrawings = []; } form.innerHTML = ''; renderMap(); });
       }
 
       function openArticle(page) {
@@ -962,7 +1178,14 @@
       }
 
       function wireMenu() {
-        document.getElementById('menuButton')?.addEventListener('click', () => document.body.classList.toggle('sidebar-open'));
+        const button = document.getElementById('menuButton');
+        button?.setAttribute('aria-expanded', String(document.body.classList.contains('sidebar-open')));
+        button?.addEventListener('click', () => setSidebarOpen(!document.body.classList.contains('sidebar-open')));
+      }
+
+      function setSidebarOpen(open) {
+        document.body.classList.toggle('sidebar-open', open);
+        document.getElementById('menuButton')?.setAttribute('aria-expanded', String(open));
       }
 
       searchInput.addEventListener('input', event => {
@@ -972,11 +1195,29 @@
       homeButton.addEventListener('click', showHome);
       rulesButton.addEventListener('click', showRules);
       mapButton.addEventListener('click', showMap);document.addEventListener('click',(function(e){var t=e.target;if(t.id==='poiToggle'){var p=document.getElementById('mobilePoiPanel');if(p)p.classList.toggle('mobile-open')}if(t.classList.contains('map-sheet-close')){t.closest('.map-sidebar')?.classList.remove('mobile-open')}}));
+      document.getElementById('sidebarClose').addEventListener('click', () => setSidebarOpen(false));
+      document.getElementById('sidebarScrim').addEventListener('click', () => setSidebarOpen(false));
+      document.getElementById('sidebar').addEventListener('click', event => {
+        if (isMobile() && event.target.closest('.home-button, .rules-button, .map-button, .article-link')) setSidebarOpen(false);
+      });
+      let sidebarSwipeStart = null;
+      document.getElementById('sidebar').addEventListener('touchstart', event => {
+        const touch = event.touches[0];
+        sidebarSwipeStart = touch ? { x: touch.clientX, y: touch.clientY } : null;
+      }, { passive:true });
+      document.getElementById('sidebar').addEventListener('touchend', event => {
+        const touch = event.changedTouches[0];
+        if (!sidebarSwipeStart || !touch) return;
+        const deltaX = touch.clientX - sidebarSwipeStart.x;
+        const deltaY = touch.clientY - sidebarSwipeStart.y;
+        if (deltaX < -55 && Math.abs(deltaX) > Math.abs(deltaY) * 1.2) setSidebarOpen(false);
+        sidebarSwipeStart = null;
+      }, { passive:true });
       document.addEventListener('keydown', event => {
         if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'z' && state.activeId === 'map' && undoMapChange()) { event.preventDefault(); return; }
         if (state.activeId === 'map' && (event.key === 'Delete' || event.key === 'Backspace') && !event.target.matches('input, textarea, select') && state.map.selectedDrawings.length) { event.preventDefault(); requestDeleteDrawings(); return; }
         if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'k') { event.preventDefault(); searchInput.focus(); }
-        if (event.key === 'Escape') { var s=document.getElementById('mobilePoiPanel'); if(s)s.classList.remove('mobile-open'); document.body.classList.remove('sidebar-open'); }
+        if (event.key === 'Escape') { var s=document.getElementById('mobilePoiPanel'); if(s)s.classList.remove('mobile-open'); setSidebarOpen(false); }
       });
 
       Promise.all([
@@ -1022,6 +1263,16 @@
           if (categoryIds.size !== categoryDefinitions.length || state.pages.some(page => !categoryIds.has(page.categoryId))) throw new Error('Wiki categories are invalid.');
           state.categories = categoryDefinitions.map(category => ({ ...category, count: state.pages.filter(page => page.categoryId === category.id).length, pages: state.pages.filter(page => page.categoryId === category.id).sort((a, b) => a.title.localeCompare(b.title)) }));
           state.fuse = new Fuse(state.pages, { keys: [{ name:'title', weight:0.6 }, { name:'summary', weight:0.25 }, { name:'content', weight:0.15 }], threshold:0.34, ignoreLocation:true, minMatchCharLength:2 });
+          collaboration = window.createMapCollaboration({
+            getSnapshot: () => ({ drawings:savedDrawings(), locations:savedLocations(), layers:{ ...state.map.annotationLayers } }),
+            applySnapshot: snapshot => {
+              saveDrawings(snapshot.drawings || [], false, false);
+              saveLocations(snapshot.locations || [], false, false);
+              state.map.annotationLayers = { ...state.map.annotationLayers, ...(snapshot.layers || {}) };
+              if (state.activeId === 'map' && document.getElementById('mapCanvas')) renderMap();
+            }
+          });
+          collaboration.init();
           showHome();
         })
         .catch(error => {

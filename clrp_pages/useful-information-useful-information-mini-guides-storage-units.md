@@ -14,7 +14,7 @@ Secure personal storage units across San Andreas! Store your items safely with c
 
 ### &#x20;Storage Locations
 
-<figure><img src="assets/wiki/e00020544eefe6e555b3.png" alt=""><figcaption><p>Storage units are available at three convenient locations:</p></figcaption></figure>
+<figure><img src="https://1220491511-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FTjoPqB53oR42XfwTK5MK%2Fuploads%2FPlBmoZQj07qlZl9sOAnG%2Fstorage.png?alt=media&amp;token=594eb504-9f2e-4656-a86e-5d37a2af4d69" alt=""><figcaption><p>Storage units are available at three convenient locations:</p></figcaption></figure>
 
 1. City Storage (Downtown) - Central Los Santos
 2. City Storage (Sandy Shores) - Blaine County

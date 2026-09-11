@@ -7,12 +7,14 @@ const root = process.cwd();
 const importPath = path.join(root, 'clrp_wiki_import.json');
 const communityPath = path.join(root, 'community-wiki-data.json');
 const outputPath = path.join(root, 'community-wiki-data.json');
+const rulesPath = path.join(root, 'CityLife Roleplay.txt');
 
 // ── Read inputs ────────────────────────────────────────────────────────
 const imported = JSON.parse(fs.readFileSync(importPath, 'utf8'));
 const community  = JSON.parse(fs.readFileSync(communityPath, 'utf8'));
+const rulesRaw = fs.readFileSync(rulesPath, 'utf8');
 
-const pages = [...imported.pages]; // start with cleaned/imported
+const pages = [...imported.pages];
 
 // ── Resolve categoryId from URL path ───────────────────────────────────
 function resolveCategory(pageUrl) {
@@ -66,22 +68,6 @@ pages.forEach(p => {
   p.id         = stableId(p.url);
 });
 
-// ── Merge community pages (curated overrides raw imports) ───────────────
-const allPages = [...pages, ...community.pages];
-
-// Guard against title collisions between imported + community
-const seenTitles = new Map();
-allPages.forEach(p => {
-  const baseKey = p.title.toLowerCase();
-  let key = baseKey;
-  let counter = 2;
-  while (seenTitles.has(key)) {
-    key = `${baseKey}-${counter}`;
-    counter++;
-  }
-  seenTitles.set(key, true);
-});
-
 // ── Category definitions ───────────────────────────────────────────────
 const categories = [
   { id: 'getting-started',     name: 'Getting Started',     icon: '01' },
@@ -100,18 +86,19 @@ const output = {
   categories,
   locations: community.locations || [],
   ruleGuideLinks: community.ruleGuideLinks || [],
-  pages: allPages
+  rulesRaw,
+  pages
 };
 
 fs.writeFileSync(outputPath, JSON.stringify(output, null, 2) + '\n', 'utf8');
 
 // ── Report ─────────────────────────────────────────────────────────────
 const counts = {};
-allPages.forEach(p => { counts[p.categoryId] = (counts[p.categoryId] || 0) + 1; });
-console.log(`Built community-wiki-data.json with ${allPages.length} pages.`);
+pages.forEach(p => { counts[p.categoryId] = (counts[p.categoryId] || 0) + 1; });
+console.log(`Built community-wiki-data.json with ${pages.length} pages.`);
 console.log('Categories:', JSON.stringify(counts, null, 2));
 
-const nullCat = allPages.filter(p => !p.categoryId);
+const nullCat = pages.filter(p => !p.categoryId);
 if (nullCat.length) {
   console.warn(`⚠️ ${nullCat.length} pages have no categoryId:`, nullCat.map(p => `${p.title} (${p.url})`));
 } else {

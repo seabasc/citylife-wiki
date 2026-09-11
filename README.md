@@ -52,6 +52,10 @@
 2. Go to Settings > Pages > Source: main branch
 3. Your wiki will be live at `https://yourusername.github.io/repo-name/`
 
+### Shared Map Collaboration
+
+The wiki supports private Supabase-backed access with username/password accounts, a member site key, persistent sessions, realtime map updates, and revision history. Follow [docs/supabase-map-setup.md](docs/supabase-map-setup.md) to connect a free Supabase project. Until configured, the map continues using this device's local browser storage.
+
 ## File Structure
 
 ```
@@ -112,6 +116,7 @@ Edit `js/data.js` — the `RULES_DATA` object contains all rules organized by ca
 - **Map**: Leaflet 1.9 (interactive maps)
 - **PWA**: Service Worker + Web App Manifest
 - **Hosting**: GitHub Pages (free, no server required)
+- **Shared map**: Supabase Auth, PostgreSQL, and Realtime (optional free backend)
 
 ## License
 

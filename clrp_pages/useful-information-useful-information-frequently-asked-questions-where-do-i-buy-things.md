@@ -32,7 +32,7 @@ Ready to hit the road in style? Your dream ride awaits you at one of these fanta
 * **Mosley's Used Car Lot**: Fantastic deals on pre-loved vehicles.
 * **All dealerships** have an "open" category that doesn't require a salesman!
 
-For those seeking something extra special, \
+A supporter membership is required to access supporter-exclusive vehicles.\
 \
 Looking to let go of your vehicle for a little tax? Visit the vehicle sales on your GPS!
 

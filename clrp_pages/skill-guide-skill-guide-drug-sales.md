@@ -14,4 +14,4 @@ Drug sales is a skill that can be leveled by selling Drugs! Below is your Drug S
 * [x] Reaching Level 60 Unlocks Candy Kush Joint Sales
 * [x] Reaching Level 75 Unlocks Tropical Kush Joint Sales
 
-<figure><img src="assets/wiki/bc0cc43d765cf510d21d.png" alt=""><figcaption></figcaption></figure>
+<figure><img src="https://1220491511-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FTjoPqB53oR42XfwTK5MK%2Fuploads%2Fsm0YZyfrfgXeSqcDDeYI%2Fgolden_pill.png?alt=media&amp;token=0430c846-74a2-4241-8542-024687af9947" alt=""><figcaption></figcaption></figure>

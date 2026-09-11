@@ -6,7 +6,7 @@
 
 ### To start Garbage, head over to the Garbage blip on your GPS!&#x20;
 
-<figure><img src="assets/wiki/774ee05f0e4954416e70.png" alt="" width="169"><figcaption></figcaption></figure>
+<figure><img src="https://1220491511-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FTjoPqB53oR42XfwTK5MK%2Fuploads%2F1FogsQRTXFd4GxVs5qrR%2Fgarb.png?alt=media&amp;token=ac772153-b98c-49ee-a333-445f6948a037" alt="" width="169"><figcaption></figcaption></figure>
 
 1. **Meet Eddie**: Start at postal Garbage Icon on your GPS, ascend the stairs, and find Eddie, your trusty new boss.
 2. **Choose Your Route**: Eddie will present you with a range of routes. Remember, better skills open up more rewarding routes.
@@ -19,7 +19,7 @@
 9. **Repeat**: Continue this cycle, cleaning up each zone on your route.
 10. **Return to Eddie**: After all zones are clean, return to Eddie. He will reward your hard work with a well-deserved pay. Let's clean up the city, one bin at a time!
 
-> **Note:** See the linked Garbage article for unlock details!
+> **Note:** See the linked Garbage article for complete unlock details!
 
 {% content-ref url="/pages/WHzkYhbJWyDYQzWBjaAK" %}
 [Garbage](/skill-guide/skill-guide/hauling/garbage.md)

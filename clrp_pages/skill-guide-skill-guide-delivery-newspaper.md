@@ -13,4 +13,4 @@ Newspaper is an easy-to-learn skill that levels up by simply delivering Newspape
 * [x] Reaching Level 75 Increases the Base Payout by 12%
 * [x] Reaching Level 100 Increases the Base Payout by 15%!
 
-<figure><img src="assets/wiki/def08fc0c92a112716e1.png" alt=""><figcaption></figcaption></figure>
+<figure><img src="https://1220491511-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FTjoPqB53oR42XfwTK5MK%2Fuploads%2FrqU6b1YjC2Abf5apyDIt%2Fgolden_newspaper.png?alt=media&amp;token=c05daf24-dd0e-44e2-924c-35327b56a225" alt=""><figcaption></figcaption></figure>

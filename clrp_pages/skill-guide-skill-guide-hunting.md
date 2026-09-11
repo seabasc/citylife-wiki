@@ -21,4 +21,4 @@ Hunting is a skill that can be leveled Hunting animals! Below is your Hunting Sk
 * [x] Reaching Level 75 Boosts your chance to receive higher tier pelts, and boosts your chance to receive a wild rush!
 * [x] Reaching Level 100 Boosts your chance to receive higher tier pelts!
 
-<figure><img src="assets/wiki/9dafbc3297378f23623a.png" alt=""><figcaption></figcaption></figure>
+<figure><img src="https://1220491511-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FTjoPqB53oR42XfwTK5MK%2Fuploads%2F3mSlRjEJy9j7xHu3Beeo%2Fgolden_bone.png?alt=media&amp;token=80c5b8ae-f80c-4850-8c52-9e76736e8036" alt=""><figcaption></figcaption></figure>

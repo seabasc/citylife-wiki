@@ -47,9 +47,10 @@ function resolveCategory(pageUrl) {
   const p = u.pathname;
 
   // — explicit path patterns (checked top-down, first match wins) —
+  if (p === '/welcome.md')                           return 'getting-started';
   if (/^\/getting-started\//.test(p))              return 'getting-started';
   if (/^\/criminal-guide\/criminal-guide\/gang-life/.test(p)) return 'getting-started';
-  if (/\/useful-information\/useful-information\.md$/.test(p)) return 'useful-information';
+  if (/^\/useful-information\//.test(p))           return 'useful-information';
   if (/^\/criminal-guide\//.test(p))               return 'criminal-activities';
   if (/^\/job-guide\//.test(p))                    return 'jobs-careers';
   if (/^\/skill-guide\/skill-guide\/drug-sales/.test(p)) return 'criminal-activities';
@@ -95,43 +96,17 @@ function assignCategories(pages) {
   return result;
 }
 
-/* ── Deduplication ────────────────────────────────────────────────────── */
-
-function deduplicateEnriched(pages) {
-  const map = new Map(); // title → enriched page (keeps the more detailed one)
-
-  for (const p of pages) {
-    const existing = map.get(p.title);
-    if (!existing) {
-      map.set(p.title, p);
-    } else {
-      // Same title — keep whichever has more content
-      if ((p.content?.length || 0) > (existing.content?.length || 0)) {
-        map.set(p.title, p);
-      }
-    }
-  }
-
-  return Array.from(map.values());
-}
-
 /* ── Run & persist ────────────────────────────────────────────────────── */
 
 const enriched = assignCategories(data.pages);
-const deduped  = deduplicateEnriched(enriched);
-
-// Record dedup count for reporting
-const skipped = data.pages.length - deduped.length;
-
-data.pages = deduped;
-data.totalPages = deduped.length;
+data.pages = enriched;
+data.totalPages = enriched.length;
 
 fs.writeFileSync(inputPath, `${JSON.stringify(data, null, 2)}\n`, 'utf8');
 
 console.log(`Categorised ${enriched.length} pages.`);
-if (skipped) console.warn(`Skipped ${skipped} duplicate-title(s) during enrichment.`);
 
 // Per-category summary
 const counts = {};
-deduped.forEach(p => { counts[p.categoryId] = (counts[p.categoryId] || 0) + 1; });
+enriched.forEach(p => { counts[p.categoryId] = (counts[p.categoryId] || 0) + 1; });
 console.log('Categories:', JSON.stringify(counts, null, 2));

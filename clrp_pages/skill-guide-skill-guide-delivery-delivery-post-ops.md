@@ -24,4 +24,4 @@ Delivery is a skill that can be leveled by making deliveries for Postops! Below 
 * [x] Reaching Level 75 Boosts Your Special Delivery Chance!
 * [x] Reaching Level 90 Boosts Your Special Delivery Chance!
 
-<figure><img src="assets/wiki/6baca0efab0a96b15509.png" alt=""><figcaption></figcaption></figure>
+<figure><img src="https://1220491511-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FTjoPqB53oR42XfwTK5MK%2Fuploads%2FkTQwtyXIJqdaKmGUh2YC%2Fgolden_newspaper.png?alt=media&amp;token=884f354b-e434-477d-aafd-fbc923a008b1" alt=""><figcaption></figcaption></figure>

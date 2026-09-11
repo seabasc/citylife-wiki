@@ -16,4 +16,4 @@ Delivery is a skill that can be leveled by Fishing! Below is your Fishing Skill 
 * [x] Reaching Level 85 significantly reduces chance to receive mini-game for the Fly Fishing Rod
 * [x] Reaching Level 100 significantly reduces chance to receive mini-game for the Deep Sea Rod
 
-<figure><img src="assets/wiki/cfaf6a09144ea18924a1.png" alt=""><figcaption></figcaption></figure>
+<figure><img src="https://1220491511-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FTjoPqB53oR42XfwTK5MK%2Fuploads%2F1d8IIb3kVkj4FI5lAEPn%2Fgolden_mackerel.png?alt=media&amp;token=12fe366d-8042-46e3-8439-bd06acdd4cc4" alt=""><figcaption></figcaption></figure>

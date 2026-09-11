@@ -23,4 +23,4 @@ Mining is a skill that can be leveled by you guessed it, Mining! Below is your M
 
 * [x] As you level up, your lucky chance also increases, giving you a chance to receive more stone!
 
-<figure><img src="assets/wiki/1cab86553398774471bd.png" alt=""><figcaption></figcaption></figure>
+<figure><img src="https://1220491511-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FTjoPqB53oR42XfwTK5MK%2Fuploads%2FWxhpns86Ru6nfNg2lJmo%2Fgolden_stone.png?alt=media&amp;token=71ab3e71-fac7-4e64-8fd0-e6f6575ed831" alt=""><figcaption></figcaption></figure>

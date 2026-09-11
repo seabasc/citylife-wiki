@@ -30,4 +30,4 @@ Garbage is a skill that can be leveled by you being a Garbage Worker! Below is y
 * [x] Reaching Level 90-99 will change your Garbage Truck into a Metallic Black Color
 * [x] Reaching Level 100+ will change your Garbage Truck into a Gold Color
 
-<figure><img src="assets/wiki/a14f16c2e89378e1e5e3.png" alt=""><figcaption></figcaption></figure>
+<figure><img src="https://1220491511-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FTjoPqB53oR42XfwTK5MK%2Fuploads%2FJ8Uqk8Ae2JCrCF9ri9Vx%2Fgolden_trashbag.png?alt=media&amp;token=5e7f3a87-e87a-4cf3-aec4-7fa315abe9c0" alt=""><figcaption></figcaption></figure>

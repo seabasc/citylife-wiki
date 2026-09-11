@@ -1,6 +1,6 @@
 # Robberies
 
- This article covers Robbery activities.
+ This guide covers the Robbery activities available throughout CityLife.
 
 {% content-ref url="/pages/QwN4AL8ohOQ0dnDLck4O" %}
 [Store Robberies](/criminal-guide/criminal-guide/robberies/store-robberies.md)
@@ -14,7 +14,7 @@
 [Bank Truck Robberies](/criminal-guide/criminal-guide/robberies/bank-truck-robberies.md)
 {% endcontent-ref %}
 
-> **Note:** See the linked Thieving article for unlock details
+> **Note:** See the linked Thieving article for complete unlock details
 
 {% content-ref url="/pages/mhGFVRjMEDuiLlThUANx" %}
 [Thieving](/skill-guide/skill-guide/thieving.md)

@@ -1,6 +1,6 @@
 # Whitelisted Gangs
 
- This article describes the available unlocks you obtain when your gang is officially Whitelisted!!
+ This page describes the available unlocks you obtain when your gang is officially Whitelisted!!
 
 #### Official Territory
 

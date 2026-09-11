@@ -15,4 +15,4 @@ Thieving is a skill that can be leveled by you robbing houses! Below is your Thi
 * [x] Reaching Level 45 Unlocks Tier 2 Luxury Interiors
 * [x] Reaching Level 65 Unlocks Tier 3 Luxury Interiors
 
-<figure><img src="assets/wiki/e841eb37759ec2d28466.png" alt=""><figcaption></figcaption></figure>
+<figure><img src="https://1220491511-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FTjoPqB53oR42XfwTK5MK%2Fuploads%2FGZYtUD6wOr3gcntCaEY2%2Fgolden_gloves.png?alt=media&amp;token=04497b8f-da25-4c8b-9920-a8bbf8af8820" alt=""><figcaption></figcaption></figure>

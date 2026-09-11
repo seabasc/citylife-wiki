@@ -1,6 +1,6 @@
 # Drug Manufacturing
 
-This article covers Drug Activities.
+This guide covers the Drug Activities available throughout CityLife.
 
 {% content-ref url="/pages/wdEoemSl4EhcWk5pbYeg" %}
 [Growing and Selling](/criminal-guide/criminal-guide/drug-manufacturing/growing-and-selling.md)
@@ -26,7 +26,7 @@ This article covers Drug Activities.
 [Oxy Runs](/criminal-guide/criminal-guide/drug-manufacturing/oxy-runs.md)
 {% endcontent-ref %}
 
-> **Note:** See the linked Drug Sales article for unlock details
+> **Note:** See the linked Drug Sales article for complete unlock details
 
 {% content-ref url="/pages/npm6syxiZFjUZ6L8COxT" %}
 [Drug Sales](/skill-guide/skill-guide/drug-sales.md)

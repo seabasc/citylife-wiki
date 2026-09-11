@@ -1,6 +1,6 @@
 # Petty Crime
 
- This article covers Petty Crime activities.
+ This guide covers the Petty Crime activities available throughout CityLife.
 
 {% content-ref url="/pages/f91LsBMH8f04Uccmxnuv" %}
 [Parking Meters](/criminal-guide/criminal-guide/petty-crime/parking-meters.md)
@@ -18,7 +18,7 @@
 [House Packages](/criminal-guide/criminal-guide/petty-crime/house-packages.md)
 {% endcontent-ref %}
 
-> **Note:** See the linked Thieving article for unlock details
+> **Note:** See the linked Thieving article for complete unlock details
 
 {% content-ref url="/pages/mhGFVRjMEDuiLlThUANx" %}
 [Thieving](/skill-guide/skill-guide/thieving.md)

@@ -20,4 +20,4 @@ Dumpster Diving is a passive skill that can be leveled by Searching through Tras
 * [x] Reaching Level 75 Increases existing reward chances from all sources
 * [x] Reaching Level 100 unlocks new rewards for scrapping, and increases existing reward chances from all sources
 
-<figure><img src="assets/wiki/fa442bb7c2c54b2694a1.png" alt=""><figcaption></figcaption></figure>
+<figure><img src="https://1220491511-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FTjoPqB53oR42XfwTK5MK%2Fuploads%2F6AHLK1NgXza7hhZ4ZHbx%2Fgolden_bottle.png?alt=media&amp;token=f7a23bf8-c0ea-49b3-a0df-d63ca25b11ea" alt=""><figcaption></figcaption></figure>

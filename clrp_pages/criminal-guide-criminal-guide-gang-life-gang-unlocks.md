@@ -1,10 +1,10 @@
 # Gang Unlocks
 
-This article describes the available unlocks you can obtain as you level your Gang!
+This page describes the available unlocks you can obtain as you level your Gang!
 
 ## Earning XP as a Gang
 
-Your gang earns XP through various criminal activities across the city.. XP is awarded for completing heists, robberies, boosting vehicles, and other illegal operations. Higher tier activities reward more XP for example, a Pacific Standard bank job grants significantly more than an ATM robbery. Each gang member receives the full XP amount (not split), but there's a 1,000 XP cap per player per restart to prevent power leveling. Notably, selling drugs from your own grow operation does not grant XP; however, selling another gang's product will award XP to the gang who grew it. Complete eligible activities to progress through the levels and unlock warehouses, upgrades, and eventually the ability to raid rival gang operations at level 25.
+Your gang earns XP through various criminal activities across the city.. XP is awarded for completing heists, robberies, boosting vehicles, and other illegal operations. Higher tier activities reward more XP for example, a Pacific Standard bank job grants significantly more than an ATM robbery. Each gang member receives the full XP amount (not split), but there's a 1,000 XP cap per player per restart to prevent power leveling. Notably, selling drugs from your own grow operation does not grant XP; however, selling another gang's product will award XP to the gang who grew it. Continue completing eligible activities with your crew to progress through the levels and unlock warehouses, upgrades, and eventually the ability to raid rival gang operations at level 25.
 
 ## Gang Unlocks
 

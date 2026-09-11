@@ -6,7 +6,7 @@ Starting a Gang can be overwhelming, luckily, we curated some information to hel
 
 Starting a gang in CityLife is not a decision to be taken lightly. Building a reputation on the streets takes time, dedication, and the right people by your side. Before jumping in, consider the following:
 
-* Establishing your gang takes time: You won't become a powerhouse overnight. Expect progression to require sustained activity before major features unlock.
+* Establishing your gang takes time: You won't become a powerhouse overnight. Expect progression to require several weeks of activity, relationship building, and increased influence before major features unlock.
 * Choose your members wisely: Every member you recruit reflects on your gang. Bring in people you trust who are committed to the long-term vision, not just anyone looking for quick action.
 * Quality over quantity: A tight knit crew of 6 reliable members will outperform 20 randoms who don't communicate or work together.
 * Roleplay properly: Gang roleplay should enhance the server experience for everyone. Follow all server rules, avoid RDM & VDM, and create meaningful stories and rivalries.

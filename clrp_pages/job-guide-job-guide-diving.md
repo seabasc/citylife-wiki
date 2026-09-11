@@ -6,7 +6,7 @@
 
 ### To start Diving, head over to the Diving blip on your GPS!
 
-<figure><img src="assets/wiki/c834497d3a592cabc1c1.png" alt=""><figcaption><p>POSTAL: 8212</p></figcaption></figure>
+<figure><img src="https://1220491511-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FTjoPqB53oR42XfwTK5MK%2Fuploads%2FHdulj104gBHeSqLrCYOJ%2Fscuba.png?alt=media&amp;token=4cc5cde5-2b80-41e7-a6ef-ca7be60c5afd" alt=""><figcaption><p>POSTAL: 8212</p></figcaption></figure>
 
 1. **Meet the boss:** Make your way to 8212 and engage with Boss Finley using your third eye.
 2. **Shop for Equipment:** Open the Scuba Shop through Finley and purchase the essential gear you'll need, including diving refills and diving equipment!
@@ -22,7 +22,7 @@
 12. **Sell Corals:** Any corals you've gathered can be sold back to Finley for a tidy profit.
 13. **Need Help?:** If you require more guidance, feel free to have a chat with Finley and select "activity instructions."
 
-> **Note:** See the linked Diving article for unlock details!
+> **Note:** See the linked Diving article for complete unlock details!
 
 {% content-ref url="/pages/q7TYRoZGR30nQzhXZYD1" %}
 [Diving](/skill-guide/skill-guide/foraging/diving.md)

@@ -21,4 +21,4 @@ Trucking is a skill that can be leveled by Trucking! Below is your Trucking Skil
 * [x] Reaching Level 75 Boosts the chance to receive Trucking Reward Boxes
 * [x] Reaching Level 100 Boosts the chance to receive Trucking Reward Boxes
 
-<figure><img src="assets/wiki/f01d3d0bd7fca0f7770c.png" alt=""><figcaption></figcaption></figure>
+<figure><img src="https://1220491511-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FTjoPqB53oR42XfwTK5MK%2Fuploads%2FwGKmIPkuNq4rrvRpJxmS%2Fgolden_parcel.png?alt=media&amp;token=51061b4b-2ed8-4322-878b-f219aadb0110" alt=""><figcaption></figcaption></figure>

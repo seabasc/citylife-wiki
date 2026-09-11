@@ -1,6 +1,6 @@
 # Vehicle Crime
 
- This article covers Vehicular related crime activities.
+ This guide covers the Vehicular related crime activities available throughout CityLife.
 
 {% content-ref url="/pages/pRBlXp4vRPaSxas0iOqJ" %}
 [Chop Shop](/skill-guide/skill-guide/chop-shop.md)
@@ -14,7 +14,7 @@
 [Bank Truck Robberies](/criminal-guide/criminal-guide/robberies/bank-truck-robberies.md)
 {% endcontent-ref %}
 
-> **Note:** See the linked Thieving article for unlock details
+> **Note:** See the linked Thieving article for complete unlock details
 
 {% content-ref url="/pages/mhGFVRjMEDuiLlThUANx" %}
 [Thieving](/skill-guide/skill-guide/thieving.md)

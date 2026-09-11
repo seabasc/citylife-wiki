@@ -18,4 +18,4 @@ Diving is a skill that can be leveled by you guessed it, Diving! Below is your D
 * [x] Reaching Level 50 Increases your chance to find underwater Containers, Treasure Chests, and Ruins by 4%
 * [x] Reaching Level 75 Increases your chance to find underwater Containers, Treasure Chests, and Ruins by 6%
 
-<figure><img src="assets/wiki/8c8b6502eab6d2242fbc.png" alt=""><figcaption></figcaption></figure>
+<figure><img src="https://1220491511-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FTjoPqB53oR42XfwTK5MK%2Fuploads%2Fg7luOvpckzsdyoxkjgpa%2Fgolden_coral.png?alt=media&amp;token=cb4584da-2ae6-4022-92af-e89c4a009362" alt=""><figcaption></figcaption></figure>

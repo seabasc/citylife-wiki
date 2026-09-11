@@ -10,11 +10,11 @@ const MAP = (() => {
     window._currentMap = map;
 
     // Standard tile layers
-    customLayers.roadmap = L.imageOverlay("map/GTAV-HD-MAP-roadmap.jpg", [[30.5, -119.2], [31.6, -117.1]]).addTo(map);
+    customLayers.roadmap = L.imageOverlay("https://www.bragitoff.com/wp-content/uploads/2015/11/GTAV-HD-MAP-roadmap.jpg", [[30.5, -119.2], [31.6, -117.1]]).addTo(map);
 
-    customLayers.satellite = L.imageOverlay("map/GTAV-HD-MAP-satellite.jpg", [[30.5, -119.2], [31.6, -117.1]]);
+    customLayers.satellite = L.imageOverlay("https://www.bragitoff.com/wp-content/uploads/2015/11/GTAV-HD-MAP-satellite.jpg", [[30.5, -119.2], [31.6, -117.1]]);
 
-    customLayers.atlus = L.imageOverlay("map/GTAV_ATLUS_8192x8192.png", [[30.5, -119.2], [31.6, -117.1]]);
+    customLayers.atlus = L.imageOverlay("https://www.bragitoff.com/wp-content/uploads/2015/11/GTAV_ATLUS_8192x8192.png", [[30.5, -119.2], [31.6, -117.1]]);
 
     // Load map pins from localStorage
     loadPins();

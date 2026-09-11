@@ -4,8 +4,7 @@ const ASSETS = [
   './', './index.html', './wiki.html', './css/style.css',
   './js/data.js', './js/search.js', './js/map.js',
   './js/calculators.js', './js/wiki.js', './js/app.js',
-  './community-wiki-data.json',
-  './map/GTAV_ATLUS_8192x8192.png', './map/GTAV-HD-MAP-roadmap.jpg', './map/GTAV-HD-MAP-satellite.jpg'
+  './community-wiki-data.json'
 ];
 
 self.addEventListener('install', e => {

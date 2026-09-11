@@ -35,6 +35,18 @@ const SLUG_TO_CATEGORY = {
   'house-robberies': 'criminal-activities',
   'store-robberies': 'criminal-activities',
   'atm-robberies': 'criminal-activities',
+
+  // — skills-gathering (4) —
+  'collectibles': 'skills-gathering',
+  'gym-life': 'skills-gathering',
+  'skill-trophies': 'skills-gathering',
+  'treasure-maps': 'skills-gathering',
+
+  // — economy-properties (4) —
+  'mosleys-used-car-dealership': 'economy-properties',
+  'motels': 'economy-properties',
+  'pawnshop-rings': 'economy-properties',
+  'storage-units': 'economy-properties',
 };
 
 /* ── Resolvers (checked in priority order) ────────────────────────────── */
@@ -49,16 +61,11 @@ function resolveCategory(pageUrl) {
   // — explicit path patterns (checked top-down, first match wins) —
   if (p === '/welcome.md')                           return 'getting-started';
   if (/^\/getting-started\//.test(p))              return 'getting-started';
-  if (/^\/criminal-guide\/criminal-guide\/gang-life/.test(p)) return 'getting-started';
   if (/^\/useful-information\//.test(p))           return 'useful-information';
   if (/^\/criminal-guide\//.test(p))               return 'criminal-activities';
   if (/^\/job-guide\//.test(p))                    return 'jobs-careers';
   if (/^\/skill-guide\/skill-guide\/drug-sales/.test(p)) return 'criminal-activities';
   if (/^\/skill-guide\//.test(p))                  return 'skills-gathering';
-
-  // — economy-properties fallback (must be last to avoid matching sub-paths) —
-  const ecoSlugs = ['collectibles', 'gym-life', 'motels', 'pawnshop-rings', 'refueling-vehicles', 'skill-trophies', 'storage-units', 'treasure-maps'];
-  if (ecoSlugs.includes(slug)) return 'economy-properties';
 
   return null; // unreachable for well-formed wiki data
 }

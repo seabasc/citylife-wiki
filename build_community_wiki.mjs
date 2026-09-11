@@ -35,19 +35,21 @@ function resolveCategory(pageUrl) {
   const jobsSlugs = ['crypto-mining', 'maintenance-and-repairs', 'upgrading-your-rig'];
   if (jobsSlugs.includes(slug)) return 'jobs-careers';
 
+  // — skills-gathering (checked before broad useful-information paths) —
+  const skillSlugs = ['collectibles', 'gym-life', 'skill-trophies', 'treasure-maps'];
+  if (skillSlugs.includes(slug)) return 'skills-gathering';
+
+  // — economy-properties (checked before broad useful-information paths) —
+  const ecoSlugs = ['mosleys-used-car-dealership', 'motels', 'pawnshop-rings', 'storage-units'];
+  if (ecoSlugs.includes(slug)) return 'economy-properties';
+
   // — path-based categorization (checked top-down, first match wins) —
   if (/^\/getting-started\//.test(p))                  return 'getting-started';
-  if (/^\/criminal-guide\/criminal-guide\/gang-life/.test(p)) return 'getting-started';
   if (/^\/useful-information\//.test(p))               return 'useful-information';
   if (/^\/criminal-guide\//.test(p))                   return 'criminal-activities';
   if (/^\/job-guide\//.test(p))                        return 'jobs-careers';
   if (/^\/skill-guide\/skill-guide\/drug-sales/.test(p)) return 'criminal-activities';
   if (/^\/skill-guide\//.test(p))                      return 'skills-gathering';
-
-  // — economy-properties fallback —
-  const ecoSlugs = ['collectibles', 'gym-life', 'motels', 'pawnshop-rings',
-    'refueling-vehicles', 'skill-trophies', 'storage-units', 'treasure-maps'];
-  if (ecoSlugs.includes(slug)) return 'economy-properties';
 
   // — welcome landing page → getting-started —
   if (slug === 'welcome' || slug === 'welcome-page') return 'getting-started';

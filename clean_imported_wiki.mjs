@@ -21,8 +21,10 @@ function cleanLink(label, destination) {
   return `[${label}](${destination})`;
 }
 
-function cleanContent(content) {
-  const withoutBoilerplate = content.replace(boilerplate, '');
+function cleanContent(content, pageUrl) {
+  const isWelcomePage = new URL(pageUrl).pathname === '/welcome.md';
+  const withoutWelcomePromotion = isWelcomePage ? content.replace(/<figure>[\s\S]*?<\/figure>\s*/gi, '') : content;
+  const withoutBoilerplate = withoutWelcomePromotion.replace(boilerplate, '');
   const withoutMissingReferences = withoutBoilerplate.replace(/\{% content-ref[^%]*%\}\n?\[([^\]]+)\]\((\/[^)\s]+\.md)\)\n?\{% endcontent-ref %\}\n?/g, (match, label, destination) => knownPaths.has(new URL(destination, 'https://wiki.cityliferp.net').pathname) ? match : '');
   const paragraphs = withoutMissingReferences.split(/\n{2,}/).filter(paragraph => !promotionalTerms.test(paragraph));
   return paragraphs.join('\n\n')
@@ -37,7 +39,7 @@ const removedPages = imported.pages.filter(page => /\/support-citylife\//i.test(
 const retainedPages = imported.pages.filter(page => !/\/support-citylife\//i.test(page.url));
 const knownPaths = new Set(retainedPages.map(page => new URL(page.url).pathname));
 imported.pages = retainedPages
-  .map(page => ({ ...page, content: cleanContent(page.content) }));
+  .map(page => ({ ...page, content: cleanContent(page.content, page.url) }));
 imported.totalPages = imported.pages.length;
 
 fs.writeFileSync(importFile, `${JSON.stringify(imported, null, 2)}\n`, 'utf8');

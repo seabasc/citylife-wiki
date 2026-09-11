@@ -1,10 +1,11 @@
 // CityLife Santos Wiki — Service Worker (PWA offline support)
-const CACHE_NAME = 'cls-wiki-v1';
+const CACHE_NAME = 'cls-wiki-v2';
 const ASSETS = [
   './', './index.html', './wiki.html', './css/style.css',
   './js/data.js', './js/search.js', './js/map.js',
   './js/calculators.js', './js/wiki.js', './js/app.js',
-  './community-wiki-data.json'
+  './community-wiki-data.json', './assets/manifest.json',
+  './assets/icons/brand-logo.png', './assets/icons/icon-192.png', './assets/icons/icon-512.png'
 ];
 
 self.addEventListener('install', e => {

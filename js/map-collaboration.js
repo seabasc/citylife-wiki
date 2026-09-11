@@ -40,6 +40,7 @@
     let dirty = false;
     let status = enabled ? 'Sign in' : 'Local map';
     let errorMessage = '';
+    let accessResolved = !enabled;
 
     const button = document.createElement('button');
     button.className = 'collab-button';
@@ -54,12 +55,13 @@
     dialog.innerHTML = '<div class="collab-dialog-body"></div>';
     document.body.append(dialog);
 
-    const gate = document.createElement('section');
-    gate.className = 'collab-gate';
-    gate.id = 'collabGate';
-    gate.setAttribute('aria-label', 'Private wiki access');
-    gate.innerHTML = '<div class="collab-gate-card"><p>Checking access...</p></div>';
-    document.body.append(gate);
+    const gate = document.getElementById('collabGate') || document.createElement('section');
+    if (!gate.id) {
+      gate.className = 'collab-gate';
+      gate.id = 'collabGate';
+      gate.setAttribute('aria-label', 'Private wiki access');
+      document.body.append(gate);
+    }
 
     const canEdit = () => Boolean(membership && ['owner', 'editor'].includes(membership.role));
     const hasLegacy = () => Boolean(localStorage.getItem(LEGACY_KEY));
@@ -73,7 +75,7 @@
       document.body.classList.toggle('collab-locked', enabled && !canEdit());
       gate.hidden = !enabled || Boolean(membership);
       document.body.classList.toggle('collab-authorized', !enabled || Boolean(membership));
-      if (!gate.hidden) renderGate();
+      if (!gate.hidden) accessResolved ? renderGate() : renderLoadingGate();
       if (dialog.open) renderDialog();
       options.onStateChange?.({ enabled, session, profile, membership, workspace, status, error });
     }
@@ -228,12 +230,19 @@
 
     function renderGate() {
       const card = gate.querySelector('.collab-gate-card');
+      gate.setAttribute('aria-label', 'Private wiki access');
+      card.className = 'collab-gate-card';
       if (!session) {
-        card.innerHTML = `<div class="collab-gate-brand"><span>CL</span><div><small>Private community wiki</small><h1>City Life / Santos Cartel</h1></div></div><p class="collab-gate-intro">Sign in to access the wiki and shared map.</p><form id="collabPasswordSignIn"><label>Username<input name="username" autocomplete="username" minlength="2" maxlength="32" required></label><label>Password<input name="password" type="password" autocomplete="current-password" minlength="8" required></label><button type="submit">Sign in</button></form><div class="collab-divider"><span>New member</span></div><form id="collabSignUp"><label>Username<input name="username" autocomplete="username" minlength="2" maxlength="32" required></label><label>Password<input name="password" type="password" autocomplete="new-password" minlength="8" required></label><label>Site key<input name="code" autocomplete="off" required></label><button type="submit">Create account</button></form><details class="collab-owner-setup"><summary>First-time owner setup</summary><form id="collabOwnerSignUp"><label>Owner username<input name="username" autocomplete="username" minlength="2" maxlength="32" required></label><label>Owner password<input name="password" type="password" autocomplete="new-password" minlength="8" required></label><button type="submit">Create owner account</button></form></details>${errorMessage ? `<p class="collab-error">${escapeHtml(errorMessage)}</p>` : ''}`;
+        card.innerHTML = `<div class="collab-gate-brand"><img class="collab-gate-logo" src="assets/icons/brand-logo.png" alt=""><div><small>Private community wiki</small><h1>City Life / Santos Cartel</h1></div></div><p class="collab-gate-intro">Sign in to access the wiki and shared map.</p><form id="collabPasswordSignIn"><label>Username<input name="username" autocomplete="username" minlength="2" maxlength="32" required></label><label>Password<input name="password" type="password" autocomplete="current-password" minlength="8" required></label><button type="submit">Sign in</button></form><div class="collab-divider"><span>New member</span></div><form id="collabSignUp"><label>Username<input name="username" autocomplete="username" minlength="2" maxlength="32" required></label><label>Password<input name="password" type="password" autocomplete="new-password" minlength="8" required></label><label>Site key<input name="code" autocomplete="off" required></label><button type="submit">Create account</button></form><details class="collab-owner-setup"><summary>First-time owner setup</summary><form id="collabOwnerSignUp"><label>Owner username<input name="username" autocomplete="username" minlength="2" maxlength="32" required></label><label>Owner password<input name="password" type="password" autocomplete="new-password" minlength="8" required></label><button type="submit">Create owner account</button></form></details>${errorMessage ? `<p class="collab-error">${escapeHtml(errorMessage)}</p>` : ''}`;
         return;
       }
       const suggestedName = profile?.username || session.user.user_metadata?.username || '';
-      card.innerHTML = `<div class="collab-gate-brand"><span>CL</span><div><small>Account created</small><h1>Join the private wiki</h1></div></div><p class="collab-gate-intro">Enter the site key supplied by the owner.</p><form id="collabJoin"><label>Username<input name="username" minlength="2" maxlength="32" value="${escapeHtml(suggestedName)}" required></label><label>Site key<input name="code" autocomplete="off" required></label><button type="submit">Join wiki</button></form><details class="collab-owner-setup"><summary>First-time owner setup</summary><form id="collabCreate"><label>Username<input name="username" minlength="2" maxlength="32" value="${escapeHtml(suggestedName)}" required></label><label>Workspace name<input name="workspace" value="Santos Cartel" minlength="2" maxlength="80" required></label><button type="submit">Create first workspace</button></form></details><button class="collab-text-button" id="collabSignOut" type="button">Sign out</button>${errorMessage ? `<p class="collab-error">${escapeHtml(errorMessage)}</p>` : ''}`;
+      card.innerHTML = `<div class="collab-gate-brand"><img class="collab-gate-logo" src="assets/icons/brand-logo.png" alt=""><div><small>Account created</small><h1>Join the private wiki</h1></div></div><p class="collab-gate-intro">Enter the site key supplied by the owner.</p><form id="collabJoin"><label>Username<input name="username" minlength="2" maxlength="32" value="${escapeHtml(suggestedName)}" required></label><label>Site key<input name="code" autocomplete="off" required></label><button type="submit">Join wiki</button></form><details class="collab-owner-setup"><summary>First-time owner setup</summary><form id="collabCreate"><label>Username<input name="username" minlength="2" maxlength="32" value="${escapeHtml(suggestedName)}" required></label><label>Workspace name<input name="workspace" value="Santos Cartel" minlength="2" maxlength="80" required></label><button type="submit">Create first workspace</button></form></details><button class="collab-text-button" id="collabSignOut" type="button">Sign out</button>${errorMessage ? `<p class="collab-error">${escapeHtml(errorMessage)}</p>` : ''}`;
+    }
+
+    function renderLoadingGate() {
+      gate.setAttribute('aria-label', 'Checking private wiki access');
+      gate.innerHTML = '<div class="collab-gate-card collab-loading-card" aria-live="polite"><img class="collab-loading-logo" src="assets/icons/brand-logo.png" alt="Santos Cartel Wiki"><span class="collab-loader" aria-hidden="true"></span><strong>Checking access</strong><p>Restoring your private wiki session...</p></div>';
     }
 
     async function submitAccessForm(event) {
@@ -311,6 +320,7 @@
       setStatus(status);
       if (!enabled) return;
       if (!window.supabase?.createClient) {
+        accessResolved = true;
         setStatus('Sync unavailable', 'The Supabase browser library did not load.');
         return;
       }
@@ -319,6 +329,7 @@
       client = window.supabase.createClient(config.url, config.anonKey, { auth:{ persistSession:true, detectSessionInUrl:true } });
       client.auth.onAuthStateChange((_event, nextSession) => setTimeout(() => handleSession(nextSession), 0));
       const result = await client.auth.getSession();
+      accessResolved = true;
       if (result.error) setStatus('Sign-in error', readableError(result.error));
       else await handleSession(result.data.session);
     }

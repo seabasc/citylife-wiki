@@ -218,17 +218,43 @@
     .map-filter, .map-layer, .map-add, .poi-open { border:1px solid #394b61; border-radius:4px; padding:6px 8px; color:var(--muted); background:#101923; font-size:11px; transition:background .16s ease, border-color .16s ease, color .16s ease, transform .16s ease; }
     .map-filter:hover, .map-layer:hover, .poi-open:hover { color:var(--text); border-color:#62809e; background:#1a2735; }
     .map-filter.active, .map-layer.active { color:#fff; background:var(--accent); border-color:var(--accent); box-shadow:0 3px 10px #d15b6530; }
+    .map-filter { display:inline-flex; align-items:center; gap:5px; }
+    .map-filter-dot { width:8px; height:8px; border-radius:50%; background:var(--dot-color, var(--muted)); flex-shrink:0; }
     .map-add { width:100%; margin-bottom:16px; color:#1b180d; border-color:var(--accent-2); background:linear-gradient(135deg, #f5d17e, #dfaa43); font-weight:700; box-shadow:0 5px 16px #e4b65320; }
     .map-add:hover { background:linear-gradient(135deg, #ffe19c, #efbc55); transform:translateY(-1px); }
     .poi-list { display:grid; gap:5px; }
-    .poi-item { width:100%; border:1px solid transparent; border-left:2px solid var(--poi-color, var(--accent)); border-radius:4px; background:transparent; padding:10px 9px; color:var(--text); text-align:left; transition:background .16s ease, border-color .16s ease; }
+    .poi-item { width:100%; border:1px solid transparent; border-left:2px solid var(--poi-color, var(--accent)); border-radius:4px; background:transparent; padding:10px 9px; color:var(--text); text-align:left; transition:background .16s ease, border-color .16s ease; display:flex; align-items:center; gap:8px; }
     .poi-item:hover, .poi-item.active { background:#1c2a39; border-color:#405873; border-left-color:var(--poi-color, var(--accent)); }
     .poi-item strong, .poi-item small { display:block; }
     .poi-item strong { font-size:13px; font-weight:600; }
     .poi-item small { color:var(--muted); font-size:11px; margin-top:2px; }
+    .poi-item-icon { width:20px; height:20px; flex-shrink:0; border-radius:3px; }
+    .poi-item-body { min-width:0; }
+    .icon-picker-row { display:flex; align-items:center; gap:8px; }
+    .icon-preview { width:32px; height:32px; border-radius:5px; background:#0d141d; border:1px solid var(--line); flex-shrink:0; }
+    .icon-picker-panel { margin-top:8px; padding:9px; border:1px solid var(--line); border-radius:5px; background:#0d141d; }
+    .icon-picker-panel.hidden { display:none; }
+    .icon-picker-tabs { display:flex; gap:6px; margin-bottom:8px; }
+    .icon-tab { border:1px solid #394b61; border-radius:4px; padding:6px 8px; color:var(--muted); background:#101923; font-size:11px; transition:background .16s ease, border-color .16s ease, color .16s ease; }
+    .icon-tab:hover { color:var(--text); border-color:#62809e; }
+    .icon-tab.active { color:#fff; background:var(--accent); border-color:var(--accent); }
+    .icon-picker-grid { display:grid; grid-template-columns:repeat(auto-fill, 26px); justify-content:space-between; gap:3px; max-height:240px; overflow-y:auto; overflow-x:hidden; }
+    .icon-choice { width:26px; height:26px; padding:0; border:1px solid transparent; border-radius:4px; background-color:#101923; cursor:pointer; }
+    .icon-choice:hover { border-color:#62809e; }
+    .icon-choice.selected { border-color:var(--accent-2); box-shadow:0 0 0 2px #dfaa4360; }
+    .icon-first-step strong { font-size:13px; }
+    .icon-first-hint { margin:0; color:var(--muted); font-size:11px; }
+    .icon-first-step .icon-picker-grid { display:grid; grid-template-columns:repeat(auto-fill, 26px); justify-content:space-between; gap:3px; max-height:280px; overflow-y:auto; overflow-x:hidden; }
+    .icon-size-row { display:flex; align-items:center; gap:8px; margin-top:8px; }
+    .icon-size-row span { color:var(--muted); font-size:11px; white-space:nowrap; }
+    .icon-size-row input[type="range"] { flex:1; width:auto; margin:0; accent-color:var(--accent); }
     .map-stage { min-width:0; display:flex; flex-direction:column; overflow:visible; background:#0fa8d2; }
     .map-toolbar { position:relative; z-index:6; display:grid; grid-template-columns:minmax(0, 1fr); grid-template-rows:36px 38px; gap:7px; height:100px; padding:9px 13px; border-bottom:1px solid var(--line); background:linear-gradient(180deg, #182431, #111a25); user-select:none; }
     .map-primary-tools, .map-action-lane { display:flex; align-items:center; gap:8px; min-width:0; }
+    .map-primary-tools > *, .map-action-lane > * { flex-shrink:0; }
+    .map-more-menu { position:absolute; z-index:15; right:12px; top:98px; display:flex; flex-direction:column; gap:4px; min-width:130px; padding:6px; border:1px solid #3d526a; border-radius:6px; background:#111d29f5; box-shadow:0 16px 40px #000b; }
+    .map-more-menu[hidden] { display:none; }
+    .map-more-menu button { width:100%; text-align:left; }
     .map-action-lane { grid-column:1 / -1; height:38px; padding-top:7px; border-top:1px solid #26374a; overflow:visible; }
     .map-action-lane .map-layer { visibility:hidden; }
     .map-action-lane .map-layer.is-visible { visibility:visible; }
@@ -260,11 +286,17 @@
     .drawing-handle.rotate { fill:#efc263; cursor:grab; }
     .drawing-handle-line { stroke:#d9fff8; stroke-width:.3; stroke-dasharray:1 1; vector-effect:non-scaling-stroke; pointer-events:none; }
     .map-canvas.drawing { cursor:crosshair; }
-    .map-marker { position:absolute; width:22px; height:22px; border:2px solid #f5fbff; border-radius:50%; background:var(--poi-color, var(--accent)); box-shadow:0 2px 8px #000a; transition:opacity .18s ease; touch-action:none; }
+    .map-marker { position:absolute; width:22px; height:22px; border:2px solid #f5fbff; border-radius:50%; background:var(--poi-color, var(--accent)); box-shadow:0 2px 8px #000a; transition:opacity .18s ease, transform .12s ease; transform:translate(-50%,-50%) scale(var(--marker-zoom-scale, 1)); touch-action:none; }
     .map-marker > circle { pointer-events:all !important; touch-action:none; cursor:pointer; }
     .map-marker.detail-hidden { opacity:0; pointer-events:none; }
     .map-marker::after { content:''; position:absolute; inset:5px; border-radius:50%; background:#0d1720; }
+    .map-marker.has-icon { background-color:transparent; border:none; }
+    .map-marker.has-icon::after { content:none; }
     .map-marker:hover, .map-marker.active { outline:4px solid color-mix(in srgb, var(--poi-color, var(--accent)) 35%, transparent); z-index:2; }
+    .map-marker:hover { transform:translate(-50%,-50%) scale(calc(var(--marker-zoom-scale, 1) * 1.22)); z-index:4; }
+    .map-poi-preview { position:absolute; width:22px; height:22px; border:2px dashed #f5fbff; border-radius:50%; background:var(--poi-color, var(--accent)); box-shadow:0 2px 10px #000a; transform:translate(-50%,-50%) scale(var(--marker-zoom-scale, 1)); pointer-events:none; z-index:5; animation:poiPreviewPulse 1.6s ease-in-out infinite; }
+    .map-poi-preview.has-icon { background-color:transparent; border:none; }
+    @keyframes poiPreviewPulse { 0%, 100% { opacity:.72; } 50% { opacity:1; } }
     .map-detail { position:absolute; left:16px; bottom:16px; width:min(335px, calc(100% - 32px)); padding:17px; background:#101a26f2; backdrop-filter:blur(12px); border:1px solid #49627f; border-radius:7px; box-shadow:0 18px 50px #000a; }
     .map-detail[hidden] { display:none; }
     .delete-confirm { position:absolute; z-index:30; left:50%; top:50%; width:min(330px, calc(100% - 32px)); padding:20px; transform:translate(-50%, -50%); background:#141d29f5; border:1px solid #874c55; border-radius:7px; box-shadow:0 22px 60px #000b; }
@@ -316,10 +348,40 @@
     .map-library { display:flex; align-items:center; gap:6px; margin-left:auto; }
     .map-library button { border:1px solid #3d526a; border-radius:4px; background:#101a25; color:#c3d3df; padding:6px 8px; font-size:11px; }
     .map-library button:hover { border-color:var(--accent); color:var(--accent); }
-    .map-layer-menu { position:absolute; z-index:12; left:12px; top:98px; width:220px; padding:12px; border:1px solid #466078; border-radius:6px; background:#111d29f5; box-shadow:0 16px 45px #000b; }
+    .map-library button:disabled { opacity:.4; cursor:not-allowed; }
+    .map-library button:disabled:hover { border-color:#3d526a; color:#c3d3df; }
+    #shortcutsBtn, #moreMenuBtn { width:27px; padding:6px 0; font-weight:700; }
+    .map-shortcuts-panel { position:absolute; z-index:12; right:12px; top:98px; width:250px; padding:14px; border:1px solid #466078; border-radius:6px; background:#111d29f5; box-shadow:0 16px 45px #000b; }
+    .map-shortcuts-panel[hidden] { display:none; }
+    .map-shortcuts-panel strong { display:block; margin-bottom:10px; color:var(--muted); font-size:10px; letter-spacing:.08em; text-transform:uppercase; }
+    .map-shortcuts-panel dl { display:grid; grid-template-columns:auto 1fr; gap:8px 12px; margin:0; }
+    .map-shortcuts-panel dt { justify-self:start; padding:3px 7px; border:1px solid #3d526a; border-radius:4px; background:#0a1119; color:#d5e0ea; font:11px var(--sans); white-space:nowrap; }
+    .map-shortcuts-panel dd { margin:0; align-self:center; color:#c2cfda; font-size:12px; }
+    .map-cluster { position:absolute; min-width:32px; height:32px; padding:0 7px; border-radius:16px; background:linear-gradient(135deg, var(--accent), var(--accent-2)); border:2px solid #f5fbff; color:#1b1417; font:700 13px var(--sans); display:flex; align-items:center; justify-content:center; box-shadow:0 3px 12px #0007; transform:translate(-50%,-50%) scale(var(--marker-zoom-scale,1)); transition:transform .12s ease; cursor:pointer; z-index:3; }
+    .map-cluster:hover { transform:translate(-50%,-50%) scale(calc(var(--marker-zoom-scale,1) * 1.15)); }
+    .map-layer-menu { position:absolute; z-index:12; left:12px; top:98px; width:240px; padding:12px; border:1px solid #466078; border-radius:6px; background:#111d29f5; box-shadow:0 16px 45px #000b; }
     .map-layer-menu[hidden] { display:none; }
     .map-layer-menu strong { display:block; margin-bottom:8px; color:var(--muted); font-size:10px; letter-spacing:.08em; text-transform:uppercase; }
     .map-layer-menu label { display:flex; align-items:center; gap:8px; padding:5px 0; color:#d5e0ea; font-size:12px; }
+    .map-layer-menu label em { margin-left:auto; color:var(--accent-2); font-style:normal; font-size:10px; }
+    .map-layer-menu-hint { margin:0 0 10px; color:var(--muted); font-size:11px; line-height:1.5; }
+    .layer-select-wrap { display:flex; align-items:center; gap:6px; padding:5px 9px; border:1px solid #304258; border-radius:5px; background:#0e1620; color:var(--muted); font-size:11px; }
+    .layer-select { padding:3px 5px; border:1px solid #40546a; border-radius:4px; background:#0a1119; color:var(--text); font:11px var(--sans); text-transform:capitalize; }
+    .map-snapshots-panel { position:absolute; z-index:12; right:12px; top:98px; width:270px; max-height:340px; overflow-y:auto; padding:12px; border:1px solid #466078; border-radius:6px; background:#111d29f5; box-shadow:0 16px 45px #000b; }
+    .map-snapshots-panel[hidden] { display:none; }
+    .map-snapshots-panel strong { display:block; margin-bottom:6px; color:var(--muted); font-size:10px; letter-spacing:.08em; text-transform:uppercase; }
+    .snapshot-save-btn { width:100%; margin-bottom:10px; padding:8px; border:1px solid var(--accent); border-radius:5px; background:#17252f; color:var(--accent); font-size:12px; font-weight:600; }
+    .snapshot-save-btn:hover { background:#1c303c; }
+    .snapshot-list { display:flex; flex-direction:column; gap:6px; }
+    .snapshot-item { display:flex; align-items:center; justify-content:space-between; gap:8px; padding:7px 9px; border:1px solid #2c3d50; border-radius:5px; background:#0e1620; }
+    .snapshot-item-info strong { display:block; font-size:12px; color:var(--text); }
+    .snapshot-item-info small { color:var(--muted); font-size:10px; }
+    .snapshot-item-actions { display:flex; gap:5px; flex-shrink:0; }
+    .snapshot-item-actions button { padding:4px 7px; border:1px solid #3d526a; border-radius:4px; background:#101a25; color:#c3d3df; font-size:10px; }
+    .snapshot-item-actions button:hover { border-color:var(--accent); color:var(--accent); }
+    .snapshot-item-actions .snapshot-delete:hover { border-color:#b85b65; color:#ffb9bd; }
+    .map-toast { position:absolute; z-index:40; left:50%; bottom:20px; transform:translateX(-50%) translateY(14px); padding:9px 18px; border-radius:20px; background:#141d29f2; border:1px solid #3d526a; color:#e8eef4; font:12px var(--sans); opacity:0; pointer-events:none; transition:opacity .25s ease, transform .25s ease; box-shadow:0 10px 30px #000a; }
+    .map-toast.visible { opacity:1; transform:translateX(-50%) translateY(0); }
     .home { position:relative; padding:16px 0 8px; }
     .home::after { content:''; position:absolute; top:6px; right:0; width:32%; height:2px; background:linear-gradient(90deg, transparent, var(--accent-2), transparent); opacity:.7; }
     .home h1 { max-width:720px; font-size:clamp(38px, 4.4vw, 62px); line-height:1.04; margin:33px 0 16px; text-wrap:balance; }
@@ -419,6 +481,100 @@
       const rulesButton = document.getElementById('rulesButton');
       const mapButton = document.getElementById('mapButton');
       const escapeHtml = value => String(value).replace(/[&<>"']/g, char => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' })[char]);
+      // GTA-style blip texture sheets: 16x16 grid of icons per sheet, used for POI map markers
+      const ICON_SHEETS = { 1: { file: 'assets/icons/blips_texturesheet_ng.png', cols: 16, rows: 16 }, 2: { file: 'assets/icons/blips_texturesheet_ng_2.png', cols: 16, rows: 16 } };
+      const iconBgStyle = (sheet, index, size) => {
+        const cfg = ICON_SHEETS[sheet];
+        if (!cfg || !Number.isInteger(index)) return '';
+        const col = index % cfg.cols, row = Math.floor(index / cfg.cols);
+        return `background-image:url('${cfg.file}');background-position:-${col * size}px -${row * size}px;background-size:${cfg.cols * size}px ${cfg.rows * size}px;background-repeat:no-repeat;`;
+      };
+      const iconPickerFieldHtml = (prefix, sheet, index, size) => { const iconSize = size || 22; return `<label>Map icon<div class="icon-picker-row">
+          <div class="icon-preview" id="${prefix}IconPreview" style="width:${iconSize}px;height:${iconSize}px;${iconBgStyle(sheet, index, iconSize)}"></div>
+          <button type="button" class="poi-open" data-icon-toggle="${prefix}">Choose icon</button>
+          <button type="button" class="poi-open" data-icon-clear="${prefix}">Clear</button>
+        </div>
+        <input type="hidden" name="iconSheet" id="${prefix}IconSheet" value="${sheet || ''}">
+        <input type="hidden" name="iconIndex" id="${prefix}IconIndex" value="${Number.isInteger(index) ? index : ''}">
+        <div class="icon-size-row">
+          <span>Icon size</span>
+          <input type="range" name="iconSize" id="${prefix}IconSize" min="14" max="48" step="2" value="${iconSize}">
+          <span id="${prefix}IconSizeValue">${iconSize}px</span>
+        </div>
+        <div class="icon-picker-panel hidden" id="${prefix}IconPanel">
+          <div class="icon-picker-tabs">
+            <button type="button" class="icon-tab active" data-icon-sheet-tab="${prefix}" data-sheet="1">Sheet 1</button>
+            <button type="button" class="icon-tab" data-icon-sheet-tab="${prefix}" data-sheet="2">Sheet 2</button>
+          </div>
+          <div class="icon-picker-grid" id="${prefix}IconGrid"></div>
+        </div></label>`; };
+      function wireIconPicker(prefix, initialSheet, initialIndex, onChange) {
+        let sheet = initialSheet || 1;
+        const panel = document.getElementById(`${prefix}IconPanel`);
+        const preview = document.getElementById(`${prefix}IconPreview`);
+        const sheetInput = document.getElementById(`${prefix}IconSheet`);
+        const indexInput = document.getElementById(`${prefix}IconIndex`);
+        const sizeInput = document.getElementById(`${prefix}IconSize`);
+        const sizeValueLabel = document.getElementById(`${prefix}IconSizeValue`);
+        const grid = document.getElementById(`${prefix}IconGrid`);
+        const tabs = [...document.querySelectorAll(`[data-icon-sheet-tab="${prefix}"]`)];
+        if (!panel || !preview || !sheetInput || !indexInput || !grid) return;
+        function updatePreview() {
+          const size = Number(sizeInput.value) || 22;
+          sizeValueLabel.textContent = `${size}px`;
+          const s = Number(sheetInput.value), i = Number(indexInput.value);
+          preview.setAttribute('style', `width:${size}px;height:${size}px;${sheetInput.value !== '' && indexInput.value !== '' ? iconBgStyle(s, i, size) : ''}`);
+          onChange?.({ sheet: sheetInput.value !== '' ? s : null, index: indexInput.value !== '' ? i : null, size });
+        }
+        function renderGrid() {
+          const cfg = ICON_SHEETS[sheet];
+          let html = '';
+          for (let i = 0; i < cfg.cols * cfg.rows; i++) {
+            const selected = Number(sheetInput.value) === sheet && Number(indexInput.value) === i ? ' selected' : '';
+            html += `<button type="button" class="icon-choice${selected}" style="${iconBgStyle(sheet, i, 26)}" data-icon-pick="${i}"></button>`;
+          }
+          grid.innerHTML = html;
+          grid.querySelectorAll('[data-icon-pick]').forEach(btn => btn.addEventListener('click', () => {
+            sheetInput.value = sheet;
+            indexInput.value = btn.dataset.iconPick;
+            updatePreview();
+            renderGrid();
+          }));
+        }
+        document.querySelector(`[data-icon-toggle="${prefix}"]`)?.addEventListener('click', () => {
+          const opening = panel.classList.contains('hidden');
+          panel.classList.toggle('hidden');
+          if (opening) renderGrid();
+        });
+        document.querySelector(`[data-icon-clear="${prefix}"]`)?.addEventListener('click', () => {
+          sheetInput.value = ''; indexInput.value = ''; updatePreview(); renderGrid();
+        });
+        sizeInput?.addEventListener('input', updatePreview);
+        tabs.forEach(tab => tab.addEventListener('click', () => {
+          sheet = Number(tab.dataset.sheet);
+          tabs.forEach(t => t.classList.toggle('active', t === tab));
+          renderGrid();
+        }));
+        updatePreview();
+      }
+
+      function setPoiPreview(x, y, type, icon) {
+        let marker = document.getElementById('poiPreviewMarker');
+        const world = document.getElementById('mapWorld');
+        if (!marker) {
+          marker = document.createElement('div');
+          marker.id = 'poiPreviewMarker';
+          world.append(marker);
+        }
+        const hasIcon = icon && Number.isInteger(icon.index) && ICON_SHEETS[icon.sheet];
+        const size = hasIcon ? (icon.size || 22) : 22;
+        marker.className = `map-poi-preview${hasIcon ? ' has-icon' : ''}`;
+        marker.style.cssText = `left:${x}%;top:${y}%;--poi-color:${LOCATION_TYPE_COLORS[type] || LOCATION_TYPE_COLORS.other};--marker-zoom-scale:${1 / state.map.scale};${hasIcon ? `width:${size}px;height:${size}px;${iconBgStyle(icon.sheet, icon.index, size)}` : ''}`;
+      }
+
+      function clearPoiPreview() {
+        document.getElementById('poiPreviewMarker')?.remove();
+      }
       const pageId = page => page.id || page.url || page.title;
       const plainText = value => String(value || '').replace(/<[^>]*>/g, ' ').replace(/[#*_`>{}\[\]]/g, ' ').replace(/\s+/g, ' ').trim();
       const categoryFor = page => state.categories.find(category => category.pages.some(item => pageId(item) === pageId(page)));
@@ -724,6 +880,51 @@
 
       function savedSnapshots() { return JSON.parse(localStorage.getItem('santos-cartel-map-snapshots') || '[]'); }
 
+      function showMapToast(message) {
+        const host = document.getElementById('mapCanvas') || document.body;
+        let toast = document.getElementById('mapToast');
+        if (!toast) { toast = document.createElement('div'); toast.id = 'mapToast'; toast.className = 'map-toast'; host.append(toast); }
+        toast.textContent = message;
+        toast.classList.remove('visible');
+        void toast.offsetWidth;
+        toast.classList.add('visible');
+        clearTimeout(toast._hideTimer);
+        toast._hideTimer = setTimeout(() => toast.classList.remove('visible'), 2600);
+      }
+
+      function renderSnapshotsPanel(panel) {
+        const snapshots = savedSnapshots();
+        panel.innerHTML = `<strong>Map snapshots</strong>
+          <p class="map-layer-menu-hint">Snapshots save a full copy of your drawings &amp; points of interest so you can roll back to them later.</p>
+          <button type="button" class="snapshot-save-btn" id="saveSnapshotBtn">+ Save current map as a snapshot</button>
+          <div class="snapshot-list">${snapshots.length ? snapshots.slice().reverse().map(snap => `<div class="snapshot-item"><div class="snapshot-item-info"><strong>${escapeHtml(snap.name)}</strong><small>${new Date(snap.savedAt).toLocaleString()}</small></div><div class="snapshot-item-actions"><button type="button" data-restore-snapshot="${snap.id}">Restore</button><button type="button" class="snapshot-delete" data-delete-snapshot="${snap.id}">Delete</button></div></div>`).join('') : '<p class="map-empty">No snapshots saved yet.</p>'}</div>`;
+        document.getElementById('saveSnapshotBtn').addEventListener('click', () => {
+          const name = prompt('Snapshot name');
+          if (!name?.trim()) return;
+          const list = savedSnapshots();
+          list.push({ id: `snapshot-${Date.now()}`, name: name.trim(), savedAt: new Date().toISOString(), drawings: savedDrawings(), locations: savedLocations(), layers: { ...state.map.annotationLayers } });
+          localStorage.setItem('santos-cartel-map-snapshots', JSON.stringify(list));
+          renderSnapshotsPanel(panel);
+          showMapToast(`Snapshot "${name.trim()}" saved`);
+        });
+        panel.querySelectorAll('[data-restore-snapshot]').forEach(button => button.addEventListener('click', () => {
+          const snap = savedSnapshots().find(item => item.id === button.dataset.restoreSnapshot);
+          if (!snap || !confirm(`Restore "${snap.name}"? Your current drawings and points of interest will be replaced (you can Undo right after if needed).`)) return;
+          captureMapHistory();
+          saveDrawings(snap.drawings || []);
+          saveLocations(snap.locations || []);
+          if (snap.layers) state.map.annotationLayers = { ...state.map.annotationLayers, ...snap.layers };
+          panel.hidden = true;
+          renderMap();
+          showMapToast(`Restored "${snap.name}"`);
+        }));
+        panel.querySelectorAll('[data-delete-snapshot]').forEach(button => button.addEventListener('click', () => {
+          if (!confirm('Delete this snapshot? This cannot be undone.')) return;
+          localStorage.setItem('santos-cartel-map-snapshots', JSON.stringify(savedSnapshots().filter(item => item.id !== button.dataset.deleteSnapshot)));
+          renderSnapshotsPanel(panel);
+        }));
+      }
+
       function downloadMapPlan() {
         const plan = { version: 1, exportedAt: new Date().toISOString(), drawings: savedDrawings(), locations: savedLocations(), layers: state.map.annotationLayers };
         const link = document.createElement('a');
@@ -801,31 +1002,73 @@
         document.querySelector('.map-stage')?.style.setProperty('background-color', color);
       }
 
+      const LOCATION_TYPE_COLORS = { operation:'#e76f51', resource:'#e9c46a', meeting:'#49c5b6', property:'#6fa8dc', route:'#b58be8', other:'#9baabd' };
+
+      function renderLocationMarker(location, colors, world) {
+        const marker = document.createElement('button');
+        const hasIcon = Number.isInteger(location.iconIndex) && ICON_SHEETS[location.iconSheet];
+        const iconSize = location.iconSize || 22;
+        marker.className = `map-marker${state.selectedLocation === location.id ? ' active' : ''}${hasIcon ? ' has-icon' : ''}`;
+        marker.classList.toggle('detail-hidden', Boolean(location.drawingIds?.length) && state.map.scale > 2.2);
+        marker.type = 'button'; marker.title = location.name; marker.dataset.poiMarker = location.id;
+        marker.style.cssText = `left:${location.map.x}%;top:${location.map.y}%;--poi-color:${colors[location.type] || colors.other};--marker-zoom-scale:${1 / state.map.scale};${hasIcon ? `width:${iconSize}px;height:${iconSize}px;${iconBgStyle(location.iconSheet, location.iconIndex, iconSize)}` : ''}`;
+        world.append(marker);
+      }
+
       function renderMap() {
-        const colors = { operation:'#e76f51', resource:'#e9c46a', meeting:'#49c5b6', property:'#6fa8dc', route:'#b58be8', other:'#9baabd' };
+        const colors = LOCATION_TYPE_COLORS;
         const canvas = document.getElementById('mapCanvas');
         setMapEdgeColor();
         const world = document.getElementById('mapWorld');
         const list = document.getElementById('poiList');
         const query = document.getElementById('mapSearch').value.trim().toLowerCase();
         const locations = allLocations().filter(location => (state.mapFilter === 'all' || location.type === state.mapFilter) && `${location.name} ${location.notes || ''}`.toLowerCase().includes(query));
-        document.getElementById('mapFilters').innerHTML = ['all', ...Object.keys(colors)].map(type => `<button class="map-filter${state.mapFilter === type ? ' active' : ''}" type="button" data-filter="${type}">${type}</button>`).join('');
-        list.innerHTML = locations.length ? locations.map(location => `<button class="poi-item${state.selectedLocation === location.id ? ' active' : ''}" style="--poi-color:${colors[location.type] || colors.other}" data-poi-list="${escapeHtml(location.id)}" type="button"><strong>${escapeHtml(location.name)}</strong><small>${escapeHtml(location.type || 'other')}${location.guidePath ? ' · linked guide' : ''}${location.updatedBy || location.createdBy ? ` · by ${escapeHtml(location.updatedBy || location.createdBy)}` : ''}</small></button>`).join('') : '<p class="map-empty">No locations match this filter.</p>';
-        world.querySelectorAll('.map-marker').forEach(marker => marker.remove());
+        document.getElementById('mapFilters').innerHTML = ['all', ...Object.keys(colors)].map(type => `<button class="map-filter${state.mapFilter === type ? ' active' : ''}" type="button" data-filter="${type}">${type === 'all' ? '' : `<span class="map-filter-dot" style="--dot-color:${colors[type]}"></span>`}${type}</button>`).join('');
+        list.innerHTML = locations.length ? locations.map(location => `<button class="poi-item${state.selectedLocation === location.id ? ' active' : ''}" style="--poi-color:${colors[location.type] || colors.other}" data-poi-list="${escapeHtml(location.id)}" type="button">${Number.isInteger(location.iconIndex) ? `<span class="poi-item-icon" style="${iconBgStyle(location.iconSheet, location.iconIndex, 20)}"></span>` : ''}<span class="poi-item-body"><strong>${escapeHtml(location.name)}</strong><small>${escapeHtml(location.type || 'other')}${location.guidePath ? ' · linked guide' : ''}${location.updatedBy || location.createdBy ? ` · by ${escapeHtml(location.updatedBy || location.createdBy)}` : ''}</small></span></button>`).join('') : '<p class="map-empty">No locations match this filter.</p>';
+        world.querySelectorAll('.map-marker, .map-cluster').forEach(marker => marker.remove());
         const drawings = document.getElementById('mapDrawings');
         drawings.innerHTML = '<path id="drawingPreview" class="map-drawing drawing-preview"></path><rect id="drawingMarquee" class="drawing-marquee" hidden></rect>';
         const rawDrawings = savedDrawings();
         rawDrawings.filter(drawing => state.map.annotationLayers[drawing.layer || 'plans'] !== false).forEach(drawing => appendDrawing(drawings, drawing));
         if (!isMobile() && state.map.selectedDrawings.length === 1) appendSelectionFrame(drawings, rawDrawings.find(drawing => drawing.id === state.map.selectedDrawings[0]));
         if (!isMobile() && state.map.selectedDrawings.length > 1) appendMultiSelectionFrame(drawings, rawDrawings.filter(drawing => state.map.selectedDrawings.includes(drawing.id)));
-        locations.forEach(location => {
-          if (!Number.isFinite(location.map?.x) || !Number.isFinite(location.map?.y)) return;
-          const marker = document.createElement('button');
-          marker.className = `map-marker${state.selectedLocation === location.id ? ' active' : ''}`;
-          marker.classList.toggle('detail-hidden', Boolean(location.drawingIds?.length) && state.map.scale > 2.2);
-          marker.type = 'button'; marker.title = location.name; marker.dataset.poiMarker = location.id;
-          marker.style.cssText = `left:${location.map.x}%;top:${location.map.y}%;--poi-color:${colors[location.type] || colors.other};transform:translate(-50%,-50%) scale(${1 / state.map.scale})`;
-          world.append(marker);
+        const clusterThreshold = 3.5 / state.map.scale;
+        const clusterUsed = new Set();
+        const clusterGroups = [];
+        locations.forEach((location, i) => {
+          if (clusterUsed.has(location.id) || !Number.isFinite(location.map?.x) || !Number.isFinite(location.map?.y)) return;
+          const group = [location];
+          clusterUsed.add(location.id);
+          for (let j = i + 1; j < locations.length; j++) {
+            const other = locations[j];
+            if (clusterUsed.has(other.id) || !Number.isFinite(other.map?.x) || !Number.isFinite(other.map?.y)) continue;
+            if (Math.hypot(other.map.x - location.map.x, other.map.y - location.map.y) <= clusterThreshold) { group.push(other); clusterUsed.add(other.id); }
+          }
+          clusterGroups.push(group);
+        });
+        clusterGroups.forEach(group => {
+          const containsSelected = group.some(location => location.id === state.selectedLocation);
+          if (group.length === 1 || containsSelected) {
+            group.forEach(location => renderLocationMarker(location, colors, world));
+            return;
+          }
+          const cx = group.reduce((sum, l) => sum + l.map.x, 0) / group.length;
+          const cy = group.reduce((sum, l) => sum + l.map.y, 0) / group.length;
+          const cluster = document.createElement('button');
+          cluster.type = 'button';
+          cluster.className = 'map-cluster';
+          cluster.title = `${group.length} locations — click to zoom in`;
+          cluster.textContent = group.length;
+          cluster.style.cssText = `left:${cx}%;top:${cy}%;--marker-zoom-scale:${1 / state.map.scale};`;
+          cluster.addEventListener('click', () => {
+            const canvasBounds = canvas.getBoundingClientRect();
+            const nextScale = Math.min(20, state.map.scale * 2.6);
+            state.map.scale = nextScale;
+            state.map.x = (50 - cx) / 100 * canvasBounds.width * nextScale;
+            state.map.y = (50 - cy) / 100 * canvasBounds.width * nextScale;
+            renderMap();
+          });
+          world.append(cluster);
         });
         document.querySelectorAll('[data-filter]').forEach(button => button.addEventListener('click', () => { state.mapFilter = button.dataset.filter; renderMap(); }));
         document.querySelectorAll('[data-poi-list]').forEach(button => button.addEventListener('click', () => showLocation(button.dataset.poiList, true)));
@@ -838,11 +1081,12 @@
         const selectedGroup = selectedDrawing?.members ? selectedDrawing : null;
         const canFill = state.map.selectedDrawings.length === 1 && (selectedGroup ? selectedGroup.members.some(isClosedDrawing) : isClosedDrawing(selectedDrawing));
         const actions = `${canFill ? `<label class="map-brush is-visible"><input id="fillDrawing" type="checkbox" ${selectedDrawing.fill ? 'checked' : ''}> Fill</label><label class="map-brush is-visible">Opacity<input id="fillOpacity" type="range" min="0.05" max="0.8" step="0.05" value="${selectedDrawing.fillOpacity || 0.25}"></label>` : ''}<button type="button" class="map-layer map-group is-visible" id="groupDrawings" ${state.map.selectedDrawings.length > 1 ? '' : 'disabled'}>Group (${state.map.selectedDrawings.length})</button>${selectedGroup ? '<button type="button" class="map-layer is-visible" id="ungroupDrawings">Ungroup</button>' : ''}${state.map.selectedDrawings.length === 1 ? '<button type="button" class="map-layer is-visible" id="createLocation">Assign location</button>' : ''}${state.map.selectedDrawings.length ? `<button type="button" class="map-layer is-visible" id="deleteDrawings">Delete (${state.map.selectedDrawings.length})</button>` : ''}<button class="map-layer" type="button" disabled>Reserved</button>`;
-        document.getElementById('mapLayers').innerHTML = `<div class="map-primary-tools">${[['atlus', 'Atlas'], ['roadmap', 'Roadmap'], ['satellite', 'Satellite']].map(([layer, label]) => `<button type="button" class="map-layer${layer === state.map.layer ? ' active' : ''}" data-layer="${layer}">${label}</button>`).join('')}<div class="map-tools"><button type="button" class="map-layer${state.map.tool === 'draw' ? ' active' : ''}" data-tool="draw">Draw</button><button type="button" class="map-layer${state.map.tool === 'select' ? ' active' : ''}" data-tool="select">Box select</button><button type="button" class="map-layer${state.map.grid ? ' active' : ''}" id="gridToggle">Grid</button><div class="color-picker"><button class="color-trigger" id="colorTrigger" type="button" style="--brush-color:${state.map.color}" title="Choose drawing color"></button><input class="color-hex" id="colorHex" value="${state.map.color}"></div><label class="map-brush">Line<input id="brushWidth" type="range" min="0.5" max="16" step="0.5" value="${state.map.width}"><strong class="brush-value" id="brushValue">${state.map.width}</strong></label><div class="color-popover" id="colorPopover" hidden><div class="color-field" id="colorField" style="--picker-hue:${state.map.picker.hue};--picker-x:${state.map.picker.saturation};--picker-y:${state.map.picker.value}"></div><input class="hue-strip" id="hueStrip" type="range" min="0" max="360" value="${state.map.picker.hue}"><div class="color-popover-footer"><div class="color-presets">${['#f3bd50','#49c5b6','#e76f51','#6fa8dc','#b58be8','#f5fbff'].map(color => `<button type="button" data-preset="${color}" style="--swatch:${color}"></button>`).join('')}</div><button type="button" class="color-done" id="colorDone">Done</button></div></div></div><div class="map-zoom"><button type="button" data-zoom="out" title="Zoom out">-</button><button type="button" data-zoom="reset" title="Reset map">o</button><button type="button" data-zoom="in" title="Zoom in">+</button></div></div><div class="map-action-lane">${actions}</div>`;
+        document.getElementById('mapLayers').innerHTML = `<div class="map-primary-tools">${[['atlus', 'Atlas'], ['roadmap', 'Roadmap'], ['satellite', 'Satellite']].map(([layer, label]) => `<button type="button" class="map-layer${layer === state.map.layer ? ' active' : ''}" data-layer="${layer}">${label}</button>`).join('')}<div class="map-tools"><button type="button" class="map-layer${state.map.tool === 'draw' ? ' active' : ''}" data-tool="draw">Draw</button><button type="button" class="map-layer${state.map.tool === 'select' ? ' active' : ''}" data-tool="select">Box select</button><button type="button" class="map-layer${state.map.grid ? ' active' : ''}" id="gridToggle">Grid</button><label class="layer-select-wrap" title="New drawings are added to this layer">On<select id="activeLayerSelect" class="layer-select">${Object.keys(state.map.annotationLayers).map(layer => `<option value="${layer}" ${layer === state.map.activeAnnotationLayer ? 'selected' : ''}>${layer}</option>`).join('')}</select></label><div class="color-picker"><button class="color-trigger" id="colorTrigger" type="button" style="--brush-color:${state.map.color}" title="Choose drawing color"></button><input class="color-hex" id="colorHex" value="${state.map.color}"></div><label class="map-brush">Line<input id="brushWidth" type="range" min="0.5" max="16" step="0.5" value="${state.map.width}"><strong class="brush-value" id="brushValue">${state.map.width}</strong></label><div class="color-popover" id="colorPopover" hidden><div class="color-field" id="colorField" style="--picker-hue:${state.map.picker.hue};--picker-x:${state.map.picker.saturation};--picker-y:${state.map.picker.value}"></div><input class="hue-strip" id="hueStrip" type="range" min="0" max="360" value="${state.map.picker.hue}"><div class="color-popover-footer"><div class="color-presets">${['#f3bd50','#49c5b6','#e76f51','#6fa8dc','#b58be8','#f5fbff'].map(color => `<button type="button" data-preset="${color}" style="--swatch:${color}"></button>`).join('')}</div><button type="button" class="color-done" id="colorDone">Done</button></div></div></div><div class="map-zoom"><button type="button" data-zoom="out" title="Zoom out">-</button><button type="button" data-zoom="reset" title="Reset map">o</button><button type="button" data-zoom="in" title="Zoom in">+</button></div></div><div class="map-action-lane">${actions}</div>`;
         document.querySelectorAll('[data-layer]').forEach(button => button.addEventListener('click', () => switchMapLayer(button.dataset.layer)));
         document.querySelectorAll('[data-zoom]').forEach(button => button.addEventListener('click', () => { const zoom = button.dataset.zoom; state.map.scale = zoom === 'reset' ? 1 : Math.min(20, Math.max(1, state.map.scale * (zoom === 'in' ? 1.6 : 1 / 1.6))); if (zoom === 'reset') { state.map.x = 0; state.map.y = 0; } renderMap(); }));
         document.querySelectorAll('[data-tool]').forEach(button => button.addEventListener('click', () => { state.map.tool = button.dataset.tool; state.selectedLocation = null; document.getElementById('mapDetail').hidden = true; renderMap(); }));
         document.getElementById('gridToggle').addEventListener('click', () => { state.map.grid = !state.map.grid; document.getElementById('mapGrid').classList.toggle('visible', state.map.grid); document.getElementById('gridToggle').classList.toggle('active', state.map.grid); document.getElementById('mapGridCurrent').classList.toggle('visible', state.map.grid); highlightCenterCell(); });
+        document.getElementById('activeLayerSelect').addEventListener('change', event => { state.map.activeAnnotationLayer = event.target.value; });
         const setBrushColor = color => { if (!/^#[0-9a-f]{6}$/i.test(color)) return; state.map.color = color.toLowerCase(); state.map.picker = hexToHsv(state.map.color); document.getElementById('colorTrigger').style.setProperty('--brush-color', state.map.color); document.getElementById('colorHex').value = state.map.color; const field = document.getElementById('colorField'); field.style.setProperty('--picker-hue', state.map.picker.hue); field.style.setProperty('--picker-x', state.map.picker.saturation); field.style.setProperty('--picker-y', state.map.picker.value); document.getElementById('hueStrip').value = state.map.picker.hue; };
         document.getElementById('colorTrigger').addEventListener('click', () => { const picker = document.getElementById('colorPopover'); picker.hidden = !picker.hidden; });
         document.getElementById('colorHex').addEventListener('change', event => setBrushColor(event.target.value));
@@ -864,18 +1108,41 @@
         grid.innerHTML = Array.from({ length: 10 }, (_, index) => Array.from({ length: 10 }, (_, row) => `<span class="map-grid-label" style="left:${index * 10 + 1}%;top:${row * 10 + 1}%">${String.fromCharCode(65 + index)}${row + 1}</span>`).join('')).join('');
         const library = document.createElement('div');
         library.className = 'map-library';
-        library.innerHTML = '<button type="button" id="layersButton">Layers</button><button type="button" id="snapshotButton">Snapshot</button><button type="button" id="exportButton">Export</button><button type="button" id="importButton">Import</button><input id="importPlan" type="file" accept="application/json" hidden>';
+        library.innerHTML = '<button type="button" id="undoMapBtn" title="Undo (Ctrl+Z)">Undo</button><button type="button" id="moreMenuBtn" title="More map tools" aria-label="More map tools">⋯</button><button type="button" id="shortcutsBtn" title="Keyboard shortcuts" aria-label="Keyboard shortcuts">?</button>';
         document.querySelector('.map-primary-tools').append(library);
         const layerMenu = document.createElement('div');
         layerMenu.className = 'map-layer-menu'; layerMenu.id = 'layerMenu'; layerMenu.hidden = true;
-        layerMenu.innerHTML = `<strong>Annotation layers</strong>${Object.keys(state.map.annotationLayers).map(layer => `<label><input type="checkbox" data-annotation-layer="${layer}" ${state.map.annotationLayers[layer] ? 'checked' : ''}> ${layer}</label>`).join('')}`;
+        layerMenu.innerHTML = `<strong>Show / hide layers</strong><p class="map-layer-menu-hint">Hide a layer to declutter the map. New drawings go to the layer picked next to the Draw tool.</p>${Object.keys(state.map.annotationLayers).map(layer => `<label><input type="checkbox" data-annotation-layer="${layer}" ${state.map.annotationLayers[layer] ? 'checked' : ''}> ${layer}${layer === state.map.activeAnnotationLayer ? ' <em>(active)</em>' : ''}</label>`).join('')}`;
         document.querySelector('.map-toolbar').append(layerMenu);
-        document.getElementById('layersButton').addEventListener('click', () => layerMenu.hidden = !layerMenu.hidden);
+        const shortcutsPanel = document.createElement('div');
+        shortcutsPanel.className = 'map-shortcuts-panel'; shortcutsPanel.id = 'shortcutsPanel'; shortcutsPanel.hidden = true;
+        shortcutsPanel.innerHTML = `<strong>Keyboard shortcuts</strong><dl>
+          <dt>Ctrl/Cmd + Z</dt><dd>Undo last map change</dd>
+          <dt>Ctrl/Cmd + K</dt><dd>Jump to search</dd>
+          <dt>Delete / Backspace</dt><dd>Remove selected drawing</dd>
+          <dt>Esc</dt><dd>Close panels &amp; deselect</dd>
+          <dt>Double-click map</dt><dd>Add point of interest</dd>
+          <dt>Scroll / Wheel</dt><dd>Zoom in &amp; out</dd>
+        </dl>`;
+        document.querySelector('.map-toolbar').append(shortcutsPanel);
+        const moreMenu = document.createElement('div');
+        moreMenu.className = 'map-more-menu'; moreMenu.id = 'moreMenu'; moreMenu.hidden = true;
+        moreMenu.innerHTML = '<button type="button" id="layersButton">Layers</button><button type="button" id="snapshotButton">Snapshots</button><button type="button" id="exportButton">Export</button><button type="button" id="importButton">Import</button><input id="importPlan" type="file" accept="application/json" hidden>';
+        document.querySelector('.map-toolbar').append(moreMenu);
+        const snapshotsPanel = document.getElementById('snapshotsPanel') || document.createElement('div');
+        snapshotsPanel.className = 'map-snapshots-panel'; snapshotsPanel.id = 'snapshotsPanel'; snapshotsPanel.hidden = true;
+        document.querySelector('.map-toolbar').append(snapshotsPanel);
+        renderSnapshotsPanel(snapshotsPanel);
+        document.getElementById('moreMenuBtn').addEventListener('click', () => { moreMenu.hidden = !moreMenu.hidden; layerMenu.hidden = true; shortcutsPanel.hidden = true; snapshotsPanel.hidden = true; });
+        document.getElementById('layersButton').addEventListener('click', () => { layerMenu.hidden = !layerMenu.hidden; moreMenu.hidden = true; });
         document.querySelectorAll('[data-annotation-layer]').forEach(input => input.addEventListener('change', () => { state.map.annotationLayers[input.dataset.annotationLayer] = input.checked; renderMap(); }));
-        document.getElementById('snapshotButton').addEventListener('click', () => { const name = prompt('Snapshot name'); if (!name?.trim()) return; const snapshots = savedSnapshots(); snapshots.push({ id:`snapshot-${Date.now()}`, name:name.trim(), savedAt:new Date().toISOString(), drawings:savedDrawings(), locations:savedLocations(), layers:{ ...state.map.annotationLayers } }); localStorage.setItem('santos-cartel-map-snapshots', JSON.stringify(snapshots)); });
-        document.getElementById('exportButton').addEventListener('click', downloadMapPlan);
-        document.getElementById('importButton').addEventListener('click', () => document.getElementById('importPlan').click());
+        document.getElementById('snapshotButton').addEventListener('click', () => { moreMenu.hidden = true; snapshotsPanel.hidden = !snapshotsPanel.hidden; if (!snapshotsPanel.hidden) renderSnapshotsPanel(snapshotsPanel); });
+        document.getElementById('exportButton').addEventListener('click', () => { moreMenu.hidden = true; downloadMapPlan(); });
+        document.getElementById('importButton').addEventListener('click', () => { moreMenu.hidden = true; document.getElementById('importPlan').click(); });
         document.getElementById('importPlan').addEventListener('change', event => { if (event.target.files[0]) importMapPlan(event.target.files[0]); });
+        document.getElementById('undoMapBtn').disabled = !state.map.history.length;
+        document.getElementById('undoMapBtn').addEventListener('click', undoMapChange);
+        document.getElementById('shortcutsBtn').addEventListener('click', () => { shortcutsPanel.hidden = !shortcutsPanel.hidden; layerMenu.hidden = true; moreMenu.hidden = true; });
         wireMapInteraction(canvas, world);
         wireMobileTouch(canvas, world);
         highlightCenterCell();
@@ -1167,7 +1434,7 @@
         const pointers = new Map();
         let pan = null;
         let pinch = null;
-        const interactive = t => t && t.closest && t.closest('.map-marker, .map-drawing, .map-detail, .delete-confirm, .map-poi-toggle');
+        const interactive = t => t && t.closest && t.closest('.map-marker, .map-cluster, .map-drawing, .map-detail, .delete-confirm, .map-poi-toggle');
         const apply = () => {
           world.style.transform = `translate(calc(-50% + ${state.map.x}px), calc(-50% + ${state.map.y}px)) scale(${state.map.scale})`;
           highlightCenterCell();
@@ -1221,14 +1488,23 @@
           group.textContent = `Group (${state.map.selectedDrawings.length})`;
         };
         canvas.addEventListener('pointerdown', event => { if (isMobile()) return; const drawingPath = event.target.closest('.map-drawing:not(.drawing-preview)'); if (event.button !== 0 || !drawingPath || event.target.closest('.drawing-handle')) return; const id = drawingPath.dataset.drawing; const additive = event.ctrlKey || event.metaKey; if (additive || state.map.selectedDrawings.length !== 1 || !state.map.selectedDrawings.includes(id)) { selectDrawing(id, additive); event.stopImmediatePropagation(); } }, true);
-        canvas.addEventListener('pointerdown', event => { if (event.button !== 0 || event.target.closest('.map-marker, .map-drawing, .map-detail, .delete-confirm')) return; if (state.map.tool === 'select') { event.preventDefault(); const rect = world.getBoundingClientRect(); const canvasRect = canvas.getBoundingClientRect(); marquee = { start: { x: (event.clientX - rect.left) / rect.width * 100, y: (event.clientY - rect.top) / rect.height * 100 }, clientStart: { x: event.clientX, y: event.clientY }, canvasStart: { x: event.clientX - canvasRect.left, y: event.clientY - canvasRect.top } }; const overlay = document.getElementById('marqueeOverlay'); overlay.style.left = `${marquee.canvasStart.x}px`; overlay.style.top = `${marquee.canvasStart.y}px`; overlay.style.width = '0'; overlay.style.height = '0'; overlay.classList.add('visible'); return; } if (state.map.tool !== 'draw' && state.map.selectedDrawings.length) { state.map.selectedDrawings = []; renderMap(); } });
+        canvas.addEventListener('pointerdown', event => { if (event.button !== 0 || event.target.closest('.map-marker, .map-cluster, .map-drawing, .map-detail, .delete-confirm')) return; if (state.selectedLocation || state.map.selectedDrawings.length) { state.selectedLocation = null; state.map.selectedDrawings = []; document.getElementById('mapDetail').hidden = true; renderMap(); } if (state.map.tool === 'select') { event.preventDefault(); const rect = world.getBoundingClientRect(); const canvasRect = canvas.getBoundingClientRect(); marquee = { start: { x: (event.clientX - rect.left) / rect.width * 100, y: (event.clientY - rect.top) / rect.height * 100 }, clientStart: { x: event.clientX, y: event.clientY }, canvasStart: { x: event.clientX - canvasRect.left, y: event.clientY - canvasRect.top } }; const overlay = document.getElementById('marqueeOverlay'); overlay.style.left = `${marquee.canvasStart.x}px`; overlay.style.top = `${marquee.canvasStart.y}px`; overlay.style.width = '0'; overlay.style.height = '0'; overlay.classList.add('visible'); return; } });
         canvas.addEventListener('wheel', event => { event.preventDefault(); const bounds = canvas.getBoundingClientRect(); const factor = event.deltaY < 0 ? 1.28 : 1 / 1.28; const nextScale = Math.min(20, Math.max(1, state.map.scale * factor)); if (nextScale === state.map.scale) return; const pointerX = event.clientX - bounds.left - bounds.width / 2; const pointerY = event.clientY - bounds.top - bounds.height / 2; const ratio = nextScale / state.map.scale; state.map.x = pointerX - (pointerX - state.map.x) * ratio; state.map.y = pointerY - (pointerY - state.map.y) * ratio; state.map.scale = nextScale; world.style.transform = `translate(calc(-50% + ${state.map.x}px), calc(-50% + ${state.map.y}px)) scale(${state.map.scale})`; if (state.map.selectedDrawings.length) renderMap(); }, { passive: false });
-        canvas.addEventListener('pointerdown', event => { const handle = event.target.closest('.drawing-handle'); const drawingPath = event.target.closest('.map-drawing'); if (event.button === 0 && handle) { const drawing = savedDrawings().find(item => item.id === handle.dataset.drawing); if (!drawing) return; captureMapHistory(); const rect = world.getBoundingClientRect(); const point = { x: (event.clientX - rect.left) / rect.width * 100, y: (event.clientY - rect.top) / rect.height * 100 }; const center = { x: drawing.center.x + (drawing.transform?.x || 0), y: drawing.center.y + (drawing.transform?.y || 0) }; transform = { id: drawing.id, type: handle.dataset.handle, center, scale: drawing.transform?.scale || 1, rotation: drawing.transform?.rotation || 0, distance: Math.max(.1, Math.hypot(point.x - center.x, point.y - center.y)), angle: Math.atan2(point.y - center.y, point.x - center.x) }; canvas.setPointerCapture(event.pointerId); return; } if (event.button === 0 && drawingPath && state.map.selectedDrawings.includes(drawingPath.dataset.drawing)) { const drawing = savedDrawings().find(item => item.id === drawingPath.dataset.drawing); captureMapHistory(); const rect = world.getBoundingClientRect(); transform = { id: drawing.id, type: 'move', x: drawing.transform?.x || 0, y: drawing.transform?.y || 0, point: { x: (event.clientX - rect.left) / rect.width * 100, y: (event.clientY - rect.top) / rect.height * 100 } }; canvas.setPointerCapture(event.pointerId); return; } if (event.button === 1) { event.preventDefault(); drag = { x: event.clientX, y: event.clientY, mapX: state.map.x, mapY: state.map.y, moved: false }; canvas.classList.add('dragging'); canvas.setPointerCapture(event.pointerId); return; } if (event.button !== 0 || event.target.closest('.map-marker, .map-drawing, .map-detail, .delete-confirm') || state.map.tool !== 'draw') return; const rect = world.getBoundingClientRect(); stroke = [{ x: (event.clientX - rect.left) / rect.width * 100, y: (event.clientY - rect.top) / rect.height * 100 }]; state.map.liveStroke = stroke; updateLiveStroke(); canvas.classList.add('drawing'); canvas.setPointerCapture(event.pointerId); });
+        canvas.addEventListener('pointerdown', event => { const handle = event.target.closest('.drawing-handle'); const drawingPath = event.target.closest('.map-drawing'); if (event.button === 0 && handle) { const drawing = savedDrawings().find(item => item.id === handle.dataset.drawing); if (!drawing) return; captureMapHistory(); const rect = world.getBoundingClientRect(); const point = { x: (event.clientX - rect.left) / rect.width * 100, y: (event.clientY - rect.top) / rect.height * 100 }; const center = { x: drawing.center.x + (drawing.transform?.x || 0), y: drawing.center.y + (drawing.transform?.y || 0) }; transform = { id: drawing.id, type: handle.dataset.handle, center, scale: drawing.transform?.scale || 1, rotation: drawing.transform?.rotation || 0, distance: Math.max(.1, Math.hypot(point.x - center.x, point.y - center.y)), angle: Math.atan2(point.y - center.y, point.x - center.x) }; canvas.setPointerCapture(event.pointerId); return; } if (event.button === 0 && drawingPath && state.map.selectedDrawings.includes(drawingPath.dataset.drawing)) { const drawing = savedDrawings().find(item => item.id === drawingPath.dataset.drawing); captureMapHistory(); const rect = world.getBoundingClientRect(); transform = { id: drawing.id, type: 'move', x: drawing.transform?.x || 0, y: drawing.transform?.y || 0, point: { x: (event.clientX - rect.left) / rect.width * 100, y: (event.clientY - rect.top) / rect.height * 100 } }; canvas.setPointerCapture(event.pointerId); return; } if (event.button === 1) { event.preventDefault(); drag = { x: event.clientX, y: event.clientY, mapX: state.map.x, mapY: state.map.y, moved: false }; canvas.classList.add('dragging'); canvas.setPointerCapture(event.pointerId); return; } if (event.button !== 0 || event.target.closest('.map-marker, .map-cluster, .map-drawing, .map-detail, .delete-confirm') || state.map.tool !== 'draw') return; const rect = world.getBoundingClientRect(); stroke = [{ x: (event.clientX - rect.left) / rect.width * 100, y: (event.clientY - rect.top) / rect.height * 100 }]; state.map.liveStroke = stroke; updateLiveStroke(); canvas.classList.add('drawing'); canvas.setPointerCapture(event.pointerId); });
         canvas.addEventListener('pointermove', event => { if (transform) { const rect = world.getBoundingClientRect(); const point = { x: (event.clientX - rect.left) / rect.width * 100, y: (event.clientY - rect.top) / rect.height * 100 }; if (transform.type === 'scale') { const distance = Math.max(.1, Math.hypot(point.x - transform.center.x, point.y - transform.center.y)); updateRawDrawing(transform.id, { transform: { scale: Math.min(5, Math.max(.2, transform.scale * distance / transform.distance)) } }); } else if (transform.type === 'rotate') { const angle = Math.atan2(point.y - transform.center.y, point.x - transform.center.x); updateRawDrawing(transform.id, { transform: { rotation: transform.rotation + (angle - transform.angle) * 180 / Math.PI } }); } else updateRawDrawing(transform.id, { transform: { x: transform.x + point.x - transform.point.x, y: transform.y + point.y - transform.point.y } }); return; } if (stroke) { const rect = world.getBoundingClientRect(); const point = { x: (event.clientX - rect.left) / rect.width * 100, y: (event.clientY - rect.top) / rect.height * 100 }; const previous = stroke[stroke.length - 1]; if (Math.hypot(point.x - previous.x, point.y - previous.y) < 0.04) return; stroke.push(point); state.map.liveStroke = stroke; if (!state.map.liveStrokeFrame) state.map.liveStrokeFrame = requestAnimationFrame(() => { state.map.liveStrokeFrame = null; updateLiveStroke(); }); return; } if (!drag) return; drag.pointerX = event.clientX; drag.pointerY = event.clientY; if (dragFrame) return; dragFrame = requestAnimationFrame(() => { dragFrame = null; if (!drag) return; const moveX = drag.pointerX - drag.x; const moveY = drag.pointerY - drag.y; drag.moved ||= Math.abs(moveX) + Math.abs(moveY) > 4; state.map.x = drag.mapX + moveX; state.map.y = drag.mapY + moveY; world.style.transform = `translate(calc(-50% + ${state.map.x}px), calc(-50% + ${state.map.y}px)) scale(${state.map.scale})`; }); });
         canvas.addEventListener('pointerup', event => { if (transform) { transform = null; return; } if (stroke) { const completed = stroke; stroke = null; canvas.classList.remove('drawing'); state.map.liveStroke = []; document.getElementById('drawingPreview')?.setAttribute('d', ''); const bounds = completed.reduce((box, point) => ({ minX: Math.min(box.minX, point.x), maxX: Math.max(box.maxX, point.x), minY: Math.min(box.minY, point.y), maxY: Math.max(box.maxY, point.y) }), { minX: 100, maxX: 0, minY: 100, maxY: 0 }); if (completed.length > 1 && Math.hypot(bounds.maxX - bounds.minX, bounds.maxY - bounds.minY) > 0.12) { captureMapHistory(); const drawings = savedDrawings(); drawings.push({ id: `drawing-${Date.now()}`, layer: state.map.activeAnnotationLayer, points: completed, center: { x: (bounds.minX + bounds.maxX) / 2, y: (bounds.minY + bounds.maxY) / 2 }, color: state.map.color, width: state.map.width, transform: { scale: 1, rotation: 0 } }); saveDrawings(drawings); renderMap(); } return; } if (!drag) return; drag = null; canvas.classList.remove('dragging'); });
         canvas.addEventListener('auxclick', event => { if (event.button === 1) event.preventDefault(); });
         window.addEventListener('mousemove', event => { if (!marquee) return; const rect = world.getBoundingClientRect(); const canvasRect = canvas.getBoundingClientRect(); const point = { x: (event.clientX - rect.left) / rect.width * 100, y: (event.clientY - rect.top) / rect.height * 100 }; const box = document.getElementById('drawingMarquee'); box.setAttribute('x', Math.min(marquee.start.x, point.x)); box.setAttribute('y', Math.min(marquee.start.y, point.y)); box.setAttribute('width', Math.abs(point.x - marquee.start.x)); box.setAttribute('height', Math.abs(point.y - marquee.start.y)); const overlay = document.getElementById('marqueeOverlay'); overlay.style.left = `${Math.min(marquee.canvasStart.x, event.clientX - canvasRect.left)}px`; overlay.style.top = `${Math.min(marquee.canvasStart.y, event.clientY - canvasRect.top)}px`; overlay.style.width = `${Math.abs(event.clientX - canvasRect.left - marquee.canvasStart.x)}px`; overlay.style.height = `${Math.abs(event.clientY - canvasRect.top - marquee.canvasStart.y)}px`; marquee.end = point; marquee.clientEnd = { x: event.clientX, y: event.clientY }; applyMarqueeSelection(marquee.clientEnd); });
         canvas.addEventListener('pointerup', event => { if (!marquee) return; applyMarqueeSelection({ x: event.clientX, y: event.clientY }); marquee = null; document.getElementById('drawingMarquee').hidden = true; document.getElementById('marqueeOverlay').classList.remove('visible'); renderMap(); });
+        canvas.addEventListener('dblclick', event => {
+          if (event.target.closest('.map-marker, .map-cluster, .map-drawing, .map-detail, .delete-confirm, .drawing-handle')) return;
+          const rect = world.getBoundingClientRect();
+          const x = (event.clientX - rect.left) / rect.width * 100;
+          const y = (event.clientY - rect.top) / rect.height * 100;
+          if (x < 0 || x > 100 || y < 0 || y > 100) return;
+          showPoiIconStep(x, y);
+          if (isMobile()) document.getElementById('mobilePoiPanel')?.classList.add('mobile-open');
+        });
       }
 
       function showLocation(id, focus = false) {
@@ -1275,10 +1551,21 @@
         if (!location) return;
         const form = document.getElementById('poiForm');
         let drawingIds = [...(location.drawingIds || [])];
-        form.innerHTML = `<form class="map-form" id="locationEditor"><strong>Edit point of interest</strong><label>Name<input name="name" required value="${escapeHtml(location.name)}"></label><label>Type<select name="type">${['operation','resource','meeting','property','route','other'].map(type => `<option value="${type}" ${type === location.type ? 'selected' : ''}>${type}</option>`).join('')}</select></label><label>Linked guide<select name="guidePath"><option value="">None</option>${state.pages.filter(page => page.url).sort((a,b) => a.title.localeCompare(b.title)).map(page => `<option value="${escapeHtml(new URL(page.url).pathname)}" ${new URL(page.url).pathname === location.guidePath ? 'selected' : ''}>${escapeHtml(page.title)}</option>`).join('')}</select></label><label>Notes<textarea name="notes" rows="3">${escapeHtml(location.notes || '')}</textarea></label><div class="map-form-actions"><button type="button" id="useSelection">Use selected drawing</button><span id="linkedDrawingStatus">${drawingIds.length ? `${drawingIds.length} drawing linked` : 'No drawing linked'}</span></div><div class="map-form-actions"><button>Save changes</button><button type="button" id="cancelEdit">Cancel</button></div></form>`;
+        form.innerHTML = `<form class="map-form" id="locationEditor"><strong>Edit point of interest</strong><label>Name<input name="name" required value="${escapeHtml(location.name)}"></label><label>Type<select name="type">${['operation','resource','meeting','property','route','other'].map(type => `<option value="${type}" ${type === location.type ? 'selected' : ''}>${type}</option>`).join('')}</select></label><label>Linked guide<select name="guidePath"><option value="">None</option>${state.pages.filter(page => page.url).sort((a,b) => a.title.localeCompare(b.title)).map(page => `<option value="${escapeHtml(new URL(page.url).pathname)}" ${new URL(page.url).pathname === location.guidePath ? 'selected' : ''}>${escapeHtml(page.title)}</option>`).join('')}</select></label><label>Notes<textarea name="notes" rows="3">${escapeHtml(location.notes || '')}</textarea></label>${iconPickerFieldHtml('edit', location.iconSheet, location.iconIndex, location.iconSize)}<div class="map-form-actions"><button type="button" id="useSelection">Use selected drawing</button><span id="linkedDrawingStatus">${drawingIds.length ? `${drawingIds.length} drawing linked` : 'No drawing linked'}</span></div><div class="map-form-actions"><button>Save changes</button><button type="button" id="cancelEdit">Cancel</button></div></form>`;
+        wireIconPicker('edit', location.iconSheet, location.iconIndex, icon => updateLiveMarker(id, form.querySelector('[name="type"]').value, icon));
         document.getElementById('useSelection').addEventListener('click', () => { drawingIds = [...state.map.selectedDrawings]; document.getElementById('linkedDrawingStatus').textContent = drawingIds.length ? `${drawingIds.length} drawing linked` : 'No drawing selected'; });
-        document.getElementById('cancelEdit').addEventListener('click', () => form.innerHTML = '');
-        document.getElementById('locationEditor').addEventListener('submit', event => { event.preventDefault(); const values = Object.fromEntries(new FormData(event.target)); const linked = savedDrawings().filter(drawing => drawingIds.includes(drawing.id)); const points = linked.flatMap(drawing => (drawing.points || []).map(point => transformedPoint(drawing, point))); location.name = values.name.trim(); location.type = values.type; location.guidePath = values.guidePath; location.notes = values.notes.trim(); location.drawingIds = drawingIds; if (points.length) location.map = points.reduce((total, point) => ({ x:total.x + point.x / points.length, y:total.y + point.y / points.length }), {x:0,y:0}); saveLocations(saved); form.innerHTML = ''; renderMap(); showLocation(id, false); });
+        form.querySelector('[name="type"]').addEventListener('change', event => updateLiveMarker(id, event.target.value, { sheet: Number(document.getElementById('editIconSheet').value) || null, index: document.getElementById('editIconIndex').value !== '' ? Number(document.getElementById('editIconIndex').value) : null, size: Number(document.getElementById('editIconSize').value) }));
+        document.getElementById('cancelEdit').addEventListener('click', () => { form.innerHTML = ''; renderMap(); });
+        document.getElementById('locationEditor').addEventListener('submit', event => { event.preventDefault(); const values = Object.fromEntries(new FormData(event.target)); const linked = savedDrawings().filter(drawing => drawingIds.includes(drawing.id)); const points = linked.flatMap(drawing => (drawing.points || []).map(point => transformedPoint(drawing, point))); location.name = values.name.trim(); location.type = values.type; location.guidePath = values.guidePath; location.notes = values.notes.trim(); location.drawingIds = drawingIds; const iconIndex = values.iconIndex !== '' ? Number(values.iconIndex) : undefined; if (Number.isInteger(iconIndex)) { location.iconSheet = Number(values.iconSheet); location.iconIndex = iconIndex; location.iconSize = Number(values.iconSize) || 22; } else { delete location.iconSheet; delete location.iconIndex; delete location.iconSize; } if (points.length) location.map = points.reduce((total, point) => ({ x:total.x + point.x / points.length, y:total.y + point.y / points.length }), {x:0,y:0}); saveLocations(saved); form.innerHTML = ''; renderMap(); showLocation(id, false); });
+      }
+
+      function updateLiveMarker(id, type, icon) {
+        const marker = document.querySelector(`[data-poi-marker="${id}"]`);
+        if (!marker) return;
+        const hasIcon = icon && Number.isInteger(icon.index) && ICON_SHEETS[icon.sheet];
+        const size = hasIcon ? (icon.size || 22) : 22;
+        marker.classList.toggle('has-icon', Boolean(hasIcon));
+        marker.style.cssText = `left:${marker.style.left};top:${marker.style.top};--poi-color:${LOCATION_TYPE_COLORS[type] || LOCATION_TYPE_COLORS.other};--marker-zoom-scale:${1 / state.map.scale};${hasIcon ? `width:${size}px;height:${size}px;${iconBgStyle(icon.sheet, icon.index, size)}` : ''}`;
       }
 
       function reassignLocation(id) {
@@ -1299,11 +1586,51 @@
         showLocation(id, false);
       }
 
-      function showPoiForm(x = '', y = '', drawing = null, drawingIds = []) {
+      function showPoiIconStep(x, y) {
         const form = document.getElementById('poiForm');
-        form.innerHTML = `<form class="map-form" id="poiEditor"><label>Name<input name="name" required></label><label>Type<select name="type"><option value="operation">Operation</option><option value="resource">Resource</option><option value="meeting">Meeting</option><option value="property">Property</option><option value="route">Route</option><option value="other">Other</option></select></label><label>Linked guide<select name="guidePath"><option value="">None</option>${state.pages.filter(page => page.url).sort((a,b) => a.title.localeCompare(b.title)).map(page => `<option value="${escapeHtml(new URL(page.url).pathname)}">${escapeHtml(page.title)}</option>`).join('')}</select></label><label>Notes<textarea name="notes" rows="3"></textarea></label><input name="x" type="hidden" value="${x}"><input name="y" type="hidden" value="${y}"><div class="map-form-actions"><button>Save point</button><button type="button" id="cancelPoi">Cancel</button></div></form>`;
-        document.getElementById('cancelPoi').addEventListener('click', () => form.innerHTML = '');
-        document.getElementById('poiEditor').addEventListener('submit', event => { event.preventDefault(); const values = Object.fromEntries(new FormData(event.target)); const saved = savedLocations(); const id = `poi-${Date.now()}`; saved.push({ id, name: values.name.trim(), type: values.type, guidePath: values.guidePath, notes: values.notes.trim(), map: { x: Number(values.x || 50), y: Number(values.y || 50) }, drawingIds, ...(drawing ? { drawing: { points: drawing, transform: { scale: 1, rotation: 0, x: 0, y: 0 } } } : {}) }); saveLocations(saved, !drawingIds.length); if (drawingIds.length) { const drawings = savedDrawings().map(item => drawingIds.includes(item.id) ? { ...item, pinId: id } : item); saveDrawings(drawings); state.map.selectedDrawings = []; } form.innerHTML = ''; renderMap(); });
+        let sheet = 1;
+        form.innerHTML = `<div class="map-form icon-first-step">
+          <strong>Choose a map icon</strong>
+          <p class="icon-first-hint">Pick an icon for this point of interest, or skip to use a plain color pin.</p>
+          <div class="icon-picker-tabs">
+            <button type="button" class="icon-tab active" data-sheet="1">Sheet 1</button>
+            <button type="button" class="icon-tab" data-sheet="2">Sheet 2</button>
+          </div>
+          <div class="icon-picker-grid" id="iconFirstGrid"></div>
+          <div class="map-form-actions">
+            <button type="button" id="skipIconStep">Skip icon</button>
+            <button type="button" id="cancelIconStep">Cancel</button>
+          </div>
+        </div>`;
+        const grid = document.getElementById('iconFirstGrid');
+        const tabs = [...form.querySelectorAll('.icon-tab')];
+        setPoiPreview(x, y, 'operation', null);
+        function renderGrid() {
+          const cfg = ICON_SHEETS[sheet];
+          let html = '';
+          for (let i = 0; i < cfg.cols * cfg.rows; i++) html += `<button type="button" class="icon-choice" style="${iconBgStyle(sheet, i, 26)}" data-icon-pick="${i}"></button>`;
+          grid.innerHTML = html;
+          grid.querySelectorAll('[data-icon-pick]').forEach(btn => {
+            btn.addEventListener('mouseenter', () => setPoiPreview(x, y, 'operation', { sheet, index: Number(btn.dataset.iconPick) }));
+            btn.addEventListener('click', () => showPoiForm(x, y, null, [], { sheet, index: Number(btn.dataset.iconPick) }));
+          });
+        }
+        tabs.forEach(tab => tab.addEventListener('click', () => { sheet = Number(tab.dataset.sheet); tabs.forEach(t => t.classList.toggle('active', t === tab)); renderGrid(); }));
+        document.getElementById('skipIconStep').addEventListener('click', () => showPoiForm(x, y, null, [], null));
+        document.getElementById('cancelIconStep').addEventListener('click', () => { clearPoiPreview(); form.innerHTML = ''; });
+        renderGrid();
+      }
+
+      function showPoiForm(x = '', y = '', drawing = null, drawingIds = [], presetIcon = null) {
+        const form = document.getElementById('poiForm');
+        form.innerHTML = `<form class="map-form" id="poiEditor"><label>Name<input name="name" required></label><label>Type<select name="type"><option value="operation">Operation</option><option value="resource">Resource</option><option value="meeting">Meeting</option><option value="property">Property</option><option value="route">Route</option><option value="other">Other</option></select></label><label>Linked guide<select name="guidePath"><option value="">None</option>${state.pages.filter(page => page.url).sort((a,b) => a.title.localeCompare(b.title)).map(page => `<option value="${escapeHtml(new URL(page.url).pathname)}">${escapeHtml(page.title)}</option>`).join('')}</select></label><label>Notes<textarea name="notes" rows="3"></textarea></label>${iconPickerFieldHtml('new', presetIcon?.sheet, presetIcon?.index, presetIcon?.size)}<input name="x" type="hidden" value="${x}"><input name="y" type="hidden" value="${y}"><div class="map-form-actions"><button>Save point</button><button type="button" id="cancelPoi">Cancel</button></div></form>`;
+        let previewType = 'operation';
+        let previewIcon = presetIcon;
+        setPoiPreview(x, y, previewType, previewIcon);
+        wireIconPicker('new', presetIcon?.sheet, presetIcon?.index, icon => { previewIcon = icon; setPoiPreview(x, y, previewType, previewIcon); });
+        form.querySelector('[name="type"]').addEventListener('change', event => { previewType = event.target.value; setPoiPreview(x, y, previewType, previewIcon); });
+        document.getElementById('cancelPoi').addEventListener('click', () => { clearPoiPreview(); form.innerHTML = ''; });
+        document.getElementById('poiEditor').addEventListener('submit', event => { event.preventDefault(); const values = Object.fromEntries(new FormData(event.target)); const saved = savedLocations(); const id = `poi-${Date.now()}`; const iconSheet = values.iconSheet ? Number(values.iconSheet) : undefined; const iconIndex = values.iconIndex !== '' ? Number(values.iconIndex) : undefined; const iconSize = Number(values.iconSize) || 22; saved.push({ id, name: values.name.trim(), type: values.type, guidePath: values.guidePath, notes: values.notes.trim(), map: { x: Number(values.x || 50), y: Number(values.y || 50) }, drawingIds, ...(Number.isInteger(iconIndex) ? { iconSheet, iconIndex, iconSize } : {}), ...(drawing ? { drawing: { points: drawing, transform: { scale: 1, rotation: 0, x: 0, y: 0 } } } : {}) }); saveLocations(saved, !drawingIds.length); if (drawingIds.length) { const drawings = savedDrawings().map(item => drawingIds.includes(item.id) ? { ...item, pinId: id } : item); saveDrawings(drawings); state.map.selectedDrawings = []; } clearPoiPreview(); form.innerHTML = ''; renderMap(); });
       }
 
       function openArticle(page) {
@@ -1406,7 +1733,21 @@
         if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'z' && state.activeId === 'map' && undoMapChange()) { event.preventDefault(); return; }
         if (state.activeId === 'map' && (event.key === 'Delete' || event.key === 'Backspace') && !event.target.matches('input, textarea, select') && state.map.selectedDrawings.length) { event.preventDefault(); requestDeleteDrawings(); return; }
         if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'k') { event.preventDefault(); searchInput.focus(); }
-        if (event.key === 'Escape') { var s=document.getElementById('mobilePoiPanel'); if(s)s.classList.remove('mobile-open'); setSidebarOpen(false); }
+        if (event.key === 'Escape') {
+          var s=document.getElementById('mobilePoiPanel'); if(s)s.classList.remove('mobile-open');
+          setSidebarOpen(false);
+          if (state.activeId === 'map') {
+            clearPoiPreview();
+            const form = document.getElementById('poiForm');
+            if (form) form.innerHTML = '';
+            if (state.selectedLocation || state.map.selectedDrawings.length) {
+              state.selectedLocation = null;
+              state.map.selectedDrawings = [];
+              document.getElementById('mapDetail').hidden = true;
+              renderMap();
+            }
+          }
+        }
       });
 
       Promise.all([

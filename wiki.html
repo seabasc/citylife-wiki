@@ -228,6 +228,30 @@
     .wiki-image-controls { display:grid; grid-template-columns:1fr 95px 105px; gap:8px; }
     .wiki-preview-head { display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:10px; color:var(--muted); font-size:11px; letter-spacing:.08em; text-transform:uppercase; }
     .wiki-editor-preview { min-height:420px; padding:18px; border:1px solid #443139; border-radius:6px; background:#181215; }
+    .wiki-rich-shell { display:grid; grid-template-rows:auto auto minmax(0, 1fr) auto auto; min-height:min(690px, calc(100dvh - 190px)); background:#0e0b0d; }
+    .wiki-rich-meta { display:grid; grid-template-columns:minmax(0, 1fr) 240px; gap:10px; padding:14px 16px; border-bottom:1px solid var(--line); background:#171215; }
+    .wiki-rich-toolbar { position:relative; z-index:3; display:flex; align-items:center; flex-wrap:wrap; gap:7px; padding:10px 16px; border-bottom:1px solid #443139; background:#1b1418; box-shadow:0 10px 24px #0004; }
+    .wiki-rich-toolbar button, .wiki-rich-toolbar select, .wiki-rich-toolbar label { width:auto; min-height:32px; border:1px solid #54404a; border-radius:4px; background:#21181d; color:#e8dfe2; padding:6px 8px; font:700 11px/1 var(--sans); }
+    .wiki-rich-toolbar select { flex:0 0 auto; max-width:150px; }
+    .wiki-rich-toolbar label { display:inline-flex; align-items:center; gap:6px; }
+    .wiki-rich-toolbar button:hover, .wiki-rich-toolbar select:hover, .wiki-rich-toolbar label:hover { border-color:var(--accent); color:#fff; }
+    .wiki-rich-toolbar input[type="color"] { width:34px; height:24px; padding:0; border:0; background:transparent; vertical-align:middle; }
+    .wiki-rich-page-wrap { min-height:0; overflow:auto; padding:28px clamp(14px, 4vw, 42px); background:linear-gradient(180deg, #100d0f, #0b090a); }
+    .wiki-rich-page { width:min(850px, 100%); min-height:560px; margin:0 auto; padding:clamp(24px, 5vw, 52px); border:1px solid #4c3940; border-radius:7px; background:#fbf7f0; color:#20181b; box-shadow:0 22px 70px #0009; outline:none; font:16px/1.72 Georgia, "Times New Roman", serif; }
+    .wiki-rich-page:focus { border-color:#d15b65; box-shadow:0 22px 70px #0009, 0 0 0 3px #d15b6538; }
+    .wiki-rich-page h1, .wiki-rich-page h2, .wiki-rich-page h3 { color:#21181d; font-family:Bahnschrift, "Segoe UI Variable Display", sans-serif; }
+    .wiki-rich-page blockquote { margin:18px 0; padding:11px 15px; border-left:4px solid #d15b65; border-radius:0 5px 5px 0; background:#f3e7df; color:#3c2d32; }
+    .wiki-rich-page img { max-width:100%; height:auto; border:1px solid #d8c7bd; border-radius:4px; }
+    .wiki-rich-page figure { margin:22px auto; }
+    .wiki-rich-page figcaption { color:#6b5c61; font-size:13px; text-align:center; }
+    .wiki-rich-page[data-empty="true"]::before { content:attr(data-placeholder); color:#8e7d83; pointer-events:none; }
+    .wiki-source-drawer { border-top:1px solid var(--line); background:#151013; }
+    .wiki-source-drawer summary { cursor:pointer; padding:10px 16px; color:var(--muted); font:700 11px/1 var(--sans); letter-spacing:.08em; text-transform:uppercase; }
+    .wiki-source-drawer textarea { width:100%; min-height:170px; border:0; border-top:1px solid #443139; border-radius:0; background:#0d0a0c; color:var(--text); font:12px/1.5 Consolas, "Cascadia Mono", monospace; }
+    .wiki-rich-image-popover { display:flex; align-items:end; flex-wrap:wrap; gap:8px; padding:10px 16px; border-top:1px solid #443139; background:#171215; }
+    .wiki-rich-image-popover label { display:grid; gap:4px; color:var(--muted); font-size:11px; }
+    .wiki-rich-image-popover input, .wiki-rich-image-popover select { min-height:34px; border:1px solid #4c3940; border-radius:5px; background:#0d0a0c; color:var(--text); padding:7px 8px; }
+    .wiki-rich-image-popover button { border:1px solid var(--accent); border-radius:4px; background:#3a171c; color:#f1b7bc; padding:9px 11px; font:700 11px/1 var(--sans); }
     .wiki-editor .danger-action { border-color:#8f4951; color:#ffb9bd; }
     .wiki-editor .primary-action { border-color:var(--accent); background:#3a171c; color:#f1b7bc; }
     .wiki-local-note { color:var(--muted); font-size:11px; }
@@ -451,6 +475,9 @@
       .map-detail .poi-open { min-height:40px; }
       .wiki-top-actions { align-items:flex-start; }
       .wiki-editor-body, .wiki-editor-row, .wiki-image-controls { grid-template-columns:1fr; }
+      .wiki-rich-meta { grid-template-columns:1fr; }
+      .wiki-rich-page-wrap { padding:12px; }
+      .wiki-rich-page { min-height:430px; padding:22px; }
       .wiki-editor-pane:first-child { border-right:0; border-bottom:1px solid var(--line); }
       .wiki-editor textarea { min-height:300px; }
       .map-details-jump { position:relative; z-index:7; display:flex; align-items:center; justify-content:center; gap:8px; width:100%; min-height:42px; border:0; border-top:1px solid #2d4054; border-bottom:1px solid #26394d; background:linear-gradient(180deg, #152230, #101a25); color:#dce9f1; font-weight:600; font-size:12px; letter-spacing:.04em; }
@@ -872,7 +899,95 @@
         return canvas.toDataURL(file.type === 'image/png' ? 'image/png' : 'image/jpeg', .86);
       }
 
+      function openRichWikiEditor(page = null) {
+        let dialog = document.getElementById('wikiEditorDialog');
+        if (!dialog) {
+          dialog = document.createElement('dialog');
+          dialog.id = 'wikiEditorDialog';
+          dialog.className = 'wiki-editor-dialog';
+          document.body.append(dialog);
+        }
+        const isNew = !page;
+        const starter = page?.content || '# New Article\n\n> **TIP:** Add the quick thing readers need to know here.\n\n1. First step\n2. Second step\n';
+        const selectedCategory = page?.categoryId || state.categories[0]?.id || '';
+        const categoryOptions = state.categories.map(category => `<option value="${escapeHtml(category.id)}" ${category.id === selectedCategory ? 'selected' : ''}>${escapeHtml(category.icon)} ${escapeHtml(category.name)}</option>`).join('');
+        dialog.innerHTML = `<form class="wiki-editor" id="wikiEditorForm"><header class="wiki-editor-head"><div><h2>${isNew ? 'New article' : 'Edit article'}</h2><p>Use the page like a document. Export local packages the finished article, Markdown copies, and uploaded images.</p></div><button class="wiki-editor-close" type="button" id="closeWikiEditor" aria-label="Close editor">&times;</button></header><div class="wiki-rich-shell"><div class="wiki-rich-meta"><label>Title<input name="title" required value="${escapeHtml(page?.title || '')}" placeholder="Radio"></label><label>Main group<select name="categoryId">${categoryOptions}</select></label></div><div class="wiki-rich-toolbar" aria-label="Formatting tools"><select id="richBlockFormat" title="Text style"><option value="p">Paragraph</option><option value="h2">Heading</option><option value="h3">Subheading</option><option value="blockquote">Tip / note block</option></select><button type="button" data-rich-command="bold"><strong>B</strong></button><button type="button" data-rich-command="italic"><em>I</em></button><button type="button" data-rich-command="insertUnorderedList">Bullets</button><button type="button" data-rich-command="insertOrderedList">Numbers</button><button type="button" id="richLinkButton">Link</button><button type="button" id="richDetailsButton">Dropdown</button><label>Text <input id="richTextColor" type="color" value="#d15b65"></label><label>Highlight <input id="richHighlightColor" type="color" value="#f3bd50"></label><select id="richSize" title="Text size"><option value="">Size</option><option value="1em">Normal</option><option value="1.2em">Large</option><option value="1.45em">Feature</option><option value=".9em">Small</option></select><button type="button" data-rich-command="removeFormat">Clear</button></div><div class="wiki-rich-page-wrap"><div class="wiki-rich-page prose" id="wikiRichEditor" contenteditable="true" data-placeholder="Start writing your article...">${marked.parse(normalizeSource(starter))}</div></div><div class="wiki-rich-image-popover"><label>Image<input id="wikiImageFile" type="file" accept="image/*"></label><label>Width<select id="wikiImageWidth"><option value="100">Full</option><option value="75">Wide</option><option value="50">Half</option><option value="33">Small</option></select></label><label>Align<select id="wikiImageAlign"><option value="center">Center</option><option value="left">Left</option><option value="right">Right</option></select></label><label>Caption<input id="wikiImageCaption" placeholder="What this image shows"></label><button type="button" id="insertWikiImage">Insert image</button></div><details class="wiki-source-drawer"><summary>Source / advanced</summary><textarea name="content" id="wikiEditorContent" spellcheck="false">${escapeHtml(starter)}</textarea></details></div><footer class="wiki-editor-foot"><div>${isNew ? '' : '<button class="danger-action" type="button" id="deleteWikiArticle">Delete article</button>'}</div><div><button type="button" id="cancelWikiEditor">Cancel</button><button class="primary-action" type="submit">Save article</button></div></footer></form>`;
+        const form = document.getElementById('wikiEditorForm');
+        const editor = document.getElementById('wikiRichEditor');
+        const source = document.getElementById('wikiEditorContent');
+        const syncSource = () => {
+          editor.dataset.empty = String(!editor.textContent.trim() && !editor.querySelector('img'));
+          source.value = editor.innerHTML.trim();
+        };
+        const runCommand = (command, value = null) => {
+          editor.focus();
+          document.execCommand(command, false, value);
+          syncSource();
+        };
+        editor.addEventListener('input', syncSource);
+        source.addEventListener('input', () => { editor.innerHTML = source.value; syncSource(); });
+        syncSource();
+        document.querySelectorAll('[data-rich-command]').forEach(button => button.addEventListener('click', () => runCommand(button.dataset.richCommand)));
+        document.getElementById('richBlockFormat').addEventListener('change', event => {
+          const value = event.target.value;
+          if (value === 'blockquote') runCommand('formatBlock', 'blockquote');
+          else runCommand('formatBlock', value);
+          event.target.value = 'p';
+        });
+        document.getElementById('richTextColor').addEventListener('input', event => runCommand('foreColor', event.target.value));
+        document.getElementById('richHighlightColor').addEventListener('input', event => runCommand('hiliteColor', event.target.value));
+        document.getElementById('richSize').addEventListener('change', event => {
+          if (!event.target.value) return;
+          runCommand('insertHTML', `<span style="font-size:${event.target.value};">${document.getSelection().toString() || 'Sized text'}</span>`);
+          event.target.value = '';
+        });
+        document.getElementById('richLinkButton').addEventListener('click', () => {
+          const href = prompt('Paste a URL or wiki:article-id link');
+          if (!href) return;
+          runCommand('createLink', href);
+        });
+        document.getElementById('richDetailsButton').addEventListener('click', () => runCommand('insertHTML', '<details><summary>Dropdown title</summary><p>Hidden information goes here.</p></details>'));
+        document.getElementById('insertWikiImage').addEventListener('click', async () => {
+          const file = document.getElementById('wikiImageFile').files[0];
+          if (!file) return alert('Choose an image first.');
+          const caption = document.getElementById('wikiImageCaption').value.trim();
+          const width = Number(document.getElementById('wikiImageWidth').value) || 100;
+          const align = document.getElementById('wikiImageAlign').value;
+          const margin = align === 'left' ? '0 auto 1rem 0' : align === 'right' ? '0 0 1rem auto' : '0 auto 1rem';
+          const sourceUrl = await imageFileToDataUrl(file);
+          runCommand('insertHTML', `<figure style="max-width:${width}%;margin:${margin};"><img src="${sourceUrl}" alt="${escapeHtml(caption)}"><figcaption><p>${escapeHtml(caption)}</p></figcaption></figure>`);
+        });
+        const close = () => dialog.close();
+        document.getElementById('closeWikiEditor').addEventListener('click', close);
+        document.getElementById('cancelWikiEditor').addEventListener('click', close);
+        document.getElementById('deleteWikiArticle')?.addEventListener('click', () => {
+          if (!confirm(`Delete "${page.title}"?`)) return;
+          state.pages = state.pages.filter(item => pageId(item) !== pageId(page));
+          rebuildWikiCollections();
+          saveLocalWikiData();
+          dialog.close();
+          showHome();
+        });
+        form.addEventListener('submit', event => {
+          event.preventDefault();
+          syncSource();
+          const values = Object.fromEntries(new FormData(form));
+          const title = values.title.trim();
+          if (!title) return;
+          const target = isNew ? { id:`custom-${Date.now()}`, url:wikiUrlFromTitle(title) } : state.pages.find(item => pageId(item) === pageId(page));
+          Object.assign(target, { title, categoryId:values.categoryId, content:values.content, url:target.url || wikiUrlFromTitle(title) });
+          if (isNew) state.pages.push(target);
+          rebuildWikiCollections();
+          saveLocalWikiData();
+          dialog.close();
+          showHome();
+          showHomeArticle(target);
+        });
+        dialog.showModal();
+      }
+
       function openWikiEditor(page = null) {
+        return openRichWikiEditor(page);
         let dialog = document.getElementById('wikiEditorDialog');
         if (!dialog) {
           dialog = document.createElement('dialog');

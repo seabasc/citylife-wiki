@@ -38,8 +38,9 @@
     .home-button:hover, .home-button.active { color:var(--text); background:var(--surface); border-left-color:var(--accent); }
     .rules-button { display:block; width:calc(100% - 12px); margin:0 6px 18px; border:1px solid var(--line); background:var(--surface); color:var(--text); padding:9px 10px; text-align:left; font-family:Arial, sans-serif; font-size:12px; font-weight:700; letter-spacing:.04em; }
     .rules-button:hover, .rules-button.active { border-color:var(--accent-2); background:var(--surface-2); }
-    .map-button { display:block; width:calc(100% - 12px); margin:0 6px 18px; border:1px solid var(--line); background:var(--surface); color:var(--text); padding:9px 10px; text-align:left; font-family:Arial, sans-serif; font-size:12px; font-weight:700; letter-spacing:.04em; }
-    .map-button:hover, .map-button.active { border-color:var(--accent); background:var(--surface-2); }
+    .map-button, .editor-button { display:block; width:calc(100% - 12px); margin:0 6px 18px; border:1px solid var(--line); background:var(--surface); color:var(--text); padding:9px 10px; text-align:left; font-family:Arial, sans-serif; font-size:12px; font-weight:700; letter-spacing:.04em; }
+    .map-button:hover, .map-button.active, .editor-button:hover { border-color:var(--accent); background:var(--surface-2); }
+    .editor-button { margin-top:-8px; border-color:#49343b; color:#efc263; }
     .collab-button { display:flex; align-items:center; gap:8px; width:calc(100% - 12px); margin:-10px 6px 18px; border:1px solid var(--line); background:#0d151f; color:var(--muted); padding:8px 10px; text-align:left; font-size:11px; }
     .collab-button:hover { color:var(--text); border-color:#4b6279; }
     .collab-dot { width:7px; height:7px; flex:none; border-radius:50%; background:#69798a; box-shadow:0 0 0 3px #69798a1c; }
@@ -199,6 +200,37 @@
     .rules-section h2 { margin:0 0 19px; color:#f4cb75; font:700 18px/1.2 Arial, sans-serif; letter-spacing:.02em; }
     .rules-raw { margin:0; color:#dae4ee; white-space:pre-wrap; overflow-wrap:anywhere; font:15px/1.7 Georgia, "Times New Roman", serif; }
     .rules-intro .rules-raw { color:#bfcdda; font-size:14px; }
+    .wiki-top-actions, .article-actions { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+    .wiki-action, .article-edit-button, .home-article-edit { border:1px solid #594048; border-radius:5px; background:#1a1417; color:#e8dfe2; padding:7px 10px; font:700 11px/1 var(--sans); letter-spacing:.04em; text-transform:uppercase; }
+    .wiki-action:hover, .article-edit-button:hover, .home-article-edit:hover { border-color:var(--accent); color:#fff; background:#2a1b20; }
+    .home-article-tools { display:flex; justify-content:flex-end; margin-top:18px; padding-top:14px; border-top:1px solid var(--line); }
+    .wiki-editor-dialog { width:min(1180px, calc(100% - 30px)); max-height:min(900px, calc(100dvh - 30px)); padding:0; overflow:hidden; border:1px solid #60434b; border-radius:8px; background:#120f11; color:var(--text); box-shadow:0 30px 100px #000d; }
+    .wiki-editor-dialog::backdrop { background:#03070bcc; backdrop-filter:blur(4px); }
+    .wiki-editor { display:grid; grid-template-rows:auto minmax(0, 1fr) auto; max-height:min(900px, calc(100dvh - 30px)); }
+    .wiki-editor-head, .wiki-editor-foot { display:flex; align-items:center; justify-content:space-between; gap:14px; padding:16px 18px; border-bottom:1px solid var(--line); background:#171215; }
+    .wiki-editor-foot { border-top:1px solid var(--line); border-bottom:0; }
+    .wiki-editor-head h2 { margin:0; font:600 22px/1.1 var(--display); }
+    .wiki-editor-head p { margin:4px 0 0; color:var(--muted); font-size:12px; }
+    .wiki-editor-close { display:grid; place-items:center; width:36px; height:36px; border:1px solid #4b3740; border-radius:5px; background:#22191d; color:var(--text); font-size:22px; }
+    .wiki-editor-body { display:grid; grid-template-columns:minmax(0, 1fr) minmax(320px, .82fr); min-height:0; }
+    .wiki-editor-pane { min-height:0; overflow:auto; padding:16px; }
+    .wiki-editor-pane:first-child { border-right:1px solid var(--line); }
+    .wiki-editor-fields { display:grid; gap:12px; }
+    .wiki-editor-row { display:grid; grid-template-columns:1fr 230px; gap:10px; }
+    .wiki-editor label { display:grid; gap:5px; color:var(--muted); font-size:11px; }
+    .wiki-editor input, .wiki-editor select, .wiki-editor textarea { width:100%; border:1px solid #4c3940; border-radius:5px; background:#0d0a0c; color:var(--text); padding:9px 10px; outline:none; font:13px/1.45 var(--sans); }
+    .wiki-editor textarea { min-height:420px; resize:vertical; font:13px/1.55 Consolas, "Cascadia Mono", monospace; }
+    .wiki-editor input:focus, .wiki-editor select:focus, .wiki-editor textarea:focus { border-color:var(--accent); box-shadow:0 0 0 3px #d15b651f; }
+    .wiki-toolbar { display:flex; flex-wrap:wrap; gap:6px; padding:10px; border:1px solid #443139; border-radius:6px; background:#171215; }
+    .wiki-toolbar button, .wiki-image-tools button, .wiki-editor-foot button { border:1px solid #54404a; border-radius:4px; background:#21181d; color:#e8dfe2; padding:7px 9px; font:700 11px/1 var(--sans); }
+    .wiki-toolbar button:hover, .wiki-image-tools button:hover, .wiki-editor-foot button:hover { border-color:var(--accent); color:#fff; }
+    .wiki-image-tools { display:grid; gap:9px; padding:12px; border:1px solid #443139; border-radius:6px; background:#151013; }
+    .wiki-image-controls { display:grid; grid-template-columns:1fr 95px 105px; gap:8px; }
+    .wiki-preview-head { display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:10px; color:var(--muted); font-size:11px; letter-spacing:.08em; text-transform:uppercase; }
+    .wiki-editor-preview { min-height:420px; padding:18px; border:1px solid #443139; border-radius:6px; background:#181215; }
+    .wiki-editor .danger-action { border-color:#8f4951; color:#ffb9bd; }
+    .wiki-editor .primary-action { border-color:var(--accent); background:#3a171c; color:#f1b7bc; }
+    .wiki-local-note { color:var(--muted); font-size:11px; }
     .rule-guides, .article-rules { display:flex; flex-wrap:wrap; align-items:center; gap:8px; margin-top:22px; padding-top:16px; border-top:1px solid var(--line); font-family:var(--sans); }
     .rule-guides span, .article-rules span { color:var(--muted); font-size:11px; letter-spacing:.07em; text-transform:uppercase; }
     .rule-guides button, .article-rules button { border:1px solid #415066; background:#192330; color:#d9e8f4; padding:6px 9px; font-size:12px; }
@@ -417,6 +449,10 @@
       .map-drawings { pointer-events:none; }
       .map-detail { max-height:46%; }
       .map-detail .poi-open { min-height:40px; }
+      .wiki-top-actions { align-items:flex-start; }
+      .wiki-editor-body, .wiki-editor-row, .wiki-image-controls { grid-template-columns:1fr; }
+      .wiki-editor-pane:first-child { border-right:0; border-bottom:1px solid var(--line); }
+      .wiki-editor textarea { min-height:300px; }
       .map-details-jump { position:relative; z-index:7; display:flex; align-items:center; justify-content:center; gap:8px; width:100%; min-height:42px; border:0; border-top:1px solid #2d4054; border-bottom:1px solid #26394d; background:linear-gradient(180deg, #152230, #101a25); color:#dce9f1; font-weight:600; font-size:12px; letter-spacing:.04em; }
       .map-details-jump span { color:var(--accent); font-size:18px; line-height:1; }
       .map-details-jump:active { background:#1b2c3a; }
@@ -458,6 +494,7 @@
       <button class="home-button active" id="homeButton">Home</button>
       <button class="rules-button" id="rulesButton" type="button">Rules (Verbatim)</button>
       <button class="map-button" id="mapButton" type="button">Map</button>
+      <button class="editor-button" id="newArticleButton" type="button">New Article</button>
       <div class="search-wrap"><span class="search-icon">/</span><input class="search" id="searchInput" type="search" placeholder="Search the wiki" autocomplete="off"></div>
       <nav id="categoryNav"><p class="loading">Loading wiki pages...</p></nav>
     </aside>
@@ -480,6 +517,8 @@
       const homeButton = document.getElementById('homeButton');
       const rulesButton = document.getElementById('rulesButton');
       const mapButton = document.getElementById('mapButton');
+      const newArticleButton = document.getElementById('newArticleButton');
+      const WIKI_STORAGE_KEY = 'santos-cartel-wiki-data-v1';
       const escapeHtml = value => String(value).replace(/[&<>"']/g, char => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' })[char]);
       // GTA-style blip texture sheets: 16x16 grid of icons per sheet, used for POI map markers
       const ICON_SHEETS = { 1: { file: 'assets/icons/blips_texturesheet_ng.png', cols: 16, rows: 16 }, 2: { file: 'assets/icons/blips_texturesheet_ng_2.png', cols: 16, rows: 16 } };
@@ -596,6 +635,313 @@
       };
       marked.use({ headerIds: true, mangle: false, headerPrefix: 'section-' });
 
+      function cleanCategories(categories = state.categories) {
+        return categories.map(({ pages, count, ...category }) => category);
+      }
+
+      function loadLocalWikiData(baseData) {
+        try {
+          const local = JSON.parse(localStorage.getItem(WIKI_STORAGE_KEY) || 'null');
+          if (!local || !Array.isArray(local.pages) || !Array.isArray(local.categories)) return baseData;
+          return { ...baseData, ...local, rulesRaw:baseData.rulesRaw, ruleGuideLinks:baseData.ruleGuideLinks, locations:baseData.locations };
+        } catch {
+          return baseData;
+        }
+      }
+
+      function saveLocalWikiData() {
+        localStorage.setItem(WIKI_STORAGE_KEY, JSON.stringify({ version:2, savedAt:new Date().toISOString(), categories:cleanCategories(), pages:state.pages }, null, 2));
+      }
+
+      function rebuildWikiCollections(categoryDefinitions = cleanCategories()) {
+        const categoryIds = new Set(categoryDefinitions.map(category => category.id));
+        if (categoryIds.size !== categoryDefinitions.length || state.pages.some(page => !categoryIds.has(page.categoryId))) throw new Error('Wiki categories are invalid.');
+        state.categories = categoryDefinitions.map(category => ({ ...category, count: state.pages.filter(page => page.categoryId === category.id).length, pages: state.pages.filter(page => page.categoryId === category.id).sort((a, b) => a.title.localeCompare(b.title)) }));
+        const categoryNames = new Map(categoryDefinitions.map(category => [category.id, category.name]));
+        state.pages.forEach(page => {
+          page.searchCategory = categoryNames.get(page.categoryId) || 'Wiki';
+          page.searchText = plainText(normalizeSource(page.content || ''));
+          page.searchPath = page.url ? new URL(page.url).pathname.replace(/[\/-]+/g, ' ') : '';
+        });
+        state.searchPages = [...state.pages, { id:'rules-search', title:'CityLife Roleplay Rules', searchCategory:'Rules', searchPath:'rules', searchText:plainText(state.rulesRaw), content:state.rulesRaw, searchType:'rules' }];
+        state.fuse = new Fuse(state.searchPages, { includeScore:true, keys: [{ name:'title', weight:.5 }, { name:'searchCategory', weight:.12 }, { name:'summary', weight:.1 }, { name:'searchPath', weight:.1 }, { name:'searchText', weight:.18 }], threshold:.42, ignoreLocation:true, minMatchCharLength:2 });
+      }
+
+      const zipCrcTable = Array.from({ length:256 }, (_, index) => {
+        let value = index;
+        for (let bit = 0; bit < 8; bit++) value = value & 1 ? 0xedb88320 ^ (value >>> 1) : value >>> 1;
+        return value >>> 0;
+      });
+
+      function zipCrc32(bytes) {
+        let crc = 0xffffffff;
+        for (const byte of bytes) crc = zipCrcTable[(crc ^ byte) & 0xff] ^ (crc >>> 8);
+        return (crc ^ 0xffffffff) >>> 0;
+      }
+
+      function writeZipNumber(view, offset, value, bytes) {
+        for (let index = 0; index < bytes; index++) view.setUint8(offset + index, (value >>> (index * 8)) & 0xff);
+      }
+
+      function createZipBlob(files) {
+        const encoder = new TextEncoder();
+        const records = [];
+        const chunks = [];
+        let offset = 0;
+        const now = new Date();
+        const zipTime = (now.getHours() << 11) | (now.getMinutes() << 5) | Math.floor(now.getSeconds() / 2);
+        const zipDate = ((now.getFullYear() - 1980) << 9) | ((now.getMonth() + 1) << 5) | now.getDate();
+        files.forEach(file => {
+          const name = encoder.encode(file.name.replace(/\\/g, '/'));
+          const data = file.bytes instanceof Uint8Array ? file.bytes : encoder.encode(String(file.bytes ?? ''));
+          const crc = zipCrc32(data);
+          const header = new Uint8Array(30 + name.length);
+          const headerView = new DataView(header.buffer);
+          writeZipNumber(headerView, 0, 0x04034b50, 4);
+          writeZipNumber(headerView, 4, 20, 2);
+          writeZipNumber(headerView, 6, 0, 2);
+          writeZipNumber(headerView, 8, 0, 2);
+          writeZipNumber(headerView, 10, zipTime, 2);
+          writeZipNumber(headerView, 12, zipDate, 2);
+          writeZipNumber(headerView, 14, crc, 4);
+          writeZipNumber(headerView, 18, data.length, 4);
+          writeZipNumber(headerView, 22, data.length, 4);
+          writeZipNumber(headerView, 26, name.length, 2);
+          header.set(name, 30);
+          records.push({ name, crc, size:data.length, offset });
+          chunks.push(header, data);
+          offset += header.length + data.length;
+        });
+        const centralStart = offset;
+        records.forEach(record => {
+          const header = new Uint8Array(46 + record.name.length);
+          const view = new DataView(header.buffer);
+          writeZipNumber(view, 0, 0x02014b50, 4);
+          writeZipNumber(view, 4, 20, 2);
+          writeZipNumber(view, 6, 20, 2);
+          writeZipNumber(view, 8, 0, 2);
+          writeZipNumber(view, 10, 0, 2);
+          writeZipNumber(view, 12, zipTime, 2);
+          writeZipNumber(view, 14, zipDate, 2);
+          writeZipNumber(view, 16, record.crc, 4);
+          writeZipNumber(view, 20, record.size, 4);
+          writeZipNumber(view, 24, record.size, 4);
+          writeZipNumber(view, 28, record.name.length, 2);
+          writeZipNumber(view, 42, record.offset, 4);
+          header.set(record.name, 46);
+          chunks.push(header);
+          offset += header.length;
+        });
+        const end = new Uint8Array(22);
+        const endView = new DataView(end.buffer);
+        writeZipNumber(endView, 0, 0x06054b50, 4);
+        writeZipNumber(endView, 8, records.length, 2);
+        writeZipNumber(endView, 10, records.length, 2);
+        writeZipNumber(endView, 12, offset - centralStart, 4);
+        writeZipNumber(endView, 16, centralStart, 4);
+        chunks.push(end);
+        return new Blob(chunks, { type:'application/zip' });
+      }
+
+      function bytesFromBase64(base64) {
+        const binary = atob(base64);
+        const bytes = new Uint8Array(binary.length);
+        for (let index = 0; index < binary.length; index++) bytes[index] = binary.charCodeAt(index);
+        return bytes;
+      }
+
+      function fileNameForPage(page, usedNames) {
+        const pathName = page.url ? new URL(page.url).pathname.replace(/^\/+/, '').replace(/\.md$/i, '') : '';
+        const base = slugify(pathName || page.title) || `article-${Date.now()}`;
+        let name = `${base}.md`;
+        let copy = 2;
+        while (usedNames.has(name)) name = `${base}-${copy++}.md`;
+        usedNames.add(name);
+        return name;
+      }
+
+      function extractWikiUploads(content, page, uploadFiles) {
+        let uploadIndex = 1;
+        const pageSlug = slugify(pageId(page)) || 'article';
+        return String(content || '').replace(/src=(['"])data:([^;]+);base64,([^'"]+)\1/g, (match, quote, mime, base64) => {
+          const extension = mime.includes('png') ? 'png' : mime.includes('webp') ? 'webp' : mime.includes('gif') ? 'gif' : 'jpg';
+          const fileName = `assets/wiki-uploads/${pageSlug}-${uploadIndex++}.${extension}`;
+          uploadFiles.push({ name:fileName, bytes:bytesFromBase64(base64) });
+          return `src=${quote}${fileName}${quote}`;
+        });
+      }
+
+      function buildLocalWikiPackage() {
+        const usedPageNames = new Set();
+        const uploadFiles = [];
+        const exportedPages = state.pages.map(page => ({ ...page, content:extractWikiUploads(page.content, page, uploadFiles) }));
+        const markdownFiles = exportedPages.map(page => ({ name:`clrp_pages/${fileNameForPage(page, usedPageNames)}`, bytes:page.content || '' }));
+        const data = {
+          version:'2.0-local-export',
+          title:'City Life / Santos Cartel Community Wiki',
+          exportedAt:new Date().toISOString(),
+          lastReviewed:new Date().toISOString().slice(0, 10),
+          categories:cleanCategories(),
+          locations:state.locations,
+          ruleGuideLinks:state.ruleGuideLinks,
+          rulesRaw:state.rulesRaw,
+          pages:exportedPages
+        };
+        const instructions = `City Life Santos Wiki - Local Export\n\nFiles in this package:\n- community-wiki-data.json: drop this beside wiki.html to replace the wiki data.\n- clrp_pages/: markdown copies of every exported article for manual review/copy-paste.\n- assets/wiki-uploads/: images uploaded through the browser editor. Keep this folder path when copying files.\n- local-edits.json: same edited page/category data without rules/map metadata.\n\nHow to apply manually:\n1. Extract this zip.\n2. Copy assets/wiki-uploads into the wiki assets folder.\n3. Review community-wiki-data.json, then replace the project copy if it looks right.\n4. Refresh wiki.html and use Reset edits in the browser if old local edits are overriding the file.\n`;
+        return createZipBlob([
+          { name:'README_IMPORT.txt', bytes:instructions },
+          { name:'community-wiki-data.json', bytes:`${JSON.stringify(data, null, 2)}\n` },
+          { name:'local-edits.json', bytes:`${JSON.stringify({ version:2, exportedAt:data.exportedAt, categories:data.categories, pages:exportedPages }, null, 2)}\n` },
+          ...markdownFiles,
+          ...uploadFiles
+        ]);
+      }
+
+      function downloadLocalWikiData() {
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(buildLocalWikiPackage());
+        link.download = `citylife-wiki-local-export-${new Date().toISOString().slice(0, 10)}.zip`;
+        link.hidden = true;
+        document.body.append(link);
+        link.click();
+        setTimeout(() => { URL.revokeObjectURL(link.href); link.remove(); }, 1000);
+      }
+
+      function importLocalWikiData(file) {
+        const reader = new FileReader();
+        reader.onload = () => {
+          try {
+            const data = JSON.parse(reader.result);
+            if (!Array.isArray(data.pages) || !Array.isArray(data.categories)) throw new Error();
+            state.pages = data.pages;
+            rebuildWikiCollections(data.categories);
+            saveLocalWikiData();
+            showHome();
+          } catch {
+            alert('This file is not a valid wiki export.');
+          }
+        };
+        reader.readAsText(file);
+      }
+
+      function resetLocalWikiData() {
+        if (!localStorage.getItem(WIKI_STORAGE_KEY)) return alert('No local wiki edits are saved in this browser.');
+        if (!confirm('Discard local wiki edits and reload the bundled wiki data?')) return;
+        localStorage.removeItem(WIKI_STORAGE_KEY);
+        location.reload();
+      }
+
+      function wikiUrlFromTitle(title) {
+        return `https://wiki.cityliferp.net/community/${slugify(title) || `article-${Date.now()}`}.md`;
+      }
+
+      function insertEditorText(textarea, text, selectStart = 0, selectEnd = 0) {
+        const start = textarea.selectionStart;
+        const end = textarea.selectionEnd;
+        textarea.value = `${textarea.value.slice(0, start)}${text}${textarea.value.slice(end)}`;
+        textarea.focus();
+        textarea.setSelectionRange(start + selectStart, start + text.length - selectEnd);
+        textarea.dispatchEvent(new Event('input', { bubbles:true }));
+      }
+
+      function wrapEditorSelection(textarea, before, after = before, placeholder = 'text') {
+        const selected = textarea.value.slice(textarea.selectionStart, textarea.selectionEnd) || placeholder;
+        insertEditorText(textarea, `${before}${selected}${after}`, before.length, after.length);
+      }
+
+      async function imageFileToDataUrl(file) {
+        const rawUrl = await new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = () => resolve(reader.result);
+          reader.onerror = reject;
+          reader.readAsDataURL(file);
+        });
+        if (!file.type.startsWith('image/')) return rawUrl;
+        const image = await new Promise((resolve, reject) => {
+          const img = new Image();
+          img.onload = () => resolve(img);
+          img.onerror = reject;
+          img.src = rawUrl;
+        });
+        const max = 1600;
+        const scale = Math.min(1, max / Math.max(image.width, image.height));
+        const canvas = document.createElement('canvas');
+        canvas.width = Math.max(1, Math.round(image.width * scale));
+        canvas.height = Math.max(1, Math.round(image.height * scale));
+        canvas.getContext('2d').drawImage(image, 0, 0, canvas.width, canvas.height);
+        return canvas.toDataURL(file.type === 'image/png' ? 'image/png' : 'image/jpeg', .86);
+      }
+
+      function openWikiEditor(page = null) {
+        let dialog = document.getElementById('wikiEditorDialog');
+        if (!dialog) {
+          dialog = document.createElement('dialog');
+          dialog.id = 'wikiEditorDialog';
+          dialog.className = 'wiki-editor-dialog';
+          document.body.append(dialog);
+        }
+        const isNew = !page;
+        const selectedCategory = page?.categoryId || state.categories[0]?.id || '';
+        const categoryOptions = state.categories.map(category => `<option value="${escapeHtml(category.id)}" ${category.id === selectedCategory ? 'selected' : ''}>${escapeHtml(category.icon)} ${escapeHtml(category.name)}</option>`).join('');
+        dialog.innerHTML = `<form class="wiki-editor" id="wikiEditorForm"><header class="wiki-editor-head"><div><h2>${isNew ? 'New article' : 'Edit article'}</h2><p>Write in Markdown, use the toolbar for common formatting, then save locally.</p></div><button class="wiki-editor-close" type="button" id="closeWikiEditor" aria-label="Close editor">&times;</button></header><div class="wiki-editor-body"><section class="wiki-editor-pane"><div class="wiki-editor-fields"><div class="wiki-editor-row"><label>Title<input name="title" required value="${escapeHtml(page?.title || '')}" placeholder="Radio"></label><label>Main group<select name="categoryId">${categoryOptions}</select></label></div><div class="wiki-toolbar" aria-label="Formatting tools"><button type="button" data-editor-tool="heading">Heading</button><button type="button" data-editor-tool="bold">Bold</button><button type="button" data-editor-tool="italic">Italic</button><button type="button" data-editor-tool="bullet">Bullets</button><button type="button" data-editor-tool="number">Numbers</button><button type="button" data-editor-tool="tip">Tip</button><button type="button" data-editor-tool="note">Note</button><button type="button" data-editor-tool="link">Link</button><button type="button" data-editor-tool="color">Color</button><button type="button" data-editor-tool="large">Large text</button><button type="button" data-editor-tool="details">Dropdown</button></div><label>Article body<textarea name="content" id="wikiEditorContent" spellcheck="true">${escapeHtml(page?.content || '# New Article\n\n> **TIP:** Add the quick thing readers need to know here.\n\n1. First step\n2. Second step\n')}</textarea></label><div class="wiki-image-tools"><strong>Insert image</strong><div class="wiki-image-controls"><label>Image file<input id="wikiImageFile" type="file" accept="image/*"></label><label>Width<select id="wikiImageWidth"><option value="100">Full</option><option value="75">Wide</option><option value="50">Half</option><option value="33">Small</option></select></label><label>Align<select id="wikiImageAlign"><option value="center">Center</option><option value="left">Left</option><option value="right">Right</option></select></label></div><label>Caption / alt text<input id="wikiImageCaption" placeholder="What this image shows"></label><button type="button" id="insertWikiImage">Insert image into article</button></div></div></section><section class="wiki-editor-pane"><div class="wiki-preview-head"><span>Live preview</span><span class="wiki-local-note">Saved in this browser for now</span></div><div class="wiki-editor-preview prose" id="wikiEditorPreview"></div></section></div><footer class="wiki-editor-foot"><div>${isNew ? '' : '<button class="danger-action" type="button" id="deleteWikiArticle">Delete article</button>'}</div><div><button type="button" id="cancelWikiEditor">Cancel</button><button class="primary-action" type="submit">Save article</button></div></footer></form>`;
+        const form = document.getElementById('wikiEditorForm');
+        const textarea = document.getElementById('wikiEditorContent');
+        const preview = document.getElementById('wikiEditorPreview');
+        const updatePreview = () => { preview.innerHTML = marked.parse(normalizeSource(textarea.value || '')); };
+        textarea.addEventListener('input', updatePreview);
+        updatePreview();
+        dialog.querySelectorAll('[data-editor-tool]').forEach(button => button.addEventListener('click', () => {
+          const tool = button.dataset.editorTool;
+          if (tool === 'heading') insertEditorText(textarea, '\n\n## Heading\n\n', 4, 2);
+          if (tool === 'bold') wrapEditorSelection(textarea, '**', '**', 'important text');
+          if (tool === 'italic') wrapEditorSelection(textarea, '*', '*', 'emphasis');
+          if (tool === 'bullet') insertEditorText(textarea, '\n- First item\n- Second item\n', 3, 14);
+          if (tool === 'number') insertEditorText(textarea, '\n1. First step\n2. Second step\n', 4, 15);
+          if (tool === 'tip') insertEditorText(textarea, '\n> **TIP:** Helpful reminder\n\n', 11, 2);
+          if (tool === 'note') insertEditorText(textarea, '\n> **Note:** Important context\n\n', 12, 2);
+          if (tool === 'link') wrapEditorSelection(textarea, '[', '](wiki:article-id)', 'link text');
+          if (tool === 'color') wrapEditorSelection(textarea, '<span style="color:#e3bc72;">', '</span>', 'colored text');
+          if (tool === 'large') wrapEditorSelection(textarea, '<span style="font-size:1.25em;">', '</span>', 'larger text');
+          if (tool === 'details') insertEditorText(textarea, '\n<details>\n\n<summary>Dropdown title</summary>\n\nHidden information goes here.\n\n</details>\n', 22, 53);
+        }));
+        document.getElementById('insertWikiImage').addEventListener('click', async () => {
+          const file = document.getElementById('wikiImageFile').files[0];
+          if (!file) return alert('Choose an image first.');
+          const caption = document.getElementById('wikiImageCaption').value.trim();
+          const width = Number(document.getElementById('wikiImageWidth').value) || 100;
+          const align = document.getElementById('wikiImageAlign').value;
+          const margin = align === 'left' ? '0 auto 1rem 0' : align === 'right' ? '0 0 1rem auto' : '0 auto 1rem';
+          const source = await imageFileToDataUrl(file);
+          insertEditorText(textarea, `\n<figure style="max-width:${width}%;margin:${margin};"><img src="${source}" alt="${escapeHtml(caption)}"><figcaption><p>${escapeHtml(caption)}</p></figcaption></figure>\n`, 1, 1);
+        });
+        const close = () => dialog.close();
+        document.getElementById('closeWikiEditor').addEventListener('click', close);
+        document.getElementById('cancelWikiEditor').addEventListener('click', close);
+        document.getElementById('deleteWikiArticle')?.addEventListener('click', () => {
+          if (!confirm(`Delete "${page.title}"?`)) return;
+          state.pages = state.pages.filter(item => pageId(item) !== pageId(page));
+          rebuildWikiCollections();
+          saveLocalWikiData();
+          dialog.close();
+          showHome();
+        });
+        form.addEventListener('submit', event => {
+          event.preventDefault();
+          const values = Object.fromEntries(new FormData(form));
+          const title = values.title.trim();
+          if (!title) return;
+          const target = isNew ? { id:`custom-${Date.now()}`, url:wikiUrlFromTitle(title) } : state.pages.find(item => pageId(item) === pageId(page));
+          Object.assign(target, { title, categoryId:values.categoryId, content:values.content, url:target.url || wikiUrlFromTitle(title) });
+          if (isNew) state.pages.push(target);
+          rebuildWikiCollections();
+          saveLocalWikiData();
+          dialog.close();
+          showHome();
+          showHomeArticle(target);
+        });
+        dialog.showModal();
+      }
+
       function searchTerms(query) {
         const words = plainText(query).toLowerCase().split(/\s+/).filter(word => word.length > 1 && !searchStopWords.has(word));
         return [...new Set(words.flatMap(word => [word, ...(searchAliases[word] || [])]))];
@@ -690,9 +1036,11 @@
         const panel = item.querySelector('.home-article-panel');
         const opening = forceOpen || panel.hidden;
         if (opening && !panel.dataset.rendered) {
-          panel.innerHTML = `<div class="prose">${marked.parse(normalizeSource(page.content || 'No content is available for this article.'))}</div>`;
+          panel.innerHTML = `<div class="prose">${marked.parse(normalizeSource(page.content || 'No content is available for this article.'))}</div><div class="home-article-tools"><button class="home-article-edit" type="button" data-edit-page="${escapeHtml(pageId(page))}">Edit article</button></div>`;
           panel.dataset.rendered = 'true';
           panel.addEventListener('click', event => {
+            const editButton = event.target.closest('[data-edit-page]');
+            if (editButton) { openWikiEditor(state.pages.find(item => pageId(item) === editButton.dataset.editPage)); return; }
             const link = event.target.closest('a');
             if (!link) return;
             const href = link.getAttribute('href') || '';
@@ -743,12 +1091,16 @@
         searchInput.value = '';
         setActive(null);
         buildNav();
-        main.innerHTML = `<div class="home"><div class="topline"><button class="menu" id="menuButton" type="button">Menu</button><span>Official Community Reference</span></div>
+        main.innerHTML = `<div class="home"><div class="topline"><button class="menu" id="menuButton" type="button">Menu</button><div class="wiki-top-actions"><span>Official Community Reference</span><button class="wiki-action" id="homeNewArticle" type="button">New article</button><button class="wiki-action" id="exportWikiData" type="button">Export local</button><label class="wiki-action" for="importWikiData">Import edits</label><input id="importWikiData" type="file" accept="application/json" hidden><button class="wiki-action" id="resetWikiData" type="button">Reset edits</button></div></div>
           <h1>Know the city. Own the moment.</h1><p class="lede">Guides, work, skills, and the useful details of City Life and Santos Cartel community life, organized for quick answers while you play.</p>
           <div class="stats"><div class="stat"><strong>${state.pages.length}</strong><span>Wiki pages</span></div><div class="stat"><strong>${state.categories.length}</strong><span>Categories</span></div></div>
           <div class="category-grid">${state.categories.map(category => `<button class="category-card" data-category="${category.id}" type="button"><span class="category-icon">${escapeHtml(category.icon)}</span><h2>${escapeHtml(category.name)}</h2><p>${category.count} articles</p></button>`).join('')}</div>
           <div class="home-directory">${state.categories.map(category => `<section class="home-category" data-home-category="${category.id}"><header class="home-category-head"><span class="category-icon">${escapeHtml(category.icon)}</span><h2>${escapeHtml(category.name)}</h2><p>${category.count} articles</p></header><div class="home-articles">${category.pages.map(page => `<div class="home-article"><button class="home-article-link" data-id="${escapeHtml(pageId(page))}" aria-expanded="false" aria-controls="home-panel-${escapeHtml(pageId(page))}" type="button">${escapeHtml(page.title)}</button><div class="home-article-panel" id="home-panel-${escapeHtml(pageId(page))}" hidden></div></div>`).join('')}</div></section>`).join('')}</div></div>`;
         wireMenu();
+        document.getElementById('homeNewArticle').addEventListener('click', () => openWikiEditor());
+        document.getElementById('exportWikiData').addEventListener('click', downloadLocalWikiData);
+        document.getElementById('importWikiData').addEventListener('change', event => { if (event.target.files[0]) importLocalWikiData(event.target.files[0]); });
+        document.getElementById('resetWikiData').addEventListener('click', resetLocalWikiData);
         main.querySelectorAll('.category-card').forEach(card => card.addEventListener('click', () => {
           const section = main.querySelector(`[data-home-category="${card.dataset.category}"]`);
           section?.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
@@ -1644,8 +1996,9 @@
         setActive(pageId(page));
         buildNav();
         main.innerHTML = `<article class="article"><div class="breadcrumb"><button id="crumbHome" type="button">Home</button> / ${escapeHtml(category?.name || 'Wiki')} / ${escapeHtml(page.title)}</div>
-          <div><div class="topline"><button class="menu" id="menuButton" type="button">Menu</button><span>${escapeHtml(category?.name || 'Wiki')}</span></div><header class="article-head"><h1>${escapeHtml(page.title)}</h1><div class="article-meta">City Life / Santos Cartel Community Wiki</div></header><div class="prose" id="articleBody">${content}</div>${relatedRules.length ? `<div class="article-rules"><span>Related rules</span>${relatedRules.map(link => `<button type="button" data-rule-section="${escapeHtml(link.ruleSection)}" data-rule-occurrence="${link.occurrence}">${escapeHtml(link.ruleSection)}</button>`).join('')}</div>` : ''}</div><aside class="toc" id="toc"><strong>On this page</strong></aside></article>`;
+          <div><div class="topline"><button class="menu" id="menuButton" type="button">Menu</button><div class="article-actions"><span>${escapeHtml(category?.name || 'Wiki')}</span><button class="article-edit-button" id="editCurrentArticle" type="button">Edit article</button></div></div><header class="article-head"><h1>${escapeHtml(page.title)}</h1><div class="article-meta">City Life / Santos Cartel Community Wiki</div></header><div class="prose" id="articleBody">${content}</div>${relatedRules.length ? `<div class="article-rules"><span>Related rules</span>${relatedRules.map(link => `<button type="button" data-rule-section="${escapeHtml(link.ruleSection)}" data-rule-occurrence="${link.occurrence}">${escapeHtml(link.ruleSection)}</button>`).join('')}</div>` : ''}</div><aside class="toc" id="toc"><strong>On this page</strong></aside></article>`;
         document.getElementById('crumbHome').addEventListener('click', showHome);
+        document.getElementById('editCurrentArticle').addEventListener('click', () => openWikiEditor(page));
         document.getElementById('articleBody').addEventListener('click', event => {
           const link = event.target.closest('a');
           if (!link) return;
@@ -1711,6 +2064,7 @@
       homeButton.addEventListener('click', showHome);
       rulesButton.addEventListener('click', showRules);
       mapButton.addEventListener('click', showMap);document.addEventListener('click',(function(e){var t=e.target;if(t.id==='poiToggle'){var p=document.getElementById('mobilePoiPanel');if(p)p.classList.toggle('mobile-open')}if(t.classList.contains('map-sheet-close')){t.closest('.map-sidebar')?.classList.remove('mobile-open')}}));
+      newArticleButton.addEventListener('click', () => openWikiEditor());
       document.getElementById('sidebarClose').addEventListener('click', () => setSidebarOpen(false));
       document.getElementById('sidebarScrim').addEventListener('click', () => setSidebarOpen(false));
       document.getElementById('sidebar').addEventListener('click', event => {
@@ -1780,7 +2134,7 @@
       ])
         .then(wikiData => {
           // Defensive: handle both object and array responses gracefully
-          const data = Array.isArray(wikiData) ? (wikiData[0] || {}) : wikiData;
+          const data = loadLocalWikiData(Array.isArray(wikiData) ? (wikiData[0] || {}) : wikiData);
           state.pages = (data?.pages || []);
           state.rulesRaw = data?.rulesRaw || '';
           state.ruleGuideLinks = data?.ruleGuideLinks || [];
@@ -1788,18 +2142,7 @@
           preloadMapLayers();
           if (!state.pages.length) throw new Error('No wiki pages found in community data.');
           if (!state.rulesRaw) throw new Error('Rules source not found in community data.');
-          const categoryDefinitions = (data?.categories || wikiData?.categories) || [];
-          const categoryIds = new Set(categoryDefinitions.map(category => category.id));
-          if (categoryIds.size !== categoryDefinitions.length || state.pages.some(page => !categoryIds.has(page.categoryId))) throw new Error('Wiki categories are invalid.');
-          state.categories = categoryDefinitions.map(category => ({ ...category, count: state.pages.filter(page => page.categoryId === category.id).length, pages: state.pages.filter(page => page.categoryId === category.id).sort((a, b) => a.title.localeCompare(b.title)) }));
-          const categoryNames = new Map(categoryDefinitions.map(category => [category.id, category.name]));
-          state.pages.forEach(page => {
-            page.searchCategory = categoryNames.get(page.categoryId) || 'Wiki';
-            page.searchText = plainText(normalizeSource(page.content || ''));
-            page.searchPath = page.url ? new URL(page.url).pathname.replace(/[\/-]+/g, ' ') : '';
-          });
-          state.searchPages = [...state.pages, { id:'rules-search', title:'CityLife Roleplay Rules', searchCategory:'Rules', searchPath:'rules', searchText:plainText(state.rulesRaw), content:state.rulesRaw, searchType:'rules' }];
-          state.fuse = new Fuse(state.searchPages, { includeScore:true, keys: [{ name:'title', weight:.5 }, { name:'searchCategory', weight:.12 }, { name:'summary', weight:.1 }, { name:'searchPath', weight:.1 }, { name:'searchText', weight:.18 }], threshold:.42, ignoreLocation:true, minMatchCharLength:2 });
+          rebuildWikiCollections(data?.categories || []);
           collaboration = window.createMapCollaboration({
             getSnapshot: () => ({ drawings:savedDrawings(), locations:savedLocations(), layers:{ ...state.map.annotationLayers } }),
             applySnapshot: snapshot => {
